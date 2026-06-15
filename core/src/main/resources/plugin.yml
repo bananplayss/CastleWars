@@ -1,0 +1,9 @@
+main: me.bananplayss.castlewars.core.core.Main
+
+authors:
+  - bananplayss
+  - koba1
+  - IdbiDev
+
+name: CastleWars
+version: 1.0.0
