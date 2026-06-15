@@ -25,9 +25,7 @@ public class ArenaPrefab {
     private File schematicFile;
     private String name;
     private Location origin;
-    /*
-        Todo: every location, etc meta data from the arena
-     */
+
     public ArenaPrefab(File schematicFile, String name) {
         this.schematicFile = schematicFile;
         this.name = name;
