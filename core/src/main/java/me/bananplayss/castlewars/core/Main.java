@@ -6,6 +6,7 @@ import me.bananplayss.castlewars.api.CastleWarsAPI;
 import me.bananplayss.castlewars.core.files.ConfigData;
 import me.bananplayss.castlewars.core.files.FileManager;
 import me.bananplayss.castlewars.core.hooks.HookManager;
+import me.bananplayss.castlewars.core.map.managers.MapManager;
 import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,6 +21,8 @@ public final class Main extends JavaPlugin {
     private HookManager hookManager;
     private ProfileCacheImpl profileCache;
 
+    private MapManager mapManager;
+
     @Override
     public void onEnable() {
 
@@ -32,6 +35,9 @@ public final class Main extends JavaPlugin {
 
         this.profileCache = new ProfileCacheImpl();
         CastleWarsAPI.setProfileCache(this.profileCache);
+
+
+        this.mapManager = new MapManager();
 
         //commandok vagy idk
         this.getCommand("stackcommand").setExecutor(new StackCommand());
