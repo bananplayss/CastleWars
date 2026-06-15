@@ -26,6 +26,6 @@ public class BaseArena {
     }
 
     public void reload() {
-        FileConfiguration c = Main.getInstance()
+        FileConfiguration c = Main.getInstance();
     }
 }

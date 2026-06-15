@@ -39,9 +39,6 @@ public final class Main extends JavaPlugin {
         CastleWarsAPI.setProfileCache(this.profileCache);
 
         this.mapManager = new MapManager();
-
-        //commandok vagy idk
-        this.getCommand("stackcommand").setExecutor(new StackCommand());
     }
 
     @Override
