@@ -16,6 +16,7 @@ dependencies {
 
     compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT")
 //    compileOnly("net.kyori:adventure-text-minimessage:5.1.1")
+    compileOnly("com.infernalsuite.asp:api:4.0.0-SNAPSHOT")
 }
 
 tasks.test {

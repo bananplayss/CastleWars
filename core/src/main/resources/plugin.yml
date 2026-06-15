@@ -1,4 +1,7 @@
-main: me.bananplayss.castlewars.core.core.Main
+main: me.bananplayss.castlewars.core.Main
+
+softdepend:
+  - PlaceholderAPI
 
 authors:
   - bananplayss

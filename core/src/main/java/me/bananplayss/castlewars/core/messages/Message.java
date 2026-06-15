@@ -13,7 +13,7 @@ public class Message extends KobaMessage {
 
     private static final Map<String, Message> MESSAGES = new HashMap<>();
 
-    public static final Message PREFIX = new Message("prefix", "&8[&aSzéfek&8]");
+    public static final Message PREFIX = new Message("prefix", "&8[&aCastleWars&8]");
     public static final Message NO_PERMISSION = new Message("no_permission", "%prefix% &cEhhez nincs jogod!");
     public static final Message COMMAND_DOES_NOT_EXISTS = new Message("command_does_not_exists", "%prefix% &cNem található ilyen parancs. Használd a /sumo parancsot a további segítségért.");
     public static final Message COMMAND_USAGE = new Message("command_usage", "%prefix% &cRossz parancs használat. Használd: %usage%");
@@ -22,20 +22,6 @@ public class Message extends KobaMessage {
     public static final Message NOT_ENOUGH_ARGUMENTS = new Message("not_enough_arguments", "%prefix% &cInvalid command usage.");
     public static final Message RELOADED = new Message("reloaded", "%prefix% &aConfiguration files successfully reloaded!.");
     public static final Message PLAYER_NOT_FOUND = new Message("player_not_found", "%prefix% &cA játékos nem található.");
-    public static final Message VAULT_NOT_FOUND = new Message("vault_not_found", "%prefix% &cA széf nem található.");
-    public static final Message TIME_NOT_FOUND = new Message("time_not_found", "%prefix% &cA idő megadása nem megfelelő.");
-
-    public static final Message NOT_RENTED = new Message("not_rented", "&4⚠ &cA széf le van zárva. Béreld ki a &#ededed/szef &cparancs használatával.");
-
-    public static final Message VAULT_RENTAL_INFO = new Message("vault_rental_info", new ArrayList<>(List.of(
-            "&5",
-            "&#068f13ℹ &#13E828Bérleti információk (%title%&#13E828)",
-            "&7Kezdete: &#ededed%start_date%",
-            "&7Lejár: &#ededed%end_date%",
-            "&5",
-            "&#FAE8B4⏳ &7Hátralévő idő: &#ededed%remaining_time%",
-            "&5"
-    )));
 
 
 

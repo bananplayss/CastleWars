@@ -21,6 +21,10 @@ subprojects {
         maven {
             url = uri("https://repo.extendedclip.com/releases/")
         }
+        maven {
+            url = uri("https://repo.infernalsuite.com/repository/maven-snapshots/")
+        }
+        maven("https://maven.enginehub.org/repo/")
         mavenCentral()
     }
 
