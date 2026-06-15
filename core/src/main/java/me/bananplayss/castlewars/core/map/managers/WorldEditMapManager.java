@@ -11,7 +11,7 @@ public class WorldEditMapManager extends BaseMapManager {
 
     private HashMap<Location,ArenaPrefab> builtMaps;
 
-    private final int 
+    private final int distanceBetweenSpawnPoints = 1000;
 
     public WorldEditMapManager() {
         super(WorldGenerateType.WORLDEDIT);

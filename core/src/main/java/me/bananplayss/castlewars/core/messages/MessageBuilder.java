@@ -1,6 +1,5 @@
 package me.bananplayss.castlewars.core.messages;
 
-
 import me.bananplayss.castlewars.core.kobalib.KobaMessageBuilder;
 
 import java.util.List;
