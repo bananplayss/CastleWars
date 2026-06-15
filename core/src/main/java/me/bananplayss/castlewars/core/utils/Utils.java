@@ -7,9 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class Utils {
     public static ItemStack getItemFromConfig(ConfigurationSection section) {
-        XItemStack.Deserializer des = XItemStack.deserializer()
-                .fromConfig(section)
-                .withMiniMessage(str -> str.stream().map(ColorParser::parse).toList());
+        XItemStack.Deserializer des = XItemStack.deserializer().fromConfig(section).withMiniMessage(str -> str.stream().map(ColorParser::parse).toList());
 
         return des.deserialize();
     }
