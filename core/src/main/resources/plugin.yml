@@ -7,3 +7,7 @@ authors:
 
 name: CastleWars
 version: 1.0.0
+
+commands:
+  stackcommand:
+    aliases: [stack,lol]
