@@ -1,4 +1,4 @@
-package me.bananplayss.castlewars.core.utils.Vectors;
+package me.bananplayss.castlewars.core.utils.vectors;
 
 import lombok.Getter;
 import lombok.Setter;

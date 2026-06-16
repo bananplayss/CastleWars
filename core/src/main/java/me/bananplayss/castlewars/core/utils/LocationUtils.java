@@ -1,6 +1,6 @@
 package me.bananplayss.castlewars.core.utils;
 
-import me.bananplayss.castlewars.core.utils.Vectors.Vector3i;
+import me.bananplayss.castlewars.core.utils.vectors.Vector3i;
 import org.bukkit.Location;
 import org.bukkit.World;
 
