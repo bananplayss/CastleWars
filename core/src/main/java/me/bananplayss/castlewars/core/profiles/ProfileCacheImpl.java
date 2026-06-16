@@ -26,7 +26,7 @@ public class ProfileCacheImpl implements ProfileCache {
     }
 
     @NotNull
-    public ProfileImpl getProfile(Player player) {
+    public Profile getProfile(Player player) {
         if(this.profiles.containsKey(player.getUniqueId())) {
             return this.profiles.get(player.getUniqueId());
         }
