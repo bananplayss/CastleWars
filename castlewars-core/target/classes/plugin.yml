@@ -1,0 +1,18 @@
+main: me.bananplayss.castlewars.core.Main
+
+api-version: 1.18
+
+softdepend:
+  - PlaceholderAPI
+  - Multiverse-Core
+
+authors:
+  - bananplayss
+  - koba1
+  - IdbiDev
+
+name: CastleWars
+version: 1.0.0
+
+commands:
+  castlewars:

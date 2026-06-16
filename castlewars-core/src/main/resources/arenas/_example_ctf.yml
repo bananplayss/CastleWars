@@ -1,0 +1,65 @@
+enabled: true
+name: "desert_5v5"
+world: "castlewars"
+display_name: "&eDesert"
+schematic: "cw_desert.schem"
+
+mode: CAPTURE_THE_FLAG # CAPTURE_THE_ZONE
+
+spectator: "15, 45, 15"
+lobby: "0, 45, 0"
+
+times:
+  waiting: 30
+  starting: 5
+  celebration: 15 # ha lejár a celebration instant reset
+  reset: 6769 # Six seven ennél, lehet h lehet cancel gui instant reset
+
+respawn:
+  enabled: true
+  delay: 5
+
+score:
+  limit: 3
+
+teams:
+  count: 5
+  red:
+    color: "&c"
+    spawn: "0, 0, 0, 0, 0"
+    corners:
+      1: "0, 0, 0"
+      2: "0, 0, 0"
+    flag:
+      location: "10, 0, 10"
+      rotation: 0
+
+      banner:
+        base_color: "RED" # "#FFA500"
+        patterns:
+          - color: BLACK
+            pattern: STRIPE_DOWNLEFT
+          - color: RED
+            pattern: CIRCLE_MIDDLE
+          - color: YELLOW
+            pattern: BORDER
+
+  blue:
+    color: "&b"
+    spawn: "25, 0, 25, 0, 0"
+    corners:
+      1: "0, 0, 0"
+      2: "0, 0, 0"
+    flag:
+      location: "30, 0, 30"
+      rotation: 180
+
+      banner:
+        base_color: "BLUE" # "#FFA500"
+        patterns:
+          - color: BLACK
+            pattern: STRIPE_DOWNLEFT
+          - color: RED
+            pattern: CIRCLE_MIDDLE
+          - color: YELLOW
+            pattern: BORDER

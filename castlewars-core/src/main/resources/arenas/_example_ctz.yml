@@ -1,0 +1,38 @@
+enabled: true
+name: "desert_5v5_ctz"
+world: "castlewars"
+display_name: "&eDesert"
+schematic: "cw_desert.schem"
+
+mode: CAPTURE_THE_ZONE
+
+spectator: "15, 45, 15"
+lobby: "0, 45, 0"
+
+respawn:
+  enabled: true
+  delay: 5
+
+capture_time: 300
+
+teams:
+  count: 5
+  red:
+    color: "&c"
+    spawn: "0, 0, 0, 0, 0"
+    corners:
+      1: "0, 0, 0"
+      2: "0, 0, 0"
+    zone:
+      location: "10, 0, 10"
+      radius: 5
+
+  blue:
+    color: "&b"
+    spawn: "25, 0, 25"
+    corners:
+      1: "0, 0, 0"
+      2: "0, 0, 0"
+    zone:
+      location: "30, 0, 30"
+      radius: 5
