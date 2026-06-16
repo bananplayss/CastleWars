@@ -1,0 +1,46 @@
+enabled: true
+name: "desert_5v5"
+world: castlewars
+displayName: "&eDesert"
+
+mode: CAPTURE_THE_FLAG # CAPTURE_THE_ZONE
+
+spectator: "15, 45, 15"
+lobby: "0, 45, 0"
+
+respawn:
+  enabled: true
+  delay: 5
+
+score:
+  limit: 3
+
+teams:
+  count: 5
+  red:
+    color: "&c"
+    spawn: "0, 0, 0"
+    flag_location: "10, 0, 10"
+    banner:
+      base_color: "RED" # "#FFA500"
+      patterns:
+        - color: BLACK
+          pattern: STRIPE_DOWNLEFT
+        - color: RED
+          pattern: CIRCLE_MIDDLE
+        - color: YELLOW
+          pattern: BORDER
+
+  blue:
+    color: "&b"
+    spawn: "25, 0, 25"
+    flag_location: "30, 0, 30"
+    banner:
+      base_color: "BLUE"
+      patterns:
+      - color: BLACK
+        pattern: STRIPE_DOWNLEFT
+      - color: RED
+        pattern: CIRCLE_MIDDLE
+      - color: YELLOW
+        pattern: BORDER

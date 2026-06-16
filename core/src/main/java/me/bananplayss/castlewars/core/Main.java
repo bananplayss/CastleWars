@@ -25,7 +25,6 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
         instance = this;
 
         this.fileManager = new FileManager();

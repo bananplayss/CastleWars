@@ -18,6 +18,7 @@ public class BaseArena {
 
     /*
         Todo: every location INSIDE THE PREFAB
+        Nope, every location in Game (RunningArena)
      */
     private Map<String, Team> teams;
     private Location spectator;
@@ -26,6 +27,6 @@ public class BaseArena {
     }
 
     public void reload() {
-        FileConfiguration c = Main.getInstance()
+        FileConfiguration c = Main.getInstance();
     }
 }
