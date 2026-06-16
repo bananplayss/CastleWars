@@ -4,7 +4,7 @@ world: "castlewars"
 display_name: "&eDesert"
 schematic: "cw_desert.schem"
 
-mode: CAPTURE_THE_ZONE
+mode: BREAK_THE_NEXUS
 
 spectator: "15, 45, 15"
 lobby: "0, 45, 0"
@@ -13,7 +13,13 @@ respawn:
   enabled: true
   delay: 5
 
-capture_time: 300
+
+nexus:
+  health: 200
+  regen:
+    enabled: true
+    amount: 1
+    delay: 15
 
 teams:
   count: 5
@@ -23,9 +29,8 @@ teams:
     corners:
       1: "0, 0, 0"
       2: "0, 0, 0"
-    zone:
+    nexus:
       location: "10, 0, 10"
-      radius: 5
 
   blue:
     color: "&b"
@@ -33,6 +38,5 @@ teams:
     corners:
       1: "0, 0, 0"
       2: "0, 0, 0"
-    zone:
+    nexus:
       location: "30, 0, 30"
-      radius: 5

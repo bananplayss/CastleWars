@@ -2,8 +2,7 @@ package me.bananplayss.castlewars.core.map.managers;
 
 import lombok.Getter;
 import me.bananplayss.castlewars.core.Main;
-import me.bananplayss.castlewars.core.game.BaseArena;
-import me.bananplayss.castlewars.core.map.ArenaPrefab;
+import me.bananplayss.castlewars.core.map.ArenaSchematic;
 import me.bananplayss.castlewars.core.map.WorldGenerateType;
 import org.bukkit.Location;
 
@@ -14,7 +13,7 @@ import java.util.Map;
 @Getter
 public class WorldEditMapManager extends BaseMapManager {
 
-    private Map<Location, ArenaPrefab> builtMaps;
+    private Map<Location, ArenaSchematic> builtMaps;
 
     private final int distanceBetweenSpawnPoints = 1000;
 
@@ -28,7 +27,7 @@ public class WorldEditMapManager extends BaseMapManager {
         System.out.println("Starting map generation!");
         int index = 0;
         int c = Main.getInstance().getConfigData().getArenaCount();
-        for (ArenaPrefab arenaPrefab : this.getArenaPrefabs()) {
+        for (ArenaSchematic arenaPrefab : this.getArenaPrefabs()) {
             for (int i = 0; i < c; i++) {
 
                 Location spawn = arenaPrefab.getOrigin().clone().add((index % 2) * distanceBetweenSpawnPoints , 100, index * distanceBetweenSpawnPoints);

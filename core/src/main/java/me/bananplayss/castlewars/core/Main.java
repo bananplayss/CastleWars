@@ -2,10 +2,9 @@ package me.bananplayss.castlewars.core;
 
 import lombok.Getter;
 import me.bananplayss.castlewars.api.CastleWarsAPI;
-import me.bananplayss.castlewars.api.kits.KitManager;
 import me.bananplayss.castlewars.core.files.ConfigData;
 import me.bananplayss.castlewars.core.files.FileManager;
-import me.bananplayss.castlewars.core.game.ArenaManagerImpl;
+import me.bananplayss.castlewars.core.arena.ArenaManagerImpl;
 import me.bananplayss.castlewars.core.hooks.HookManager;
 import me.bananplayss.castlewars.core.kits.KitManagerImpl;
 import me.bananplayss.castlewars.core.map.managers.MapManager;
@@ -39,6 +38,7 @@ public final class Main extends JavaPlugin {
         this.kitManager = new KitManagerImpl();
 
         this.arenaManager = new ArenaManagerImpl();
+        this.fileManager.loadArenas();
 
         this.profileCache = new ProfileCacheImpl();
         CastleWarsAPI.setProfileCache(this.profileCache);

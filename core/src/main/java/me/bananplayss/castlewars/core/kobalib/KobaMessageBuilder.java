@@ -3,6 +3,7 @@ package me.bananplayss.castlewars.core.kobalib;
 import lombok.Getter;
 import lombok.Setter;
 import me.bananplayss.castlewars.core.kobalib.colors.ColorParser;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.util.Ticks;
 import org.bukkit.Bukkit;
@@ -132,5 +133,13 @@ public class KobaMessageBuilder {
                 player.sendActionBar(ColorParser.parse(s, player));
             }
         }
+    }
+
+    public Component getComponent() {
+        return ColorParser.parse(this.message);
+    }
+
+    public Component getComponent(Player player) {
+        return ColorParser.parse(this.message, player);
     }
 }

@@ -4,7 +4,6 @@ package me.bananplayss.castlewars.core.messages;
 import me.bananplayss.castlewars.core.Main;
 import me.bananplayss.castlewars.core.kobalib.KobaMessage;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +21,10 @@ public class Message extends KobaMessage {
     public static final Message NOT_ENOUGH_ARGUMENTS = new Message("not_enough_arguments", "%prefix% &cInvalid command usage.");
     public static final Message RELOADED = new Message("reloaded", "%prefix% &aConfiguration files successfully reloaded!.");
     public static final Message PLAYER_NOT_FOUND = new Message("player_not_found", "%prefix% &cA játékos nem található.");
+
+    // FLAG
+    public static final Message CAPTURED_FLAG = new Message("flag.capture", "%prefix% &c The flag has been captured by %player%.");
+    public static final Message DROPPED_FLAG = new Message("flag.drop", "%prefix% &c he flag has been dropped by %player%.");
 
 
 

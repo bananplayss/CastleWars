@@ -1,0 +1,17 @@
+package me.bananplayss.castlewars.api.teams;
+
+import lombok.Getter;
+import me.bananplayss.castlewars.api.utils.BoundingBox;
+import me.bananplayss.castlewars.api.utils.vectors.Vector3i;
+import me.bananplayss.castlewars.api.utils.vectors.VectorLocation;
+
+@Getter
+public class NexusTeam extends AbstractTeam {
+
+    private final Vector3i block;
+
+    public NexusTeam(String key, String displayName, String color, BoundingBox boundingBox, VectorLocation spawn, Vector3i block) {
+        super(key, displayName, color, spawn, boundingBox);
+        this.block = block;
+    }
+}

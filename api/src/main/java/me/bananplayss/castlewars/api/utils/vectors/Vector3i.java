@@ -1,8 +1,8 @@
-package me.bananplayss.castlewars.core.utils.vectors;
+package me.bananplayss.castlewars.api.utils.vectors;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
+import org.bukkit.Bukkit;import org.jetbrains.annotations.Nullable;
 
 @Getter @Setter
 public class Vector3i {
@@ -36,6 +36,6 @@ public class Vector3i {
             Bukkit.getLogger().severe("Cannot parse " + string + " to Vector3i");
             return null;
         }
-        return new Vector3i(Integer.parseInt(args[0]),Integer.parseInt(args[1]),Integer.parseInt(args[2]));
+        return new Vector3i(Integer.parseInt(args[0].trim()),Integer.parseInt(args[1].trim()),Integer.parseInt(args[2].trim()));
     }
 }
