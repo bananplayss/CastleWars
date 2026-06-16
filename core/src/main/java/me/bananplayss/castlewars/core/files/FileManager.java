@@ -15,6 +15,9 @@ public class FileManager {
     public FileManager() {
         this.config = new KobaFile(Main.getInstance(), "config.yml");
         this.messages = new KobaFile(Main.getInstance(), "messages.yml");
+
+        new KobaFile(Main.getInstance(), "arenas", "_example_ctf.yml");
+        new KobaFile(Main.getInstance(), "arenas", "_example_ctz.yml");
     }
 
     public void loadArenas(){

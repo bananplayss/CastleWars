@@ -17,9 +17,9 @@ public class KitManagerImpl implements KitManager {
         this.kits = new HashMap<>();
     }
 
-    public KitImpl createKit(Player player, String name){
-        KitImpl kit = new KitImpl(name, Arrays.stream(player.getInventory().getContents()).toList());
-        this.kits.put(name,kit);
+    public Kit createKit(Player player, String name){
+        Kit kit = new Kit(name, Arrays.stream(player.getInventory().getContents()).toList());
+        this.kits.put(name, kit);
 
         return kit;
     }
