@@ -74,10 +74,11 @@ public class FlagGame extends Game {
             GameFlagTeam team = (GameFlagTeam) value;
 
             team.getFlagSpawn().getBlock().setType(team.getTeam().getBannerItem().getType());
-            Banner banner = (Banner) team.getFlagSpawn().getBlock().getBlockData();
+            Banner banner = (Banner) team.getFlagSpawn().getBlock().getState();
             banner.setBaseColor(team.getTeam().getBaseColor());
             banner.setPatterns(team.getTeam().getPatterns());
-            team.getFlagSpawn().getBlock().setBlockData(banner.getBlockData());
+            banner.update();
+//            team.getFlagSpawn().getBlock().setBlockData(banner.getBlockData());
 
             Rotatable r = (Rotatable) banner.getBlockData();
             r.setRotation(team.getTeam().getRotation());

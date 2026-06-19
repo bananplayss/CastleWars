@@ -7,7 +7,7 @@ import me.bananplayss.castlewars.core.map.WorldGenerateType;
 @Getter
 public class MapManager {
 
-    private BaseMapManager manager;
+    private final BaseMapManager manager;
 
     public MapManager() {
         // Nem használok ConfigData-t itt mert reload ugyse hat rá. Fix resi kell      ok tesó

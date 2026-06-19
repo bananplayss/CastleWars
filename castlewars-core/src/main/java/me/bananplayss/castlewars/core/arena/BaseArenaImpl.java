@@ -11,6 +11,7 @@ import me.bananplayss.castlewars.api.utils.BoundingBox;
 import me.bananplayss.castlewars.api.utils.vectors.VectorLocation;
 import me.bananplayss.castlewars.core.game.FlagGame;
 import me.bananplayss.castlewars.core.kobalib.KobaFile;
+import me.bananplayss.castlewars.core.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.banner.Pattern;
@@ -105,7 +106,7 @@ public class BaseArenaImpl extends BaseArena {
                     }
 
 
-                    ItemStack banner = new ItemStack(Material.WHITE_BANNER);
+                    ItemStack banner = new ItemStack(Utils.getBannerByBaseColor(baseColor));
                     BannerMeta meta = (BannerMeta) banner.getItemMeta();
                     patterns.forEach(meta::addPattern);
 

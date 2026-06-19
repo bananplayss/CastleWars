@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Getter
@@ -27,6 +28,7 @@ public abstract class Game {
     public Game(int id, BaseArena baseArena) {
         this.id = id;
         this.baseArena = baseArena;
+        this.teams = new HashMap<>();
     }
 
     public JoinResult join(Player player) {
@@ -44,6 +46,8 @@ public abstract class Game {
         //Todo: Gameplayer setupolni stb
         team.getPlayers().add(player);
         player.teleport(lobby);
+
+        // Todo: Give kit
         return JoinResult.SUCCESS;
     }
 

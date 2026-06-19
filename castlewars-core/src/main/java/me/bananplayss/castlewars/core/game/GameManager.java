@@ -2,6 +2,8 @@ package me.bananplayss.castlewars.core.game;
 
 import me.bananplayss.castlewars.api.arena.BaseArena;
 import me.bananplayss.castlewars.api.game.Game;
+import me.bananplayss.castlewars.core.Main;
+import me.bananplayss.castlewars.core.map.ArenaSchematic;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +24,8 @@ public class GameManager {
         int id = games.size();
         switch (arena.getGameMode()) {
             case CAPTURE_THE_FLAG -> {
-                FlagGame fg = new FlagGame(id, null, arena);
+                ArenaSchematic schem = Main.getInstance().getMapManager().getManager().getArenaPrefabs().get(0);
+                FlagGame fg = new FlagGame(id, schem, arena);
                 games.put(id, fg);
                 return fg;
             }

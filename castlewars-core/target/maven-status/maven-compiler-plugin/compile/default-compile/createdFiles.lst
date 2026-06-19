@@ -8,6 +8,7 @@ me\bananplayss\castlewars\core\map\WorldGenerateType.class
 me\bananplayss\castlewars\core\utils\LocationUtils.class
 me\bananplayss\castlewars\core\kobalib\KobaMessage.class
 me\bananplayss\castlewars\core\kobalib\colors\MixedSerializer.class
+me\bananplayss\castlewars\core\utils\Utils$1.class
 me\bananplayss\castlewars\core\utils\Utils.class
 me\bananplayss\castlewars\core\map\ArenaSchematic.class
 me\bananplayss\castlewars\core\commands\subcmds\StartGameCommand.class
