@@ -19,8 +19,8 @@ me\bananplayss\castlewars\core\messages\Message.class
 me\bananplayss\castlewars\core\map\managers\WorldEditMapManager.class
 me\bananplayss\castlewars\core\kobalib\DefaultConfigUtils.class
 me\bananplayss\castlewars\core\files\FileManager.class
+me\bananplayss\castlewars\core\game\FlagGameImpl.class
 me\bananplayss\castlewars\core\map\managers\MapManager$1.class
-me\bananplayss\castlewars\core\game\FlagGame.class
 me\bananplayss\castlewars\core\kobalib\KobaMessageBuilder.class
 me\bananplayss\castlewars\core\kobalib\database\KobaDatabase$SQLConsumer.class
 me\bananplayss\castlewars\core\kobalib\database\KobaDatabase.class
@@ -41,6 +41,7 @@ me\bananplayss\castlewars\core\kobalib\commands\argumentMatchers\ContainingAllCh
 me\bananplayss\castlewars\core\commands\MainCommand.class
 me\bananplayss\castlewars\core\Main.class
 me\bananplayss\castlewars\core\map\managers\MapManager.class
+me\bananplayss\castlewars\core\commands\subcmds\DropFlagTestCommand.class
 me\bananplayss\castlewars\core\kobalib\KobaFile.class
 me\bananplayss\castlewars\core\kobalib\save\SaveModule.class
 me\bananplayss\castlewars\core\profiles\ProfileCacheImpl.class

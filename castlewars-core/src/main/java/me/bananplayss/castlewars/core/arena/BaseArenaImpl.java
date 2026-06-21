@@ -9,7 +9,7 @@ import me.bananplayss.castlewars.api.teams.NexusTeam;
 import me.bananplayss.castlewars.api.teams.ZoneTeam;
 import me.bananplayss.castlewars.api.utils.BoundingBox;
 import me.bananplayss.castlewars.api.utils.vectors.VectorLocation;
-import me.bananplayss.castlewars.core.game.FlagGame;
+import me.bananplayss.castlewars.core.game.FlagGameImpl;
 import me.bananplayss.castlewars.core.kobalib.KobaFile;
 import me.bananplayss.castlewars.core.utils.Utils;
 import org.bukkit.*;
@@ -110,7 +110,7 @@ public class BaseArenaImpl extends BaseArena {
                     BannerMeta meta = (BannerMeta) banner.getItemMeta();
                     patterns.forEach(meta::addPattern);
 
-                    meta.getPersistentDataContainer().set(FlagGame.FLAG_TEAM_KEY, PersistentDataType.STRING, key);
+                    meta.getPersistentDataContainer().set(FlagGameImpl.FLAG_TEAM_KEY, PersistentDataType.STRING, key);
                     banner.setItemMeta(meta);
 
                     FlagTeam t = new FlagTeam(key, dpName, color, spawn, boundingBox, flagVector, rotation, baseColor, patterns, banner);

@@ -15,7 +15,7 @@ import java.util.UUID;
 @Getter
 public class ProfileCacheImpl implements ProfileCache {
 
-    private final Map<UUID, Profile> profiles;
+    @Getter private final Map<UUID, Profile> profiles;
 
     public ProfileCacheImpl() {
         this.profiles = new HashMap<>();
@@ -28,11 +28,7 @@ public class ProfileCacheImpl implements ProfileCache {
 
     @NotNull
     public Profile getProfile(Player player) {
-        if(this.profiles.containsKey(player.getUniqueId())) {
-            return this.profiles.get(player.getUniqueId());
-        }
-
-        return new ProfileImpl(player.getUniqueId());
+        return getProfile(player.getUniqueId(), true);
     }
 
     @Nullable

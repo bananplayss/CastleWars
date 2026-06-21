@@ -2,6 +2,7 @@ package me.bananplayss.castlewars.core.game;
 
 import lombok.Getter;
 import me.bananplayss.castlewars.api.arena.BaseArena;
+import me.bananplayss.castlewars.api.game.FlagGame;
 import me.bananplayss.castlewars.api.game.Game;
 import me.bananplayss.castlewars.api.game.flags.GameFlagManager;
 import me.bananplayss.castlewars.api.teams.AbstractTeam;
@@ -14,9 +15,11 @@ import me.bananplayss.castlewars.core.Main;
 import me.bananplayss.castlewars.core.map.ArenaSchematic;
 import me.bananplayss.castlewars.core.map.managers.WorldEditMapManager;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Banner;
+import org.bukkit.block.Block;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
@@ -25,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 @Getter
-public class FlagGame extends Game {
+public class FlagGameImpl extends Game implements FlagGame {
     public final static NamespacedKey FLAG_TEAM_KEY = new NamespacedKey(Main.getInstance(), "team");
 
     private final ArenaSchematic map;
@@ -37,15 +40,21 @@ public class FlagGame extends Game {
 
     private Location origin;
 
-    public FlagGame(int id, ArenaSchematic map, BaseArena arenaConfig) {
+    public FlagGameImpl(int id, ArenaSchematic map, BaseArena arenaConfig) {
         super(id, arenaConfig);
         this.map = map;
+        this.flagManager = new GameFlagManager(this);
 
         for (Map.Entry<Location, ArenaSchematic> entry : ((WorldEditMapManager) Main.getInstance().getMapManager().getManager()).getBuiltMaps().entrySet()) {
             if (entry.getValue().equals(this.map)) {
                 this.origin = entry.getKey();
                 break;
             }
+        }
+
+        if (this.origin == null) {
+            Bukkit.getLogger().severe("The arena " + this.map.getName() + " is not loaded!");
+            return;
         }
 
         // load teams
@@ -58,31 +67,32 @@ public class FlagGame extends Game {
                     ),
                     (FlagTeam) baseTeams.getValue()
             );
-            t.setFlagSpawn(relLocationToAbsolute(((FlagTeam) baseTeams.getValue()).getFlagVector()));
+            Location flagSpawnLoc = relLocationToAbsolute(((FlagTeam) baseTeams.getValue()).getFlagVector());
+            t.setFlagSpawn(flagSpawnLoc);
+            this.flagManager.getBlockFlags().put(flagSpawnLoc, t);
             this.teams.put(baseTeams.getKey(), t);
         }
 
         this.spectatorSpawn = relLocationToAbsolute(arenaConfig.getSpectatorVector());
         this.lobby = relLocationToAbsolute(arenaConfig.getSpectatorVector());
-
-        this.flagManager = new GameFlagManager();
         placeBanners();
     }
 
     public void placeBanners() {
         for (AbstractGameTeam value : this.teams.values()) {
             GameFlagTeam team = (GameFlagTeam) value;
-
-            team.getFlagSpawn().getBlock().setType(team.getTeam().getBannerItem().getType());
-            Banner banner = (Banner) team.getFlagSpawn().getBlock().getState();
-            banner.setBaseColor(team.getTeam().getBaseColor());
-            banner.setPatterns(team.getTeam().getPatterns());
-            banner.update();
-//            team.getFlagSpawn().getBlock().setBlockData(banner.getBlockData());
-
-            Rotatable r = (Rotatable) banner.getBlockData();
-            r.setRotation(team.getTeam().getRotation());
-            team.getFlagSpawn().getBlock().setBlockData(r);
+            placeBanner(team, team.getFlagSpawn());
+//
+//            team.getFlagSpawn().getBlock().setType(team.getTeam().getBannerItem().getType());
+//            Banner banner = (Banner) team.getFlagSpawn().getBlock().getState();
+//            banner.setBaseColor(team.getTeam().getBaseColor());
+//            banner.setPatterns(team.getTeam().getPatterns());
+//            banner.update();
+////            team.getFlagSpawn().getBlock().setBlockData(banner.getBlockData());
+//
+//            Rotatable r = (Rotatable) banner.getBlockData();
+//            r.setRotation(team.getTeam().getRotation());
+//            team.getFlagSpawn().getBlock().setBlockData(r);
         }
     }
 
@@ -94,7 +104,7 @@ public class FlagGame extends Game {
     @Nullable
     public GameFlagTeam getTeam(Player player) {
         for (AbstractGameTeam value : this.teams.values()) {
-            if(value.getPlayers().contains(player))
+            if (value.getPlayers().contains(player))
                 return (GameFlagTeam) value;
         }
         return null;
@@ -131,10 +141,26 @@ public class FlagGame extends Game {
 
     private Location relLocationToAbsolute(VectorLocation relativeLocation) {
         Vector3i delta = new Vector3i((int) (relativeLocation.getX() - map.getOrigin().getBlockX()), (int) (relativeLocation.getY() - map.getOrigin().getBlockY()), (int) (relativeLocation.getZ() - map.getOrigin().getBlockZ()));
-        return new Location(origin.getWorld(),origin.getBlockX() + delta.getX(),origin.getBlockY() + delta.getY(),origin.getBlockZ() + delta.getZ());
+        return new Location(origin.getWorld(), origin.getBlockX() + delta.getX(), origin.getBlockY() + delta.getY(), origin.getBlockZ() + delta.getZ());
     }
+
     private Location relLocationToAbsolute(Vector3i relativeLocation) {
         Vector3i delta = new Vector3i((int) (relativeLocation.getX() - map.getOrigin().getBlockX()), (int) (relativeLocation.getY() - map.getOrigin().getBlockY()), (int) (relativeLocation.getZ() - map.getOrigin().getBlockZ()));
-        return new Location(origin.getWorld(),origin.getBlockX() + delta.getX(),origin.getBlockY() + delta.getY(),origin.getBlockZ() + delta.getZ());
+        return new Location(origin.getWorld(), origin.getBlockX() + delta.getX(), origin.getBlockY() + delta.getY(), origin.getBlockZ() + delta.getZ());
+    }
+
+    @Override
+    public void placeBanner(GameFlagTeam team, Location location) {
+        Block b = location.getBlock();
+        b.setType(team.getTeam().getBannerItem().getType());
+        Banner banner = (Banner) b.getState();
+        banner.setBaseColor(team.getTeam().getBaseColor());
+        banner.setPatterns(team.getTeam().getPatterns());
+        banner.update();
+//            team.getFlagSpawn().getBlock().setBlockData(banner.getBlockData());
+
+        Rotatable r = (Rotatable) banner.getBlockData();
+        r.setRotation(team.getTeam().getRotation());
+        b.setBlockData(r);
     }
 }

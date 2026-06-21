@@ -1,10 +1,11 @@
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\arena\ArenaManagerImpl.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\arena\BaseArenaImpl.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\commands\MainCommand.java
+C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\commands\subcmds\DropFlagTestCommand.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\commands\subcmds\StartGameCommand.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\files\ConfigData.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\files\FileManager.java
-C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\game\FlagGame.java
+C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\game\FlagGameImpl.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\game\GameManager.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\hooks\HookManager.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\kits\KitManagerImpl.java

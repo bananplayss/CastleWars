@@ -38,9 +38,11 @@ public abstract class Game {
             return JoinResult.LOBBY_FULL;
         }
 
+        System.out.println("10");
         Profile profile = CastleWarsAPI.getProfileCache().getProfile(player);
         profile.setCurrentGame(this);
         profile.setTeam(team);
+        System.out.println("11 " + profile.getCurrentGame());
 
         System.out.println(player.getName() + " teamje: " + team.getTeam().getKey());
         //Todo: Gameplayer setupolni stb

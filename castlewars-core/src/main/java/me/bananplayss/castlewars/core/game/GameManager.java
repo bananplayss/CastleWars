@@ -25,7 +25,7 @@ public class GameManager {
         switch (arena.getGameMode()) {
             case CAPTURE_THE_FLAG -> {
                 ArenaSchematic schem = Main.getInstance().getMapManager().getManager().getArenaPrefabs().get(0);
-                FlagGame fg = new FlagGame(id, schem, arena);
+                FlagGameImpl fg = new FlagGameImpl(id, schem, arena);
                 games.put(id, fg);
                 return fg;
             }

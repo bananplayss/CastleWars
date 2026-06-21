@@ -6,23 +6,20 @@
     <version>1.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>castlewars-core</artifactId>
-  <name>castlewars-core</name>
+  <artifactId>castlewars-api</artifactId>
   <version>${project.parent.version}</version>
   <build>
-    <defaultGoal>clean package</defaultGoal>
-    <resources>
-      <resource>
-        <filtering>true</filtering>
-        <directory>src/main/resources</directory>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.4.2</version>
+        <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <outputDirectory>C:\Users\Balu\Desktop\Servers\1.18.2\plugins</outputDirectory>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>1.18.46</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
       <plugin>
@@ -56,35 +53,12 @@
           </filters>
         </configuration>
       </plugin>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.1</version>
-        <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
-          <annotationProcessorPaths>
-            <path>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-              <version>1.18.46</version>
-            </path>
-          </annotationProcessorPaths>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
   <repositories>
     <repository>
       <id>papermc-repo</id>
       <url>https://repo.papermc.io/repository/maven-public/</url>
-    </repository>
-    <repository>
-      <id>placeholderapi</id>
-      <url>https://repo.helpch.at/releases/</url>
-    </repository>
-    <repository>
-      <id>enginehub</id>
-      <url>https://maven.enginehub.org/repo/</url>
     </repository>
   </repositories>
   <dependencies>
@@ -101,24 +75,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>me.clip</groupId>
-      <artifactId>placeholderapi</artifactId>
-      <version>2.12.2</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.fastasyncworldedit</groupId>
-      <artifactId>FastAsyncWorldEdit-Core</artifactId>
-      <version>2.9.2</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.fastasyncworldedit</groupId>
-      <artifactId>FastAsyncWorldEdit-Bukkit</artifactId>
-      <version>2.9.2</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
@@ -126,7 +82,8 @@
     </dependency>
   </dependencies>
   <properties>
-    <java.version>17</java.version>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 </project>

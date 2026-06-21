@@ -1,8 +1,7 @@
 package me.bananplayss.castlewars.core.listeners;
 
 import me.bananplayss.castlewars.api.profiles.Profile;
-import me.bananplayss.castlewars.core.Main;
-import me.bananplayss.castlewars.core.game.FlagGame;
+import me.bananplayss.castlewars.core.game.FlagGameImpl;
 import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,7 +16,7 @@ public class PlayerMoveListener implements Listener {
         Profile prof =  ProfileCacheImpl.getProfileImpl(e.getPlayer());
         if(prof.getCurrentGame() == null) return;
 
-        if(prof.getCurrentGame() instanceof FlagGame fg) {
+        if(prof.getCurrentGame() instanceof FlagGameImpl fg) {
 
         }
     }

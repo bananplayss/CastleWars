@@ -13,6 +13,8 @@ import me.bananplayss.castlewars.core.listeners.PlayerInteractListener;
 import me.bananplayss.castlewars.core.listeners.PlayerMoveListener;
 import me.bananplayss.castlewars.core.map.managers.MapManager;
 import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter
@@ -54,6 +56,10 @@ public final class Main extends JavaPlugin {
 
         MainCommand cmd = new MainCommand();
         cmd.registerMainCommand(this, "castlewars");
+
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            ProfileCacheImpl.getProfileImpl(onlinePlayer);
+        }
 
         getServer().getPluginManager().registerEvents(new PlayerInteractListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);

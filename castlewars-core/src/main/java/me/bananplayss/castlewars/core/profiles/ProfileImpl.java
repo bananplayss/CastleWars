@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.bananplayss.castlewars.api.game.Game;
 import me.bananplayss.castlewars.api.profiles.Profile;
 import me.bananplayss.castlewars.api.teams.game.AbstractGameTeam;
+import me.bananplayss.castlewars.core.Main;
 
 import java.util.UUID;
 
