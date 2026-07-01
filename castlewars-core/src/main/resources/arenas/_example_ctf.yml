@@ -9,11 +9,26 @@ mode: CAPTURE_THE_FLAG # CAPTURE_THE_ZONE
 spectator: "15, 45, 15"
 lobby: "0, 45, 0"
 
+kit: "default"
+
 times:
   waiting: 30
   starting: 5
   celebration: 15 # ha lejár a celebration instant reset
   reset: 6769 # Six seven ennél, lehet h lehet cancel gui instant reset
+
+actions:
+  - type: kit_upgrade
+    display_name: "Kit I"
+    kit: "upgrade1Kit"
+    delay: 15
+  - type: kit_upgrade
+    display_name: "Kit II"
+    kit: "upgrade2Kit"
+    delay: 10
+  - type: banner_gone
+    display_name: "Banner Gone"
+    delay: 60
 
 respawn:
   enabled: true
@@ -26,6 +41,8 @@ teams:
   count: 5
   red:
     color: "&c"
+    prefix: "&cR"
+    display_name: "&cRed"
     spawn: "0, 0, 0, 0, 0"
     corners:
       1: "0, 0, 0"
@@ -47,6 +64,8 @@ teams:
   blue:
     color: "&b"
     spawn: "25, 0, 25, 0, 0"
+    prefix: "&9B"
+    display_name: "&9Blue"
     corners:
       1: "0, 0, 0"
       2: "0, 0, 0"

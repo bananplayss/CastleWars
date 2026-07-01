@@ -39,39 +39,39 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.0</version>
-                <configuration>
-                    <relocations>
-                        <relocation>
-                            <pattern>com.cryptomorin.xseries</pattern>
-                            <!-- Be sure to change the package below -->
-                            <shadedPattern>me.bananplayss.castlewars.xseries</shadedPattern>
-                        </relocation>
-                    </relocations>
-                    <filters>
-                        <filter>
-                            <artifact>*:*</artifact>
-                            <excludes>
-                                <exclude>com/cryptomorin/xseries/XBiome*</exclude>
-                                <exclude>com/cryptomorin/xseries/NMSExtras*</exclude>
-                                <exclude>com/cryptomorin/xseries/NoteBlockMusic*</exclude>
-                                <exclude>com/cryptomorin/xseries/SkullCacheListener*</exclude>
-                            </excludes>
-                        </filter>
-                    </filters>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-shade-plugin</artifactId>-->
+<!--                <version>3.6.0</version>-->
+<!--                <configuration>-->
+<!--                    <relocations>-->
+<!--                        <relocation>-->
+<!--                            <pattern>com.cryptomorin.xseries</pattern>-->
+<!--                            &lt;!&ndash; Be sure to change the package below &ndash;&gt;-->
+<!--                            <shadedPattern>me.bananplayss.castlewars.xseries</shadedPattern>-->
+<!--                        </relocation>-->
+<!--                    </relocations>-->
+<!--                    <filters>-->
+<!--                        <filter>-->
+<!--                            <artifact>*:*</artifact>-->
+<!--                            <excludes>-->
+<!--                                <exclude>com/cryptomorin/xseries/XBiome*</exclude>-->
+<!--                                <exclude>com/cryptomorin/xseries/NMSExtras*</exclude>-->
+<!--                                <exclude>com/cryptomorin/xseries/NoteBlockMusic*</exclude>-->
+<!--                                <exclude>com/cryptomorin/xseries/SkullCacheListener*</exclude>-->
+<!--                            </excludes>-->
+<!--                        </filter>-->
+<!--                    </filters>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>shade</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 

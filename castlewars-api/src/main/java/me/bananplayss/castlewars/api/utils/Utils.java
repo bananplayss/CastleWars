@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
 
 public class Utils {
     public static Location findNearestBannerLocation(Location deathLocation, int maxRadius) {
@@ -78,6 +79,35 @@ public class Utils {
                  SNOW -> true;
 
             default -> false;
+        };
+    }
+
+    public static BlockFace getNearestBlockFace(Player player) {
+
+        float yaw = player.getLocation().getYaw();
+
+        yaw = (yaw % 360 + 360) % 360;
+
+        int index = (int) Math.round(yaw / 22.5) % 16;
+
+        return switch (index) {
+            case 0  -> BlockFace.SOUTH;
+            case 1  -> BlockFace.SOUTH_SOUTH_WEST;
+            case 2  -> BlockFace.SOUTH_WEST;
+            case 3  -> BlockFace.WEST_SOUTH_WEST;
+            case 4  -> BlockFace.WEST;
+            case 5  -> BlockFace.WEST_NORTH_WEST;
+            case 6  -> BlockFace.NORTH_WEST;
+            case 7  -> BlockFace.NORTH_NORTH_WEST;
+            case 8  -> BlockFace.NORTH;
+            case 9  -> BlockFace.NORTH_NORTH_EAST;
+            case 10 -> BlockFace.NORTH_EAST;
+            case 11 -> BlockFace.EAST_NORTH_EAST;
+            case 12 -> BlockFace.EAST;
+            case 13 -> BlockFace.EAST_SOUTH_EAST;
+            case 14 -> BlockFace.SOUTH_EAST;
+            case 15 -> BlockFace.SOUTH_SOUTH_EAST;
+            default -> BlockFace.SOUTH;
         };
     }
 }

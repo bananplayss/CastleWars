@@ -42,4 +42,9 @@ public class MessageBuilder extends KobaMessageBuilder {
         this.replace("%title%", title);
         return this;
     }
+
+    public MessageBuilder setTime(String time) {
+        this.replace("%time%", time);
+        return this;
+    }
 }

@@ -58,6 +58,8 @@ public class BaseArenaImpl extends BaseArena {
         this.spectatorVector = VectorLocation.fromString(c.getString("spectator"));
         this.lobbyVector = VectorLocation.fromString(c.getString("lobby"));
 
+        this.kitName = c.getString("kit");
+
         boolean respawnEnabled = c.getBoolean("respawn.enabled");
         int respawnDelay = c.getInt("respawn.delay");
         this.respawnDelay = respawnEnabled ? respawnDelay : -1;
@@ -65,20 +67,20 @@ public class BaseArenaImpl extends BaseArena {
         this.scoreLimit = c.getInt("score.limit");
 
         this.timeData = new ArenaTimeData(
-                c.getInt("waiting"),
-                c.getInt("starting"),
-                c.getInt("celebration"),
-                c.getInt("reset")
+                c.getInt("times.waiting") * 1000L,
+                c.getInt("times.starting") * 1000L,
+                c.getInt("times.celebration") * 1000L,
+                c.getInt("times.reset") * 1000L
         );
 
-        int maxCount = c.getInt("teams.count");
-        this.teamSize = maxCount;
+        this.teamSize = c.getInt("teams.count");
         ConfigurationSection section = c.getConfigurationSection("teams");
 
         for (String key : section.getKeys(false)) {
             if (key.equalsIgnoreCase("count")) continue;
 
             String color = section.getString(key + ".color");
+            String prefix = section.getString(key + ".prefix");
             String dpName = section.getString(key + ".display_name");
             VectorLocation spawn = VectorLocation.fromString(section.getString(key + ".spawn"));
 
@@ -113,20 +115,20 @@ public class BaseArenaImpl extends BaseArena {
                     meta.getPersistentDataContainer().set(FlagGameImpl.FLAG_TEAM_KEY, PersistentDataType.STRING, key);
                     banner.setItemMeta(meta);
 
-                    FlagTeam t = new FlagTeam(key, dpName, color, spawn, boundingBox, flagVector, rotation, baseColor, patterns, banner);
+                    FlagTeam t = new FlagTeam(key, prefix, dpName, color, spawn, boundingBox, flagVector, rotation, baseColor, patterns, banner);
                     this.teams.put(key, t);
                 }
 
                 case CAPTURE_THE_ZONE -> {
                     Vector3i zone = Vector3i.fromString(section.getString(key + ".zone.location"));
                     int radius = section.getInt(key + ".zone.radius");
-                    ZoneTeam t = new ZoneTeam(key, dpName, color, spawn, boundingBox, zone, radius);
+                    ZoneTeam t = new ZoneTeam(key, prefix, dpName, color, spawn, boundingBox, zone, radius);
                     this.teams.put(key, t);
                 }
 
                 case BREAK_THE_NEXUS -> {
                     Vector3i block = Vector3i.fromString(section.getString(key + ".nexus.location"));
-                    NexusTeam t = new NexusTeam(key, dpName, color, boundingBox, spawn, block);
+                    NexusTeam t = new NexusTeam(key, prefix, dpName, color, boundingBox, spawn, block);
                     this.teams.put(key, t);
                 }
             }

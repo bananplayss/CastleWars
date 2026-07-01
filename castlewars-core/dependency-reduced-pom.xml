@@ -40,7 +40,11 @@
           <relocations>
             <relocation>
               <pattern>com.cryptomorin.xseries</pattern>
-              <shadedPattern>me.bananplayss.castlewars.xseries</shadedPattern>
+              <shadedPattern>me.bananplayss.xseries</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>fr.mrmicky.fastboard</pattern>
+              <shadedPattern>me.bananplayss.fastboard</shadedPattern>
             </relocation>
           </relocations>
           <filters>

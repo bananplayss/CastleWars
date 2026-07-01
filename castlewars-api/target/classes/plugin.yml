@@ -1,4 +1,4 @@
-main: me.bananplayss.castlewars.core.api.Main
+main: me.bananplayss.castlewars.api.CastleWarsAPI
 
 authors:
   - bananplayss

@@ -2,8 +2,8 @@ package me.bananplayss.castlewars.api.teams.game;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.bananplayss.castlewars.api.effects.CustomEffect;
 import me.bananplayss.castlewars.api.teams.FlagTeam;
-import me.bananplayss.castlewars.api.teams.NexusTeam;
 import org.bukkit.Location;
 import org.bukkit.util.BoundingBox;
 
@@ -11,14 +11,29 @@ import org.bukkit.util.BoundingBox;
 @Getter
 public class GameFlagTeam extends AbstractGameTeam {
 
-    private Location flagSpawn;
+    public static enum FlagState {
+        SPAWN,
+        DROPPED,
+        CARRYING;
+    }
 
-    private int progress;
+    private Location flagSpawn;
+    private FlagState flagState;
+    private long flagProtection;
+
+    private int score;
+
+    private CustomEffect ringEffect;
 
     public GameFlagTeam(Location spawn, BoundingBox boundingBox, FlagTeam team) {
         super(team, spawn, boundingBox);
         this.team = team;
-        this.progress = 0;
+        this.score = 0;
+        this.flagState = FlagState.SPAWN;
+    }
+
+    public void addScore() {
+        this.score++;
     }
 
     @Override

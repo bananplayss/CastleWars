@@ -3,16 +3,18 @@ package me.bananplayss.castlewars.core;
 import lombok.Getter;
 import me.bananplayss.castlewars.api.CastleWarsAPI;
 import me.bananplayss.castlewars.core.commands.MainCommand;
+import me.bananplayss.castlewars.core.effects.EffectManagerImpl;
 import me.bananplayss.castlewars.core.files.ConfigData;
 import me.bananplayss.castlewars.core.files.FileManager;
 import me.bananplayss.castlewars.core.arena.ArenaManagerImpl;
 import me.bananplayss.castlewars.core.game.GameManager;
 import me.bananplayss.castlewars.core.hooks.HookManager;
 import me.bananplayss.castlewars.core.kits.KitManagerImpl;
-import me.bananplayss.castlewars.core.listeners.PlayerInteractListener;
-import me.bananplayss.castlewars.core.listeners.PlayerMoveListener;
+import me.bananplayss.castlewars.core.listeners.*;
 import me.bananplayss.castlewars.core.map.managers.MapManager;
 import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
+import me.bananplayss.castlewars.core.scoreboard.ScoreboardManagerImpl;
+import me.bananplayss.castlewars.core.utils.RespawnManagerImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,8 +32,14 @@ public final class Main extends JavaPlugin {
     private ArenaManagerImpl arenaManager;
     private ProfileCacheImpl profileCache;
 
+    private ScoreboardManagerImpl scoreboardManager;
+
     private MapManager mapManager;
     private GameManager gameManager;
+
+    private RespawnManagerImpl respawnManager;
+
+    private EffectManagerImpl effectManager;
 
     @Override
     public void onEnable() {
@@ -43,16 +51,26 @@ public final class Main extends JavaPlugin {
         this.hookManager = new HookManager();
 
         this.kitManager = new KitManagerImpl();
+        CastleWarsAPI.KIT_MANAGER.set(this.kitManager);
 
         this.arenaManager = new ArenaManagerImpl();
         this.fileManager.loadArenas();
 
         this.profileCache = new ProfileCacheImpl();
-        CastleWarsAPI.setProfileCache(this.profileCache);
+        CastleWarsAPI.PROFILE_CACHE.set(this.profileCache);
         
         this.mapManager = new MapManager();
 
         this.gameManager = new GameManager();
+
+        this.scoreboardManager = new ScoreboardManagerImpl();
+
+        this.respawnManager = new RespawnManagerImpl();
+        CastleWarsAPI.RESPAWN_MANAGER.set(this.respawnManager);
+
+        this.effectManager = new EffectManagerImpl();
+        CastleWarsAPI.EFFECT_MANAGER.set(this.effectManager);
+
 
         MainCommand cmd = new MainCommand();
         cmd.registerMainCommand(this, "castlewars");
@@ -61,8 +79,13 @@ public final class Main extends JavaPlugin {
             ProfileCacheImpl.getProfileImpl(onlinePlayer);
         }
 
+        getServer().getPluginManager().registerEvents(new PlayerPostRespawnListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerInteractListener(), this);
+        getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+        getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
+
     }
 
     @Override

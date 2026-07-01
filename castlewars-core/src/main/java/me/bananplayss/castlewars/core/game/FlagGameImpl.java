@@ -1,10 +1,17 @@
 package me.bananplayss.castlewars.core.game;
 
 import lombok.Getter;
-import me.bananplayss.castlewars.api.arena.BaseArena;
+import lombok.Setter;
 import me.bananplayss.castlewars.api.game.FlagGame;
 import me.bananplayss.castlewars.api.game.Game;
+import me.bananplayss.castlewars.api.game.action.BannerGoneAction;
+import me.bananplayss.castlewars.api.game.action.KitUpgradeAction;
 import me.bananplayss.castlewars.api.game.flags.GameFlagManager;
+import me.bananplayss.castlewars.api.game.phases.CelebrationPhase;
+import me.bananplayss.castlewars.api.game.phases.RunningPhase;
+import me.bananplayss.castlewars.api.game.phases.StartingPhase;
+import me.bananplayss.castlewars.api.game.phases.WaitingPhase;
+import me.bananplayss.castlewars.api.kits.Kit;
 import me.bananplayss.castlewars.api.teams.AbstractTeam;
 import me.bananplayss.castlewars.api.teams.FlagTeam;
 import me.bananplayss.castlewars.api.teams.game.AbstractGameTeam;
@@ -12,15 +19,21 @@ import me.bananplayss.castlewars.api.teams.game.GameFlagTeam;
 import me.bananplayss.castlewars.api.utils.vectors.Vector3i;
 import me.bananplayss.castlewars.api.utils.vectors.VectorLocation;
 import me.bananplayss.castlewars.core.Main;
+import me.bananplayss.castlewars.core.arena.BaseArenaImpl;
+import me.bananplayss.castlewars.core.effects.RingOuterEffect;
+import me.bananplayss.castlewars.core.game.phases.GamePhaseManagerImpl;
 import me.bananplayss.castlewars.core.map.ArenaSchematic;
 import me.bananplayss.castlewars.core.map.managers.WorldEditMapManager;
+import me.bananplayss.castlewars.core.utils.TeamColorConverter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Rotatable;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.Nullable;
@@ -32,18 +45,24 @@ public class FlagGameImpl extends Game implements FlagGame {
     public final static NamespacedKey FLAG_TEAM_KEY = new NamespacedKey(Main.getInstance(), "team");
 
     private final ArenaSchematic map;
-
     private final GameFlagManager flagManager;
+    private Location origin;
+
+    @Setter
+    private long flagProtection;
 
 //    private Map<String, GameFlagTeam> gameTeams;
     //AbsLoc = GameArenaCenter + (RelativePos - PrefabOrigin)
 
-    private Location origin;
 
-    public FlagGameImpl(int id, ArenaSchematic map, BaseArena arenaConfig) {
+    public FlagGameImpl(int id, ArenaSchematic map, BaseArenaImpl arenaConfig) {
         super(id, arenaConfig);
         this.map = map;
         this.flagManager = new GameFlagManager(this);
+        this.phaseManager = new GamePhaseManagerImpl();
+        this.gameLoop = new GameLoop(this);
+
+        this.flagProtection = arenaConfig.getFile().getConfig().getInt("flag_protection", 5) * 1000L;
 
         for (Map.Entry<Location, ArenaSchematic> entry : ((WorldEditMapManager) Main.getInstance().getMapManager().getManager()).getBuiltMaps().entrySet()) {
             if (entry.getValue().equals(this.map)) {
@@ -53,10 +72,13 @@ public class FlagGameImpl extends Game implements FlagGame {
         }
 
         if (this.origin == null) {
-            Bukkit.getLogger().severe("The arena " + this.map.getName() + " is not loaded!");
+            Bukkit.getLogger().severe("No built  " + this.map.getName() + " arena is found!");
             return;
         }
 
+        ((WorldEditMapManager) Main.getInstance().getMapManager().getManager()).getBuiltMaps().remove(this.origin);
+
+        System.out.println("ORIGIN: " + origin);
         // load teams
         for (Map.Entry<String, AbstractTeam> baseTeams : arenaConfig.getTeams().entrySet()) {
             GameFlagTeam t = new GameFlagTeam(
@@ -67,32 +89,49 @@ public class FlagGameImpl extends Game implements FlagGame {
                     ),
                     (FlagTeam) baseTeams.getValue()
             );
+
             Location flagSpawnLoc = relLocationToAbsolute(((FlagTeam) baseTeams.getValue()).getFlagVector());
             t.setFlagSpawn(flagSpawnLoc);
-            this.flagManager.getBlockFlags().put(flagSpawnLoc, t);
+            RingOuterEffect e = new RingOuterEffect(TeamColorConverter.parseColorOrThrow(t.getTeam().getColor()), 500, 2, null);
+            e.setLooping(true);
+            t.setRingEffect(e);
             this.teams.put(baseTeams.getKey(), t);
         }
 
         this.spectatorSpawn = relLocationToAbsolute(arenaConfig.getSpectatorVector());
-        this.lobby = relLocationToAbsolute(arenaConfig.getSpectatorVector());
+//        System.out.println("SPAWN: " + arenaConfig.getSpectatorVector() + "     " + spectatorSpawn);
+        this.lobby = relLocationToAbsolute(arenaConfig.getLobbyVector());
         placeBanners();
+
+        ConfigurationSection actions = arenaConfig.getFile().getConfig().getConfigurationSection("actions");
+        if (actions != null) {
+            for (String action : actions.getKeys(false)) {
+                String type = actions.getString(action + ".type");
+                String dpName = actions.getString(action + ".display_name");
+                int delay = actions.getInt(action + ".delay");
+                switch (type.toLowerCase()) {
+                    case "kit_upgrade":
+                        String kitName = actions.getString(action + ".kit");
+                        this.actionManager.getActions().add(new KitUpgradeAction(dpName, kitName, delay));
+                        break;
+                    case "banner_gone":
+                        this.actionManager.getActions().add(new BannerGoneAction(dpName, delay));
+                        break;
+                }
+            }
+        }
+
+        this.phaseManager.getPhases().add(new WaitingPhase(this, arenaConfig.getTimeData().getWaiting()));
+        this.phaseManager.getPhases().add(new StartingPhase(this, arenaConfig.getTimeData().getStarting()));
+        this.phaseManager.getPhases().add(new RunningPhase(this, arenaConfig.getTimeData().getReset()));
+        this.phaseManager.getPhases().add(new CelebrationPhase(this, arenaConfig.getTimeData().getCelebration()));
     }
 
     public void placeBanners() {
         for (AbstractGameTeam value : this.teams.values()) {
             GameFlagTeam team = (GameFlagTeam) value;
-            placeBanner(team, team.getFlagSpawn());
-//
-//            team.getFlagSpawn().getBlock().setType(team.getTeam().getBannerItem().getType());
-//            Banner banner = (Banner) team.getFlagSpawn().getBlock().getState();
-//            banner.setBaseColor(team.getTeam().getBaseColor());
-//            banner.setPatterns(team.getTeam().getPatterns());
-//            banner.update();
-////            team.getFlagSpawn().getBlock().setBlockData(banner.getBlockData());
-//
-//            Rotatable r = (Rotatable) banner.getBlockData();
-//            r.setRotation(team.getTeam().getRotation());
-//            team.getFlagSpawn().getBlock().setBlockData(r);
+            placeBanner(team, team.getFlagSpawn(), null);
+
         }
     }
 
@@ -110,6 +149,35 @@ public class FlagGameImpl extends Game implements FlagGame {
         return null;
     }
 
+    @Override
+    public void joinPlayer(Player player) {
+        Main.getInstance().getScoreboardManager().show(player, this);
+    }
+
+    @Override
+    public void leavePlayer(Player player) {
+        Main.getInstance().getScoreboardManager().delete(player);
+    }
+
+    @Override
+    public void start() {
+        Kit startKit = Main.getInstance().getKitManager().getKit(this.kitName);
+        for (AbstractGameTeam value : this.teams.values()) {
+            value.getPlayers().forEach(p -> {
+                startKit.give(p);
+                p.teleport(value.getSpawn());
+            });
+        }
+
+        System.out.println("Game indult");
+    }
+
+    @Override
+    public void reset() {
+        Location spawn = Main.getInstance().getConfigData().getSpawn();
+        this.getAllPlayers().forEach(p -> p.teleport(spawn));
+    }
+
     public void broadcast(Component component) {
         for (AbstractGameTeam value : this.teams.values()) {
             for (Player player : value.getPlayers()) {
@@ -118,39 +186,39 @@ public class FlagGameImpl extends Game implements FlagGame {
         }
     }
 
-//    private void dropFlag(Player player) {
-//        //TODO: KIT helmet nem null
-//        ItemStack banner = player.getInventory().getHelmet().clone();
-//        player.getInventory().setHelmet(null);
-//        player.setGlowing(false);
-//        for (int i = player.getLocation().getBlockY() - 1; i > -100; i--) {
-//            Block block = player.getWorld().getBlockAt(player.getLocation().getBlockX(), i, player.getLocation().getBlockZ());
-//            if(block.isSolid()) {
-//                block.setType(banner.getType());
+    private Location relLocationToAbsolute(Vector3i rel) {
+        return new Location(
+                origin.getWorld(),
+                origin.getBlockX() + rel.getX(),
+                origin.getBlockY() + rel.getY(),
+                origin.getBlockZ() + rel.getZ()
+        );
+    }
+
+    private Location relLocationToAbsolute(VectorLocation rel) {
+        return new Location(
+                origin.getWorld(),
+                origin.getBlockX() + rel.getX(),
+                origin.getBlockY() + rel.getY(),
+                origin.getBlockZ() + rel.getZ(),
+                rel.getYaw(),
+                rel.getPitch()
+        );
+    }
+
+
+//    private Location relLocationToAbsolute(VectorLocation relativeLocation) {
+//        Vector3i delta = new Vector3i((int) (relativeLocation.getX() - map.getOrigin().getBlockX()), (int) (relativeLocation.getY() - map.getOrigin().getBlockY()), (int) (relativeLocation.getZ() - map.getOrigin().getBlockZ()));
+//        return new Location(origin.getWorld(), origin.getBlockX() + delta.getX(), origin.getBlockY() + delta.getY(), origin.getBlockZ() + delta.getZ());
+//    }
 //
-//                Banner bannerState = (Banner) block.getState();
-//                BannerMeta meta = (BannerMeta) banner.getItemMeta();
-//
-//                bannerState.setPatterns(meta.getPatterns());
-//                break;
-//            }
-//        }
-//        broadcast(Message.DROPPED_FLAG.builder().setPlayer(player).getComponent());
+//    private Location relLocationToAbsolute(Vector3i relativeLocation) {
+//        Vector3i delta = new Vector3i((int) (relativeLocation.getX() - map.getOrigin().getBlockX()), (int) (relativeLocation.getY() - map.getOrigin().getBlockY()), (int) (relativeLocation.getZ() - map.getOrigin().getBlockZ()));
+//        return new Location(origin.getWorld(), origin.getBlockX() + delta.getX(), origin.getBlockY() + delta.getY(), origin.getBlockZ() + delta.getZ());
 //    }
 
-
-    private Location relLocationToAbsolute(VectorLocation relativeLocation) {
-        Vector3i delta = new Vector3i((int) (relativeLocation.getX() - map.getOrigin().getBlockX()), (int) (relativeLocation.getY() - map.getOrigin().getBlockY()), (int) (relativeLocation.getZ() - map.getOrigin().getBlockZ()));
-        return new Location(origin.getWorld(), origin.getBlockX() + delta.getX(), origin.getBlockY() + delta.getY(), origin.getBlockZ() + delta.getZ());
-    }
-
-    private Location relLocationToAbsolute(Vector3i relativeLocation) {
-        Vector3i delta = new Vector3i((int) (relativeLocation.getX() - map.getOrigin().getBlockX()), (int) (relativeLocation.getY() - map.getOrigin().getBlockY()), (int) (relativeLocation.getZ() - map.getOrigin().getBlockZ()));
-        return new Location(origin.getWorld(), origin.getBlockX() + delta.getX(), origin.getBlockY() + delta.getY(), origin.getBlockZ() + delta.getZ());
-    }
-
     @Override
-    public void placeBanner(GameFlagTeam team, Location location) {
+    public void placeBanner(GameFlagTeam team, Location location, BlockFace rotation) {
         Block b = location.getBlock();
         b.setType(team.getTeam().getBannerItem().getType());
         Banner banner = (Banner) b.getState();
@@ -160,7 +228,16 @@ public class FlagGameImpl extends Game implements FlagGame {
 //            team.getFlagSpawn().getBlock().setBlockData(banner.getBlockData());
 
         Rotatable r = (Rotatable) banner.getBlockData();
-        r.setRotation(team.getTeam().getRotation());
+        if (rotation == null) {
+            r.setRotation(team.getTeam().getRotation());
+        } else {
+            r.setRotation(rotation);
+        }
         b.setBlockData(r);
+        this.flagManager.getBlockFlags().put(location, team);
+
+        Main.getInstance().getEffectManager().addLoopEffect(team.getRingEffect(), location.clone().add(0.5,0,0.5));
+
+//        System.out.println("Placed banner to real location: " + location);
     }
 }

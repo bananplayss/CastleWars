@@ -27,6 +27,7 @@ public final class ColorParser {
     public static Component parse(String input, @Nullable Player context) {
         String processed = PapiBridge.apply(input, context);
         String translated = LegacyToMiniMessage.translate(processed);
+
         return MM.deserialize(translated);
     }
 

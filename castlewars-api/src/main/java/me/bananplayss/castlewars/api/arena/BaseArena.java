@@ -22,6 +22,8 @@ public class BaseArena {
     protected int scoreLimit;
     protected int teamSize;
 
+    protected String kitName;
+
     protected ArenaTimeData timeData;
 
     protected GameMode gameMode;

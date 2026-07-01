@@ -26,7 +26,9 @@ public class Message extends KobaMessage {
     public static final Message CAPTURED_FLAG = new Message("flag.capture", "%prefix% &c The flag has been captured by %player%.");
     public static final Message DROPPED_FLAG = new Message("flag.drop", "%prefix% &c he flag has been dropped by %player%.");
 
-
+    // CUCC
+    public static final Message DIED_TITLE = new Message("died_title", "&cYOU DIED!");
+    public static final Message DIED_SUBTITLE = new Message("died_subtitle", "&eYou will respawn in &c%time% seconds!");
 
     public Message(String key, String message) {
         super(key, message);

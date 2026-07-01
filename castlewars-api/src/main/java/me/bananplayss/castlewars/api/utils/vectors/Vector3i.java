@@ -2,10 +2,10 @@ package me.bananplayss.castlewars.api.utils.vectors;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;import org.jetbrains.annotations.Nullable;
+import lombok.ToString;
+import org.bukkit.Bukkit;
 
-import java.util.Arrays;
-
+@ToString
 @Getter @Setter
 public class Vector3i {
     private int x,y,z;

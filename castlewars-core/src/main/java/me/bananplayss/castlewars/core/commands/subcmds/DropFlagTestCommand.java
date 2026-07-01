@@ -7,6 +7,7 @@ import me.bananplayss.castlewars.core.kobalib.commands.SubCommand;
 import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class DropFlagTestCommand implements SubCommand {
     @Override
     public void perform(CommandSender sender, String[] args) {
         Player p = (Player) sender;
+
         Profile prof = ProfileCacheImpl.getProfileImpl(p);
         Game game = prof.getCurrentGame();
         if(game == null) return;

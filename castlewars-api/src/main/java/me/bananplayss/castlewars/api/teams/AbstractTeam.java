@@ -10,6 +10,7 @@ import me.bananplayss.castlewars.api.utils.vectors.VectorLocation;
 public abstract class AbstractTeam {
 
     protected String key;
+    protected String prefix;
     protected String displayName;
     protected String color;
 //    protected int maxPlayerCount;

@@ -11,8 +11,8 @@ public class ZoneTeam extends AbstractTeam {
     private final Vector3i zone;
     private final int radius; // mint négyzet
 
-    public ZoneTeam(String key, String displayName, String color, VectorLocation spawn, BoundingBox boundingBox, Vector3i zone, int radius) {
-        super(key, displayName, color, spawn, boundingBox);
+    public ZoneTeam(String key, String prefix, String displayName, String color, VectorLocation spawn, BoundingBox boundingBox, Vector3i zone, int radius) {
+        super(key, prefix, displayName, color, spawn, boundingBox);
         this.zone = zone;
         this.radius = radius;
     }

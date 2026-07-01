@@ -10,8 +10,8 @@ public class NexusTeam extends AbstractTeam {
 
     private final Vector3i block;
 
-    public NexusTeam(String key, String displayName, String color, BoundingBox boundingBox, VectorLocation spawn, Vector3i block) {
-        super(key, displayName, color, spawn, boundingBox);
+    public NexusTeam(String key, String prefix, String displayName, String color, BoundingBox boundingBox, VectorLocation spawn, Vector3i block) {
+        super(key, prefix, displayName, color, spawn, boundingBox);
         this.block = block;
     }
 }

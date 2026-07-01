@@ -31,4 +31,8 @@ public class VectorLocation {
                 Float.parseFloat(args[4].trim())
         );
     }
+
+    public Vector3i toVector3i(){
+        return new Vector3i((int) x, (int) y, (int) z);
+    }
 }

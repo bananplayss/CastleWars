@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.bananplayss.castlewars.core.Main;
 import me.bananplayss.castlewars.core.arena.BaseArenaImpl;
 import me.bananplayss.castlewars.core.kobalib.KobaFile;
+import net.kyori.adventure.text.Component;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,11 +16,13 @@ public class FileManager {
     private final KobaFile config;
     private final KobaFile messages;
     private final KobaFile kits;
+    private final KobaFile scoreboards;
 
     public FileManager() {
         this.config = new KobaFile(Main.getInstance(), "config.yml");
         this.messages = new KobaFile(Main.getInstance(), "messages.yml");
         this.kits = new KobaFile(Main.getInstance(), "kits.yml");
+        this.scoreboards = new KobaFile(Main.getInstance(), "scoreboards.yml");
 
         new KobaFile(Main.getInstance(), "arenas", "_example_ctf.yml");
         new KobaFile(Main.getInstance(), "arenas", "_example_ctz.yml");

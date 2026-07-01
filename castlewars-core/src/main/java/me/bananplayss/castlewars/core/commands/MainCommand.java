@@ -1,7 +1,6 @@
 package me.bananplayss.castlewars.core.commands;
 
-import me.bananplayss.castlewars.core.commands.subcmds.DropFlagTestCommand;
-import me.bananplayss.castlewars.core.commands.subcmds.StartGameCommand;
+import me.bananplayss.castlewars.core.commands.subcmds.*;
 import me.bananplayss.castlewars.core.kobalib.commands.BaseCommand;
 import me.bananplayss.castlewars.core.kobalib.commands.argumentMatchers.ContainingAllCharsOfStringArgumentMatcher;
 import me.bananplayss.castlewars.core.messages.Message;
@@ -16,5 +15,8 @@ public class MainCommand extends BaseCommand {
     protected void registerSubCommands() {
         this.subCommands.add(new StartGameCommand());
         this.subCommands.add(new DropFlagTestCommand());
+        this.subCommands.add(new JoinGameCommand());
+        this.subCommands.add(new CalculateCoordsCommand());
+        this.subCommands.add(new AdrianCommand());
     }
 }

@@ -1,6 +1,7 @@
 package me.bananplayss.castlewars.core.kobalib;
 
 import com.cryptomorin.xseries.XItemStack;
+import me.bananplayss.castlewars.core.utils.LocationUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -105,27 +106,27 @@ public class DefaultConfigUtils {
 //        }
 //    }
 
-//    public Location getOrSet(String path, Location defaultValue, boolean blockOnly, boolean yawPitch, String... comments) {
-//        if (this.file.getConfig().contains(path, true)) {
-//            return LocationUtils.parse(this.file.getConfig().getString(path));
-//        } else {
-//            this.file.getConfig().set(path, LocationUtils.toString(defaultValue, blockOnly, yawPitch));
-//            this.file.getConfig().setComments(path, List.of(comments));
-//            this.file.save();
-//            return defaultValue;
-//        }
-//    }
-//
-//    public Location getOrSet(String path, String defaultValue, boolean blockOnly, boolean yawPitch, String... comments) {
-//        if (this.file.getConfig().contains(path, true)) {
-//            return LocationUtils.parse(this.file.getConfig().getString(path));
-//        } else {
-//            this.file.getConfig().set(path, defaultValue);
-//            this.file.getConfig().setComments(path, List.of(comments));
-//            this.file.save();
-//            return LocationUtils.parse(defaultValue);
-//        }
-//    }
+    public Location getOrSet(String path, Location defaultValue, boolean blockOnly, boolean yawPitch, String... comments) {
+        if (this.file.getConfig().contains(path, true)) {
+            return LocationUtils.parse(this.file.getConfig().getString(path));
+        } else {
+            this.file.getConfig().set(path, LocationUtils.toString(defaultValue, blockOnly, yawPitch));
+            this.file.getConfig().setComments(path, List.of(comments));
+            this.file.save();
+            return defaultValue;
+        }
+    }
+
+    public Location getOrSet(String path, String defaultValue, boolean blockOnly, boolean yawPitch, String... comments) {
+        if (this.file.getConfig().contains(path, true)) {
+            return LocationUtils.parse(this.file.getConfig().getString(path));
+        } else {
+            this.file.getConfig().set(path, defaultValue);
+            this.file.getConfig().setComments(path, List.of(comments));
+            this.file.save();
+            return LocationUtils.parse(defaultValue);
+        }
+    }
 
 //    public ItemStack getOrSet(String path, ItemStack defaultValue, String... comments) {
 //        ItemStack is = new ItemStack(Material.STONE, 1);

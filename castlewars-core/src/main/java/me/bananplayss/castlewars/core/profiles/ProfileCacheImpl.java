@@ -45,6 +45,7 @@ public class ProfileCacheImpl implements ProfileCache {
         if(this.profiles.containsKey(uuid)) {
             return this.profiles.get(uuid);
         }
+
         if(load) {
             ProfileImpl profile = new ProfileImpl(uuid);
             this.profiles.put(uuid, profile);

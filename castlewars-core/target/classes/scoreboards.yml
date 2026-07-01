@@ -1,0 +1,59 @@
+default:
+  waiting:
+    title: "CastleWars"
+    lines:
+      - " "
+      - "&fMap: &a%map%"
+      - "&fPlayers: &a%players%/%max_players%"
+      - " "
+      - "&fWaiting for players..."
+      - " "
+      - "&fMode: &a%gamemode%"
+      - " "
+      - "&7play.castlewars.com"
+
+  starting:
+    title: "CastleWars"
+    lines:
+      - " "
+      - "&fMap: &a%map%"
+      - "&fPlayers: &a%players%/%max_players%"
+      - " "
+      - "&fStarting in &a%starting%s"
+      - " "
+      - "&fMode: &a%gamemode%"
+      - " "
+      - "&7play.castlewars.com"
+
+#  running:
+#    title: "CastleWars"
+#    lines:
+#      - " "
+#      - "&fMap: &a%map%"
+#      - "&fPlayers: &a%players%/%max_players%"
+#      - " "
+#      - "Starting in &a%starting%s"
+#      - " "
+#      - "Mode: &a%gamemode%"
+#      - " "
+#      - "&7play.castlewars.com"
+
+  celebration:
+    title: "CastleWars"
+    lines:
+      - " "
+      - "CELEBRATION"
+      - "NYERT: %winner%"
+
+capture_the_flag:
+  running:
+    title: "CastleWars"
+    lines:
+      - " "
+      - "&f%next_action_name% in &a%next_action_time%"
+      - "&5 "
+      - "%teams%"
+      - "&5 "
+      - "Kills: &a%kills%"
+      - "&5 "
+      - "&7play.castlewars.com"

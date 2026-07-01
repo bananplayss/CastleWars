@@ -10,8 +10,8 @@ import java.util.HashMap;
 @AllArgsConstructor
 public class ArenaTimeData {
 
-    private int waiting;
-    private int starting;
-    private int celebration;
-    private int reset;
+    private long waiting;
+    private long starting;
+    private long celebration;
+    private long reset;
 }

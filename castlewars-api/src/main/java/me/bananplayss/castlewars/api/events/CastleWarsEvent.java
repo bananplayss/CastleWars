@@ -10,11 +10,12 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 @AllArgsConstructor
 public class CastleWarsEvent extends Event {
+    private static final HandlerList HANDLERS_LIST = new HandlerList();
 
     private Game game;
 
     @Override
     public @NotNull HandlerList getHandlers() {
-        return null;
+        return HANDLERS_LIST;
     }
 }

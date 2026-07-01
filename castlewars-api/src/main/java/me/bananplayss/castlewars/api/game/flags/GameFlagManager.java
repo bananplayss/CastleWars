@@ -1,6 +1,8 @@
 package me.bananplayss.castlewars.api.game.flags;
 
 import lombok.Getter;
+import me.bananplayss.castlewars.api.CastleWarsAPI;
+import me.bananplayss.castlewars.api.effects.EffectManager;
 import me.bananplayss.castlewars.api.game.FlagGame;
 import me.bananplayss.castlewars.api.profiles.Profile;
 import me.bananplayss.castlewars.api.teams.game.GameFlagTeam;
@@ -61,13 +63,31 @@ public class GameFlagManager {
             this.blockFlags.remove(block.getLocation());
             this.carriedFlags.put(p, team);
             block.setType(Material.AIR);
+            team.setFlagState(GameFlagTeam.FlagState.CARRYING);
+            CastleWarsAPI.EFFECT_MANAGER.get().removeLoopEffect(team.getRingEffect());
         }
 
         return team;
     }
 
-    public void drop(Player player) {
-        if(!this.carriedFlags.containsKey(player)) return;
+    public void resetFlag(Player player, GameFlagTeam team) {
+        team.setFlagState(GameFlagTeam.FlagState.SPAWN);
+        CastleWarsAPI.EFFECT_MANAGER.get().removeLoopEffect(team.getRingEffect());
+        this.flagGame.placeBanner(team, team.getFlagSpawn(), null);
+        this.carriedFlags.remove(player);
+        this.blockFlags.put(team.getFlagSpawn(), team);
+    }
+
+    public void resetFlag(Block block, GameFlagTeam team) {
+        team.setFlagState(GameFlagTeam.FlagState.SPAWN);
+        CastleWarsAPI.EFFECT_MANAGER.get().removeLoopEffect(team.getRingEffect());
+        this.flagGame.placeBanner(team, team.getFlagSpawn(), null);
+        this.blockFlags.remove(block.getLocation());
+        this.blockFlags.put(team.getFlagSpawn(), team);
+    }
+
+    public GameFlagTeam drop(Player player) {
+        if(!this.carriedFlags.containsKey(player)) return null;
 
         GameFlagTeam stolenFlag = this.carriedFlags.get(player);
 
@@ -75,38 +95,16 @@ public class GameFlagManager {
         Location emptyLoc = Utils.findNearestBannerLocation(player.getLocation(), 5);
         if(emptyLoc == null) {
             System.out.println("Nem talál helyet?");
-            return;
+            return stolenFlag;
         }
 
-        this.flagGame.placeBanner(stolenFlag, emptyLoc);
+        this.flagGame.placeBanner(stolenFlag, emptyLoc, Utils.getNearestBlockFace(player));
 
         this.carriedFlags.remove(player);
         this.blockFlags.put(emptyLoc, stolenFlag);
-
-//        Block block = emptyLoc.getBlock();
-//        block.setType(banner.getType());
-//
-//        Banner bannerState = (Banner) block.getState();
-//        BannerMeta meta = (BannerMeta) banner.getItemMeta();
-
-//        bannerState.setPatterns(meta.getPatterns());
-
-
-//        for (int i = player.getLocation().getBlockY(); i > -64; i--) {
-//            Block block = player.getWorld().getBlockAt(player.getLocation().getBlockX(), i, player.getLocation().getBlockZ());
-//            if(block.getType() == Material.AIR) {
-//                block.setType(banner.getType());
-//
-//                Banner bannerState = (Banner) block.getState();
-//                BannerMeta meta = (BannerMeta) banner.getItemMeta();
-//
-//                bannerState.setPatterns(meta.getPatterns());
-//                System.out.println("Lerakva ez ageci xd");
-//                placed = true;
-//                break;
-//            }
-//        }
+        stolenFlag.setFlagState(GameFlagTeam.FlagState.DROPPED);
         System.out.println("Block search took: " + (System.nanoTime() - blockSearch));
+        return stolenFlag;
     }
 
     public boolean isFlag(Block block) {

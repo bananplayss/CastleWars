@@ -17,7 +17,7 @@ public class PlayerInteractListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
         if(e.getHand() != EquipmentSlot.HAND) return;
-        if (e.getAction() != Action.LEFT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
         if(e.getClickedBlock() == null) return;
 
@@ -28,13 +28,13 @@ public class PlayerInteractListener implements Listener {
         if(prof.getCurrentGame() instanceof FlagGameImpl fg) {
             GameFlagTeam t = fg.getFlagManager().getFlagByBlock(e.getClickedBlock()); // fg.getFlagManager().canPickupAndGetTeam(prof, e.getClickedBlock());
             if(t != null) {
-                CastleWarsFlagPickupEvent event = new CastleWarsFlagPickupEvent(fg, e.getPlayer(), t, e.getClickedBlock());
-                if(!event.callEvent()) return;
-
                 if (prof.getTeam().getTeam().getKey().equals(t.getTeam().getKey())) {
                     e.getPlayer().sendMessage("Ez a sajat zaszlod te fASZ.");
                     return;
                 }
+
+                CastleWarsFlagPickupEvent event = new CastleWarsFlagPickupEvent(fg, e.getPlayer(), t, e.getClickedBlock());
+                if(!event.callEvent()) return;
 
                 fg.getFlagManager().pickup(e.getPlayer(), e.getClickedBlock());
                 e.getPlayer().setGlowing(true);

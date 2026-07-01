@@ -8,6 +8,8 @@ public interface KitManager {
     Map<String, Kit> getKits();
 
     Kit createKit(Player player, String name);
+
+    Kit getKit(String name);
 }
 
 

@@ -22,13 +22,13 @@ import java.io.IOException;
 
 @Getter
 public class ArenaSchematic {
-    private File schematicFile;
     private String name;
+    private File schematicFile;
     private Location origin;
 
     public ArenaSchematic(File schematicFile, String name) {
-        this.schematicFile = schematicFile;
         this.name = name;
+        this.schematicFile = schematicFile;
         if (schematicFile == null || !schematicFile.exists()) {
             throw new IllegalArgumentException("Schematic file does not exist.");
         }
