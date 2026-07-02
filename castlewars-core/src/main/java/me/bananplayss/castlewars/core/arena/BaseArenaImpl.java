@@ -84,10 +84,8 @@ public class BaseArenaImpl extends BaseArena {
             String dpName = section.getString(key + ".display_name");
             VectorLocation spawn = VectorLocation.fromString(section.getString(key + ".spawn"));
 
-            BoundingBox boundingBox = new BoundingBox(
-                    Vector3i.fromString(section.getString(key + ".corners.1")),
-                    Vector3i.fromString(section.getString(key + ".corners.2"))
-            );
+            Vector3i corner1 = Vector3i.fromString(section.getString(key + ".corners.1"));
+            Vector3i corner2 = Vector3i.fromString(section.getString(key + ".corners.2"));
 
             switch (this.gameMode) {
                 case CAPTURE_THE_FLAG -> {
@@ -115,20 +113,20 @@ public class BaseArenaImpl extends BaseArena {
                     meta.getPersistentDataContainer().set(FlagGameImpl.FLAG_TEAM_KEY, PersistentDataType.STRING, key);
                     banner.setItemMeta(meta);
 
-                    FlagTeam t = new FlagTeam(key, prefix, dpName, color, spawn, boundingBox, flagVector, rotation, baseColor, patterns, banner);
+                    FlagTeam t = new FlagTeam(key, prefix, dpName, color, spawn, corner1, corner2, flagVector, rotation, baseColor, patterns, banner);
                     this.teams.put(key, t);
                 }
 
                 case CAPTURE_THE_ZONE -> {
                     Vector3i zone = Vector3i.fromString(section.getString(key + ".zone.location"));
                     int radius = section.getInt(key + ".zone.radius");
-                    ZoneTeam t = new ZoneTeam(key, prefix, dpName, color, spawn, boundingBox, zone, radius);
+                    ZoneTeam t = new ZoneTeam(key, prefix, dpName, color, spawn, corner1, corner2, zone, radius);
                     this.teams.put(key, t);
                 }
 
                 case BREAK_THE_NEXUS -> {
                     Vector3i block = Vector3i.fromString(section.getString(key + ".nexus.location"));
-                    NexusTeam t = new NexusTeam(key, prefix, dpName, color, boundingBox, spawn, block);
+                    NexusTeam t = new NexusTeam(key, prefix, dpName, color, corner1, corner2, spawn, block);
                     this.teams.put(key, t);
                 }
             }

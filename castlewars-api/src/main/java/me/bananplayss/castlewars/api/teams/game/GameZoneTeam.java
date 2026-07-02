@@ -13,8 +13,8 @@ public class GameZoneTeam extends AbstractGameTeam {
 
     private float progress;
 
-    public GameZoneTeam(Location spawn, BoundingBox boundingBox, ZoneTeam team) {
-        super(team, spawn, boundingBox);
+    public GameZoneTeam(Location spawn, Location corner1, Location corner2, ZoneTeam team) {
+        super(team, spawn, corner1, corner2);
         this.team = team;
         this.progress = 0;
     }

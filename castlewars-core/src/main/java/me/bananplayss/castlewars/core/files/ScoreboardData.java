@@ -1,14 +1,13 @@
 package me.bananplayss.castlewars.core.files;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import me.bananplayss.castlewars.api.game.Game;
 import me.bananplayss.castlewars.api.game.GameMode;
 import me.bananplayss.castlewars.api.game.phases.CelebrationPhase;
 import me.bananplayss.castlewars.api.game.phases.RunningPhase;
 import me.bananplayss.castlewars.api.game.phases.StartingPhase;
 import me.bananplayss.castlewars.api.game.phases.WaitingPhase;
+import me.bananplayss.castlewars.api.teams.game.GameFlagTeam;
 import me.bananplayss.castlewars.core.Main;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -36,6 +35,16 @@ public class ScoreboardData {
         private List<String> lines;
     }
 
+    @Getter
+    @AllArgsConstructor
+    public static class FormatsFlag {
+        private final String teams;
+        private final Map<GameFlagTeam.FlagState, String> flagStates;
+    }
+
+    private String you;
+
+    private FormatsFlag formatsFlag;
     private final Map<ScoreboardType, Scoreboard> defaultScoreboards;
     private final Map<GameMode, Map<ScoreboardType, Scoreboard>> scoreboards;
 
@@ -47,8 +56,16 @@ public class ScoreboardData {
     public void reload() {
         FileConfiguration config = Main.getInstance().getFileManager().getScoreboards().getConfig();
 
-        ConfigurationSection defaultSection = config.getConfigurationSection("default");
+        this.you = config.getString("you");
 
+        Map<GameFlagTeam.FlagState, String> flagStates = new HashMap<>();
+        for (String key : config.getConfigurationSection("formats.capture_the_flag.flag_states").getKeys(false)) {
+            flagStates.put(GameFlagTeam.FlagState.valueOf(key.toUpperCase()), config.getString("formats.capture_the_flag.flag_states." + key));
+        }
+        this.formatsFlag = new FormatsFlag(config.getString("formats.capture_the_flag.teams"), flagStates);
+
+
+        ConfigurationSection defaultSection = config.getConfigurationSection("default");
         this.defaultScoreboards.clear();
         for (String key : defaultSection.getKeys(false)) {
             ScoreboardType type = ScoreboardType.valueOf(key.toUpperCase());
@@ -83,7 +100,7 @@ public class ScoreboardData {
         if (game.getPhaseManager().getCurrentPhase() == null) return null;
 
         ScoreboardType type = null;
-        if(game.getPhaseManager().getCurrentPhase() instanceof WaitingPhase) {
+        if (game.getPhaseManager().getCurrentPhase() instanceof WaitingPhase) {
             type = ScoreboardType.WAITING;
         } else if (game.getPhaseManager().getCurrentPhase() instanceof StartingPhase) {
             type = ScoreboardType.STARTING;
@@ -93,7 +110,7 @@ public class ScoreboardData {
             type = ScoreboardType.RUNNING;
         }
 
-        if(type == null) return null;
+        if (type == null) return null;
 
         if (this.scoreboards.containsKey(game.getBaseArena().getGameMode())) {
             if (this.scoreboards.get(game.getBaseArena().getGameMode()).containsKey(type)) {

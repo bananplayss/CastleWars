@@ -5,7 +5,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.util.BoundingBox;
 
 import java.util.Arrays;
 
@@ -68,19 +67,42 @@ public class LocationUtils {
         return builder.toString();
     }
 
-    public static boolean isInside(Location location, BoundingBox boundingBox) {
-        double x = location.getX();
-        double y = location.getY();
-        double z = location.getZ();
-        return x >= boundingBox.getMinX() && x <= boundingBox.getMaxX()
-                && y >= boundingBox.getMinY() && y <= boundingBox.getMaxY()
-                && z >= boundingBox.getMinZ() && z <= boundingBox.getMaxZ();
+    public static boolean isInsideBlockOnly(Player player, Location loc1, Location loc2) {
+        return isInsideBlockOnly(player.getLocation(), loc1, loc2);
     }
 
     public static boolean isInside(Player player, Location loc1, Location loc2) {
-        if (!player.getWorld().equals(loc1.getWorld()) || !loc1.getWorld().equals(loc2.getWorld())) return false;
+        return isInside(player.getLocation(), loc1, loc2);
+    }
 
-        Location p = player.getLocation();
+//    public static boolean isInside(Location location, BoundingBox boundingBox) {
+//        double x = location.getX();
+//        double y = location.getY();
+//        double z = location.getZ();
+//        return x >= boundingBox.getMinX() && x <= boundingBox.getMaxX()
+//                && y >= boundingBox.getMinY() && y <= boundingBox.getMaxY()
+//                && z >= boundingBox.getMinZ() && z <= boundingBox.getMaxZ();
+//    }
+
+    public static boolean isInsideBlockOnly(Location location, Location loc1, Location loc2) {
+        if (!location.getWorld().equals(loc1.getWorld()) || !loc1.getWorld().equals(loc2.getWorld())) return false;
+
+        int minX = Math.min(loc1.getBlockX(), loc2.getBlockX());
+        int maxX = Math.max(loc1.getBlockX(), loc2.getBlockX());
+
+        int minY = Math.min(loc1.getBlockY(), loc2.getBlockY());
+        int maxY = Math.max(loc1.getBlockY(), loc2.getBlockY());
+
+        int minZ = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
+        int maxZ = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
+
+        return location.getBlockX() >= minX && location.getBlockX() <= maxX
+                && location.getBlockY() >= minY && location.getBlockY() <= maxY
+                && location.getBlockZ() >= minZ && location.getBlockZ() <= maxZ;
+    }
+
+    public static boolean isInside(Location location, Location loc1, Location loc2) {
+        if (!location.getWorld().equals(loc1.getWorld()) || !loc1.getWorld().equals(loc2.getWorld())) return false;
 
         double minX = Math.min(loc1.getX(), loc2.getX());
         double maxX = Math.max(loc1.getX(), loc2.getX());
@@ -91,8 +113,8 @@ public class LocationUtils {
         double minZ = Math.min(loc1.getZ(), loc2.getZ());
         double maxZ = Math.max(loc1.getZ(), loc2.getZ());
 
-        return p.getX() >= minX && p.getX() <= maxX
-                && p.getY() >= minY && p.getY() <= maxY
-                && p.getZ() >= minZ && p.getZ() <= maxZ;
+        return location.getX() >= minX && location.getX() <= maxX
+                && location.getY() >= minY && location.getY() <= maxY
+                && location.getZ() >= minZ && location.getZ() <= maxZ;
     }
 }

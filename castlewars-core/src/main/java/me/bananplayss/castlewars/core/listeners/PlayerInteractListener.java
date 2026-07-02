@@ -39,7 +39,7 @@ public class PlayerInteractListener implements Listener {
                 fg.getFlagManager().pickup(e.getPlayer(), e.getClickedBlock());
                 e.getPlayer().setGlowing(true);
                 e.getPlayer().getInventory().setHelmet(t.getTeam().getBannerItem());
-                fg.broadcast(Message.CAPTURED_FLAG.builder().setPlayer(e.getPlayer()).getComponent());
+                Message.FLAG_CAPTURED.builder().setTeam(t).setPlayer(e.getPlayer()).send(prof.getCurrentGame());
                 System.out.println("Felvette ez a fasz : " + e.getPlayer().getName() + " csapatét: " + t.getTeam().getKey());
 
                 // ToDo: sound effects

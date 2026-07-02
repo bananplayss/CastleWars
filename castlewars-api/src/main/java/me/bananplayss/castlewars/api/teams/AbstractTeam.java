@@ -3,6 +3,7 @@ package me.bananplayss.castlewars.api.teams;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import me.bananplayss.castlewars.api.utils.BoundingBox;
+import me.bananplayss.castlewars.api.utils.vectors.Vector3i;
 import me.bananplayss.castlewars.api.utils.vectors.VectorLocation;
 
 @Getter
@@ -15,5 +16,7 @@ public abstract class AbstractTeam {
     protected String color;
 //    protected int maxPlayerCount;
     protected VectorLocation spawn;
-    private BoundingBox boundingBox;
+    protected Vector3i corner1;
+    protected Vector3i corner2;
+//    private BoundingBox boundingBox;
 }

@@ -1,5 +1,6 @@
 package me.bananplayss.castlewars.core;
 
+import com.jeff_media.armorequipevent.ArmorEquipEvent;
 import lombok.Getter;
 import me.bananplayss.castlewars.api.CastleWarsAPI;
 import me.bananplayss.castlewars.core.commands.MainCommand;
@@ -85,6 +86,8 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
+
+        ArmorEquipEvent.registerListener(this);
 
     }
 

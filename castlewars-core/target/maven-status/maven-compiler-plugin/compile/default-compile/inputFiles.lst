@@ -8,6 +8,7 @@ C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\commands\subcmds\StartGameCommand.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\effects\BleedEffect.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\effects\BoundingBoxEffect.java
+C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\effects\BoundingBoxVolumeEffect.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\effects\EffectManagerImpl.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\effects\RingEffect.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\effects\RingOuterEffect.java
@@ -37,6 +38,7 @@ C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\kobalib\KobaMessage.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\kobalib\KobaMessageBuilder.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\kobalib\save\SaveModule.java
+C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\listeners\ArmorEquipListener.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\listeners\BlockBreakListener.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\listeners\EntityDamageByEntityListener.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\listeners\PlayerDeathListener.java

@@ -11,8 +11,8 @@ import org.bukkit.util.BoundingBox;
 public class GameNexusTeam extends AbstractGameTeam {
     private float progress;
 
-    public GameNexusTeam(Location spawn, BoundingBox boundingBox, NexusTeam team) {
-        super(team, spawn, boundingBox);
+    public GameNexusTeam(Location spawn, Location corner1, Location corner2, NexusTeam team) {
+        super(team, spawn, corner1, corner2);
         this.progress = 0;
     }
 

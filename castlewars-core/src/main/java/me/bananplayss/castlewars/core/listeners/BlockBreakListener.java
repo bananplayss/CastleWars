@@ -7,6 +7,7 @@ import me.bananplayss.castlewars.api.teams.game.GameFlagTeam;
 import me.bananplayss.castlewars.core.game.FlagGameImpl;
 import me.bananplayss.castlewars.core.messages.Message;
 import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
+import me.bananplayss.castlewars.core.utils.TimeUtils;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,6 +31,12 @@ public class BlockBreakListener implements Listener {
                     return;
                 }
 
+                if(t.hasFlagProtection()) {
+                    long diff = t.getFlagProtection() - System.currentTimeMillis();
+                    Message.FLAG_PROTECTED.builder().setTeam(t).setRemaining(TimeUtils.format(diff)).setPlayer(e.getPlayer()).send(e.getPlayer());
+                    return;
+                }
+
                 CastleWarsFlagResetEvent event = new CastleWarsFlagResetEvent(fg, e.getPlayer(), t, e.getBlock());
                 if (!event.callEvent()) return;
 
@@ -38,6 +45,7 @@ public class BlockBreakListener implements Listener {
                 e.getBlock().setType(Material.AIR);
 //                fg.getFlagManager().resetFlag(e.getPlayer(), t);
                 fg.getFlagManager().resetFlag(e.getBlock(), t);
+                Message.FLAG_SPAWNED.builder().setTeam(t).setPlayer(e.getPlayer()).send(prof.getCurrentGame());
 
                 System.out.println("REsetted flag : " + e.getPlayer().getName() + " csapatét: " + t.getTeam().getKey());
 

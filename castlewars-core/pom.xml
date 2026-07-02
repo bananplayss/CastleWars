@@ -48,6 +48,10 @@
                             <!-- Replace 'com.yourpackage' with the package of your plugin -->
                             <shadedPattern>me.bananplayss.fastboard</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>com.jeff_media.armorequipevent</pattern>
+                            <shadedPattern>me.bananplayss.castlewars.armorequipevent</shadedPattern>
+                        </relocation>
                     </relocations>
                     <filters>
                         <filter>
@@ -168,6 +172,13 @@
             <artifactId>FastAsyncWorldEdit-Core</artifactId>
             <version>2.9.2</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jeff-media</groupId>
+            <artifactId>armor-equip-event</artifactId>
+            <version>1.0.3</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

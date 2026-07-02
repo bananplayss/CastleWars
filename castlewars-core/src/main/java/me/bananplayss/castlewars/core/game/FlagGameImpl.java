@@ -83,11 +83,13 @@ public class FlagGameImpl extends Game implements FlagGame {
         for (Map.Entry<String, AbstractTeam> baseTeams : arenaConfig.getTeams().entrySet()) {
             GameFlagTeam t = new GameFlagTeam(
                     relLocationToAbsolute(arenaConfig.getTeams().get(baseTeams.getKey()).getSpawn()),
-                    BoundingBox.of(
-                            relLocationToAbsolute(baseTeams.getValue().getBoundingBox().getBound1()),
-                            relLocationToAbsolute(baseTeams.getValue().getBoundingBox().getBound2())
-                    ),
-                    (FlagTeam) baseTeams.getValue()
+//                    BoundingBox.of(
+//                            relLocationToAbsolute(baseTeams.getValue().getBoundingBox().getBound1()),
+//                            relLocationToAbsolute(baseTeams.getValue().getBoundingBox().getBound2())
+//                    ),
+                    (FlagTeam) baseTeams.getValue(),
+                    relLocationToAbsolute(baseTeams.getValue().getCorner1()),
+                    relLocationToAbsolute(baseTeams.getValue().getCorner2())
             );
 
             Location flagSpawnLoc = relLocationToAbsolute(((FlagTeam) baseTeams.getValue()).getFlagVector());
@@ -103,21 +105,19 @@ public class FlagGameImpl extends Game implements FlagGame {
         this.lobby = relLocationToAbsolute(arenaConfig.getLobbyVector());
         placeBanners();
 
-        ConfigurationSection actions = arenaConfig.getFile().getConfig().getConfigurationSection("actions");
-        if (actions != null) {
-            for (String action : actions.getKeys(false)) {
-                String type = actions.getString(action + ".type");
-                String dpName = actions.getString(action + ".display_name");
-                int delay = actions.getInt(action + ".delay");
-                switch (type.toLowerCase()) {
-                    case "kit_upgrade":
-                        String kitName = actions.getString(action + ".kit");
-                        this.actionManager.getActions().add(new KitUpgradeAction(dpName, kitName, delay));
-                        break;
-                    case "banner_gone":
-                        this.actionManager.getActions().add(new BannerGoneAction(dpName, delay));
-                        break;
-                }
+//        ConfigurationSection actions = arenaConfig.getFile().getConfig().getConfigurationSection("actions");
+        for (Map<?, ?> action : arenaConfig.getFile().getConfig().getMapList("actions")) {
+            String type = (String) action.get("type");
+            String dpName = (String) action.get("display_name");
+            long delay = (int) action.get("delay") * 1000L;
+            switch (type.toLowerCase()) {
+                case "kit_upgrade":
+                    String kitName = (String) action.get("kit");
+                    this.actionManager.getActions().add(new KitUpgradeAction(dpName, kitName, delay));
+                    break;
+                case "banner_gone":
+                    this.actionManager.getActions().add(new BannerGoneAction(dpName, delay));
+                    break;
             }
         }
 
@@ -176,6 +176,19 @@ public class FlagGameImpl extends Game implements FlagGame {
     public void reset() {
         Location spawn = Main.getInstance().getConfigData().getSpawn();
         this.getAllPlayers().forEach(p -> p.teleport(spawn));
+    }
+
+    @Override
+    public void rejoin(Player player) {
+
+    }
+
+    @Override
+    public void giveKitAll() {
+        Kit kit = Main.getInstance().getKitManager().getKit(this.kitName);
+        for (Player allPlayer : this.getAllPlayers()) {
+            kit.give(allPlayer);
+        }
     }
 
     public void broadcast(Component component) {

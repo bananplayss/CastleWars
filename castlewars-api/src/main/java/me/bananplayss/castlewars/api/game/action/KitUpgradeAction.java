@@ -16,5 +16,6 @@ public class KitUpgradeAction extends GameAction {
     @Override
     public void apply(Game game) {
         game.setKitName(this.kit);
+        game.giveKitAll();
     }
 }

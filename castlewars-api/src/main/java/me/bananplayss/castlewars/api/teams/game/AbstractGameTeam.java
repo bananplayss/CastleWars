@@ -15,12 +15,16 @@ public abstract class AbstractGameTeam {
     protected List<Player> players;
     protected AbstractTeam team;
     protected Location spawn;
-    protected BoundingBox boundingBox;
+//    protected BoundingBox boundingBox;
 
-    public AbstractGameTeam(AbstractTeam team, Location spawn, BoundingBox boundingBox) {
+    protected Location corner1;
+    protected Location corner2;
+
+    public AbstractGameTeam(AbstractTeam team, Location spawn, Location corner1, Location corner2) {
         this.team = team;
         this.players = new ArrayList<>();
         this.spawn = spawn;
-        this.boundingBox = boundingBox;
+        this.corner1 = corner1;
+        this.corner2 = corner2;
     }
 }

@@ -47,6 +47,8 @@ public abstract class Game {
         this.kitName = baseArena.getKitName();
     }
 
+    public abstract void rejoin(Player player);
+
     public JoinResult join(Player player) {
         //Todo: if megy a game tesom akk return stb
         AbstractGameTeam team = getRandomTeam();
@@ -102,6 +104,8 @@ public abstract class Game {
         return teams.values().stream().min(Comparator.comparingInt(t -> t.getPlayers().size())).orElse(null);
         //return teams.values().stream().filter(t -> t.getPlayers().size() < baseArena.getTeamSize()).findAny().orElse(null); // Átlátható be like:
     }
+
+    public abstract void giveKitAll();
     
     public Kit getKit() {
         return CastleWarsAPI.KIT_MANAGER.get().getKit(kitName);

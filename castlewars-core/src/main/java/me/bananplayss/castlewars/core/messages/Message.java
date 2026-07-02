@@ -23,8 +23,11 @@ public class Message extends KobaMessage {
     public static final Message PLAYER_NOT_FOUND = new Message("player_not_found", "%prefix% &cA játékos nem található.");
 
     // FLAG
-    public static final Message CAPTURED_FLAG = new Message("flag.capture", "%prefix% &c The flag has been captured by %player%.");
-    public static final Message DROPPED_FLAG = new Message("flag.drop", "%prefix% &c he flag has been dropped by %player%.");
+    public static final Message FLAG_CAPTURED = new Message("flag.capture", "%prefix% &a%player% &7has captured the &r%team%&7 flag!");
+    public static final Message FLAG_DROPPED = new Message("flag.drop", "%prefix% &c%player% &7has dropped the &r%team%&7 flag!");
+    public static final Message FLAG_SPAWNED = new Message("flag.spawned", "%prefix% &7The &r%team%&7 flag has returned to the base.");
+    public static final Message FLAG_PROTECTED = new Message("flag.protected", "%prefix% &cYou cannot reset your flag for another &e%remaining%s&c due to spawn protection.");
+    public static final Message FLAG_SCORED = new Message("flag.scored", "%prefix% &6&lSCORE!&r &a%player% &7has captured the &r%team%&7 banner! &8(&e%score%&7/&e%max_score%&8)");
 
     // CUCC
     public static final Message DIED_TITLE = new Message("died_title", "&cYOU DIED!");

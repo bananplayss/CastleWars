@@ -2,6 +2,7 @@ package me.bananplayss.castlewars.core.kobalib;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.bananplayss.castlewars.api.game.Game;
 import me.bananplayss.castlewars.core.kobalib.colors.ColorParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
@@ -95,6 +96,10 @@ public class KobaMessageBuilder {
 
     public void send(List<Player> players) {
         players.forEach(this::send);
+    }
+
+    public void send(Game game) {
+        this.send(game.getAllPlayers());
     }
 
     public void send(CommandSender sender) {

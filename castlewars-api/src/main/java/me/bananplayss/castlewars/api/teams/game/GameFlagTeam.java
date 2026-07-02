@@ -25,8 +25,8 @@ public class GameFlagTeam extends AbstractGameTeam {
 
     private CustomEffect ringEffect;
 
-    public GameFlagTeam(Location spawn, BoundingBox boundingBox, FlagTeam team) {
-        super(team, spawn, boundingBox);
+    public GameFlagTeam(Location spawn, FlagTeam team, Location corner1, Location corner2) {
+        super(team, spawn, corner1, corner2);
         this.team = team;
         this.score = 0;
         this.flagState = FlagState.SPAWN;
@@ -34,6 +34,10 @@ public class GameFlagTeam extends AbstractGameTeam {
 
     public void addScore() {
         this.score++;
+    }
+
+    public boolean hasFlagProtection() {
+        return this.flagProtection > System.currentTimeMillis();
     }
 
     @Override

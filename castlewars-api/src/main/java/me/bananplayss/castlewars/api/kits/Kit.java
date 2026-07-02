@@ -3,6 +3,7 @@ package me.bananplayss.castlewars.api.kits;
 import com.cryptomorin.xseries.XMaterial;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +18,11 @@ public class Kit {
 
     public void give(Player player) {
         //player.getInventory().clear();
+        ItemStack helmet = player.getInventory().getHelmet();
         player.getInventory().setContents(this.items.toArray(new ItemStack[0]));
+        if (helmet != null && helmet.getType() != Material.AIR) {
+            player.getInventory().setHelmet(helmet);
+        }
     }
 
     public void giveHelmet(Player player) {

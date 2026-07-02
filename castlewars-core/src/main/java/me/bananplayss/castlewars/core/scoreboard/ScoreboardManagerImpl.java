@@ -7,6 +7,7 @@ import me.bananplayss.castlewars.api.game.Game;
 import me.bananplayss.castlewars.api.scoreboards.ScoreboardManager;
 import me.bananplayss.castlewars.api.teams.game.AbstractGameTeam;
 import me.bananplayss.castlewars.api.teams.game.GameFlagTeam;
+import me.bananplayss.castlewars.api.utils.ColorNormalizer;
 import me.bananplayss.castlewars.core.Main;
 import me.bananplayss.castlewars.core.files.ScoreboardData;
 import me.bananplayss.castlewars.core.kobalib.colors.ColorParser;
@@ -60,7 +61,7 @@ public class ScoreboardManagerImpl implements ScoreboardManager {
 
         Map<AbstractGameTeam, String> flagStatus = new HashMap<>();
         Map<AbstractGameTeam, Integer> score = new HashMap<>();
-        if(game instanceof FlagGame fg) {
+        if (game instanceof FlagGame fg) {
             for (AbstractGameTeam value : game.getTeams().values()) {
                 GameFlagTeam ft = (GameFlagTeam) value;
 
@@ -75,14 +76,7 @@ public class ScoreboardManagerImpl implements ScoreboardManager {
 
         for (String line : currSb.getLines()) {
             if (line.equals("%teams%")) {
-                for (AbstractGameTeam value : game.getTeams().values()) {
-                    AbstractGameTeam t = game.getTeam(player);
-                    String l = value.getTeam().getPrefix() + " " + value.getTeam().getDisplayName() + "&f: " + score.get(value) + " &f| &f" + flagStatus.get(value);
-                    if(t == value) {
-                        l += " X";
-                    }
-                    lines.add(ColorParser.parse(l, player));
-                }
+                lines.addAll(getTeams(game, player));
                 continue;
             }
             line = Utils.replacePlaceholders(line, game, player);
@@ -93,5 +87,30 @@ public class ScoreboardManagerImpl implements ScoreboardManager {
 
         this.boards.get(player.getUniqueId()).updateTitle(title);
         this.boards.get(player.getUniqueId()).updateLines(lines);
+    }
+
+    private List<Component> getTeams(Game game, Player player) {
+        List<Component> teams = new ArrayList<>();
+        AbstractGameTeam t = game.getTeam(player);
+        if (game instanceof FlagGame fg) {
+            String you = Main.getInstance().getConfigData().getScoreboardData().getYou();
+            for (AbstractGameTeam value : game.getTeams().values()) {
+                GameFlagTeam ft = (GameFlagTeam) value;
+
+                String l = Main.getInstance().getConfigData().getScoreboardData().getFormatsFlag().getTeams()
+                        .replace("%display_name%", value.getTeam().getDisplayName())
+                        .replace("%display_name_stripped%", ColorNormalizer.strip(value.getTeam().getDisplayName()))
+                        .replace("%prefix%", value.getTeam().getPrefix())
+                        .replace("%name%", value.getTeam().getKey())
+                        .replace("%score%", ft.getScore() + "")
+                        .replace("%flag_state%", Main.getInstance().getConfigData().getScoreboardData().getFormatsFlag().getFlagStates().get(ft.getFlagState()))
+                        .replace("%you%", value == t ? you : "")
+                        ;
+
+                teams.add(ColorParser.parse(l, player));
+            }
+        }
+
+        return teams;
     }
 }

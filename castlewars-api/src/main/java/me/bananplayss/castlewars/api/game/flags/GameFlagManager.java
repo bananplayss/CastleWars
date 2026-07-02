@@ -107,6 +107,14 @@ public class GameFlagManager {
         return stolenFlag;
     }
 
+    public Location getFlagLocation(GameFlagTeam team) {
+        for (Map.Entry<Location, GameFlagTeam> entry : this.blockFlags.entrySet()) {
+            if(entry.getValue().equals(team)) return entry.getKey();
+        }
+
+        return null;
+    }
+
     public boolean isFlag(Block block) {
         if(!block.getType().name().contains("_BANNER")) return false;
 

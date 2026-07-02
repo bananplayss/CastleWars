@@ -4,6 +4,7 @@ me\bananplayss\castlewars\core\kobalib\commands\argumentMatchers\ArgumentMatcher
 me\bananplayss\castlewars\core\listeners\PlayerInteractListener.class
 me\bananplayss\castlewars\core\scoreboard\ArenaScoreboardData.class
 me\bananplayss\castlewars\core\arena\ArenaManagerImpl.class
+me\bananplayss\castlewars\core\effects\BoundingBoxVolumeEffect.class
 me\bananplayss\castlewars\core\kobalib\colors\ColorParser.class
 me\bananplayss\castlewars\core\kobalib\KobaLib.class
 me\bananplayss\castlewars\core\map\WorldGenerateType.class
@@ -31,6 +32,7 @@ me\bananplayss\castlewars\core\listeners\BlockBreakListener.class
 me\bananplayss\castlewars\core\map\managers\MapManager$1.class
 me\bananplayss\castlewars\core\commands\subcmds\JoinGameCommand.class
 me\bananplayss\castlewars\core\kobalib\KobaMessageBuilder.class
+me\bananplayss\castlewars\core\files\ScoreboardData$FormatsFlag.class
 me\bananplayss\castlewars\core\commands\subcmds\CalculateCoordsCommand.class
 me\bananplayss\castlewars\core\kobalib\database\KobaDatabase$SQLConsumer.class
 me\bananplayss\castlewars\core\kobalib\database\KobaDatabase.class
@@ -40,6 +42,7 @@ me\bananplayss\castlewars\core\utils\TeamColorConverter.class
 me\bananplayss\castlewars\core\listeners\PlayerMoveListener.class
 me\bananplayss\castlewars\core\utils\ColorUtils.class
 me\bananplayss\castlewars\core\kobalib\colors\PapiBridge.class
+me\bananplayss\castlewars\core\listeners\ArmorEquipListener.class
 me\bananplayss\castlewars\core\game\GameManager.class
 me\bananplayss\castlewars\core\kobalib\commands\BaseCommand.class
 me\bananplayss\castlewars\core\kobalib\commands\argumentMatchers\ContainingStringArgumentMatcher.class

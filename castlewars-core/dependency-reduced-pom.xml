@@ -46,6 +46,10 @@
               <pattern>fr.mrmicky.fastboard</pattern>
               <shadedPattern>me.bananplayss.fastboard</shadedPattern>
             </relocation>
+            <relocation>
+              <pattern>com.jeff_media.armorequipevent</pattern>
+              <shadedPattern>me.bananplayss.castlewars.armorequipevent</shadedPattern>
+            </relocation>
           </relocations>
           <filters>
             <filter>

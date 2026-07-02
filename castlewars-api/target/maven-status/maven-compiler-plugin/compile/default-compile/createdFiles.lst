@@ -31,6 +31,7 @@ me\bananplayss\castlewars\api\game\action\GameActionManager.class
 me\bananplayss\castlewars\api\profiles\ProfileCache.class
 me\bananplayss\castlewars\api\teams\game\AbstractGameTeam.class
 me\bananplayss\castlewars\api\game\action\KitUpgradeAction.class
+me\bananplayss\castlewars\api\utils\ColorNormalizer.class
 me\bananplayss\castlewars\api\teams\upgades\TeamUpgradeType.class
 me\bananplayss\castlewars\api\events\flags\CastleWarsFlagPickupEvent.class
 me\bananplayss\castlewars\api\arena\BaseArena.class
