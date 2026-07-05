@@ -1,11 +1,11 @@
 you: " &7YOU"
 formats:
   capture_the_flag:
-    teams: "%prefix% &f%display_name_stripped%&f: &a%score%%flag_state%%you%"
     flag_states:
-      SPAWN: ""
-      DROPPED: " &f(D)"
-      CARRYING: " &f(C)"
+      SPAWN: "%prefix% &f%display_name_stripped%&f: &a%score%%you%"
+      DROPPED: "%prefix% &f%display_name_stripped%&f: &a%score% &a⚑%you%"
+      CARRYING: "%prefix% &f%display_name_stripped%&f: &a%score% &e⚑%you%"
+      BANNER_GONE: "%prefix% &f%display_name_stripped%&f: &a%remaining_players%%you%"
 
 default:
   waiting:
@@ -60,6 +60,17 @@ capture_the_flag:
     lines:
       - " "
       - "&f%next_action_name% in &a%next_action_time%"
+      - "&5 "
+      - "%teams%"
+      - "&5 "
+      - "Kills: &a%kills%"
+      - "&5 "
+      - "&7play.castlewars.com"
+  celebration:
+    title: "CastleWars"
+    lines:
+      - " "
+      - "&aGame ended!"
       - "&5 "
       - "%teams%"
       - "&5 "

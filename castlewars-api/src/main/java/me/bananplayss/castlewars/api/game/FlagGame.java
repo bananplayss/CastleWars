@@ -15,4 +15,6 @@ public interface FlagGame {
 
     long getFlagProtection();
     void setFlagProtection(long time);
+    void setRespawnEnabled(boolean enabled);
+    boolean isRespawnEnabled();
 }

@@ -41,6 +41,8 @@ public class PlayerMoveListener implements Listener {
                     e.getPlayer().setGlowing(false);
                     fg.getKit().giveHelmet(e.getPlayer());
 
+
+
                     Message.FLAG_SCORED.builder().setTeam(bevittBannerTeam).setCurrentScore(ft.getScore()).setMaxScore(fg.getBaseArena().getScoreLimit()).setPlayer(e.getPlayer()).send(prof.getCurrentGame());
 
 
@@ -54,6 +56,11 @@ public class PlayerMoveListener implements Listener {
 
                     for (Player allPlayer : fg.getAllPlayers()) {
                         XSound.ENTITY_ENDER_DRAGON_GROWL.play(allPlayer);
+                    }
+
+                    if(ft.getScore() >= fg.getBaseArena().getScoreLimit()) {
+                        fg.end(ft);
+                        return;
                     }
 
                     e.getPlayer().getWorld().strikeLightningEffect(bevittBannerTeam.getFlagSpawn());

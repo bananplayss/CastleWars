@@ -30,8 +30,14 @@ public class Message extends KobaMessage {
     public static final Message FLAG_SCORED = new Message("flag.scored", "%prefix% &6&lSCORE!&r &a%player% &7has captured the &r%team%&7 banner! &8(&e%score%&7/&e%max_score%&8)");
 
     // CUCC
-    public static final Message DIED_TITLE = new Message("died_title", "&cYOU DIED!");
-    public static final Message DIED_SUBTITLE = new Message("died_subtitle", "&eYou will respawn in &c%time% seconds!");
+    public static final Message RESPAWN_TITLE = new Message("titles.respawn", "&cYOU DIED!");
+    public static final Message RESPAWN_SUBTITLE = new Message("titles.respawn_sub", "&eYou will respawn in &c%time% seconds!");
+    public static final Message DIED_TITLE = new Message("titles.died", "&cYOU DIED!");
+    public static final Message DIED_SUBTITLE = new Message("titles.died_sub", "&5");
+    public static final Message VICTORY_TITLE = new Message("titles.victory", "&6&lVICTORY!");
+    public static final Message VICTORY_SUBTITLE = new Message("titles.victory_sub", "%team%&7 win the game");
+    public static final Message LOSE_TITLE = new Message("titles.lose", "&cYOU LOST!");
+    public static final Message LOSE_SUBTITLE = new Message("titles.lose_sub", "&7Maybe next time :3");
 
     public Message(String key, String message) {
         super(key, message);

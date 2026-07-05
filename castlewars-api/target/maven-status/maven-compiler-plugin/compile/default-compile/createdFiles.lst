@@ -4,11 +4,13 @@ me\bananplayss\castlewars\api\game\phases\WaitingPhase.class
 me\bananplayss\castlewars\api\game\Game.class
 me\bananplayss\castlewars\api\game\GameMode.class
 me\bananplayss\castlewars\api\teams\FlagTeam.class
+me\bananplayss\castlewars\api\game\action\GameEndGameAction.class
 me\bananplayss\castlewars\api\game\flags\GameFlagManager.class
 me\bananplayss\castlewars\api\utils\vectors\VectorLocation.class
 me\bananplayss\castlewars\api\game\phases\AbstractPhase.class
 me\bananplayss\castlewars\api\utils\vectors\Vector3i.class
 me\bananplayss\castlewars\api\teams\upgades\SwordUpgrade.class
+me\bananplayss\castlewars\api\profiles\ProfileSpectator.class
 me\bananplayss\castlewars\api\arena\ArenaManager.class
 me\bananplayss\castlewars\api\events\flags\CastleWarsFlagEvent.class
 me\bananplayss\castlewars\api\game\action\GameAction.class
@@ -21,6 +23,7 @@ me\bananplayss\castlewars\api\teams\game\GameNexusTeam.class
 me\bananplayss\castlewars\api\utils\Utils.class
 me\bananplayss\castlewars\api\game\phases\RunningPhase.class
 me\bananplayss\castlewars\api\game\JoinResult.class
+me\bananplayss\castlewars\api\profiles\ProfileStatistics.class
 me\bananplayss\castlewars\api\teams\game\GameFlagTeam$FlagState.class
 me\bananplayss\castlewars\api\game\flags\GameScoreManager.class
 me\bananplayss\castlewars\api\scoreboards\ScoreboardManager.class

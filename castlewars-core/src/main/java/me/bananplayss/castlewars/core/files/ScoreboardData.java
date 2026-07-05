@@ -35,22 +35,16 @@ public class ScoreboardData {
         private List<String> lines;
     }
 
-    @Getter
-    @AllArgsConstructor
-    public static class FormatsFlag {
-        private final String teams;
-        private final Map<GameFlagTeam.FlagState, String> flagStates;
-    }
-
     private String you;
 
-    private FormatsFlag formatsFlag;
     private final Map<ScoreboardType, Scoreboard> defaultScoreboards;
     private final Map<GameMode, Map<ScoreboardType, Scoreboard>> scoreboards;
+    private final Map<GameFlagTeam.FlagState, String> captureTheFlagFormats;
 
     public ScoreboardData() {
         this.defaultScoreboards = new HashMap<>();
         this.scoreboards = new HashMap<>();
+        this.captureTheFlagFormats = new HashMap<>();
     }
 
     public void reload() {
@@ -58,11 +52,9 @@ public class ScoreboardData {
 
         this.you = config.getString("you");
 
-        Map<GameFlagTeam.FlagState, String> flagStates = new HashMap<>();
         for (String key : config.getConfigurationSection("formats.capture_the_flag.flag_states").getKeys(false)) {
-            flagStates.put(GameFlagTeam.FlagState.valueOf(key.toUpperCase()), config.getString("formats.capture_the_flag.flag_states." + key));
+            this.captureTheFlagFormats.put(GameFlagTeam.FlagState.valueOf(key.toUpperCase()), config.getString("formats.capture_the_flag.flag_states." + key));
         }
-        this.formatsFlag = new FormatsFlag(config.getString("formats.capture_the_flag.teams"), flagStates);
 
 
         ConfigurationSection defaultSection = config.getConfigurationSection("default");
@@ -107,7 +99,7 @@ public class ScoreboardData {
         } else if (game.getPhaseManager().getCurrentPhase() instanceof RunningPhase) {
             type = ScoreboardType.RUNNING;
         } else if (game.getPhaseManager().getCurrentPhase() instanceof CelebrationPhase) {
-            type = ScoreboardType.RUNNING;
+            type = ScoreboardType.CELEBRATION;
         }
 
         if (type == null) return null;

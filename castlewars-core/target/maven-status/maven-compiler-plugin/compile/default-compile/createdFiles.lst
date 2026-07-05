@@ -3,6 +3,7 @@ me\bananplayss\castlewars\core\effects\BleedEffect.class
 me\bananplayss\castlewars\core\kobalib\commands\argumentMatchers\ArgumentMatcher.class
 me\bananplayss\castlewars\core\listeners\PlayerInteractListener.class
 me\bananplayss\castlewars\core\scoreboard\ArenaScoreboardData.class
+me\bananplayss\castlewars\core\listeners\PlayerQuitListener.class
 me\bananplayss\castlewars\core\arena\ArenaManagerImpl.class
 me\bananplayss\castlewars\core\effects\BoundingBoxVolumeEffect.class
 me\bananplayss\castlewars\core\kobalib\colors\ColorParser.class
@@ -30,9 +31,9 @@ me\bananplayss\castlewars\core\files\FileManager.class
 me\bananplayss\castlewars\core\game\FlagGameImpl.class
 me\bananplayss\castlewars\core\listeners\BlockBreakListener.class
 me\bananplayss\castlewars\core\map\managers\MapManager$1.class
+me\bananplayss\castlewars\core\profiles\ProfileSpectatorImpl.class
 me\bananplayss\castlewars\core\commands\subcmds\JoinGameCommand.class
 me\bananplayss\castlewars\core\kobalib\KobaMessageBuilder.class
-me\bananplayss\castlewars\core\files\ScoreboardData$FormatsFlag.class
 me\bananplayss\castlewars\core\commands\subcmds\CalculateCoordsCommand.class
 me\bananplayss\castlewars\core\kobalib\database\KobaDatabase$SQLConsumer.class
 me\bananplayss\castlewars\core\kobalib\database\KobaDatabase.class
@@ -61,7 +62,6 @@ me\bananplayss\castlewars\core\commands\MainCommand.class
 me\bananplayss\castlewars\core\Main.class
 me\bananplayss\castlewars\core\files\ScoreboardData$ScoreboardType.class
 me\bananplayss\castlewars\core\map\managers\MapManager.class
-me\bananplayss\castlewars\core\scoreboard\ScoreboardManagerImpl$1.class
 me\bananplayss\castlewars\core\effects\RingEffect.class
 me\bananplayss\castlewars\core\files\ScoreboardData$Scoreboard.class
 me\bananplayss\castlewars\core\listeners\PlayerPostRespawnListener.class

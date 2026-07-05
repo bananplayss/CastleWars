@@ -6,6 +6,8 @@ import me.bananplayss.castlewars.api.teams.game.GameFlagTeam;
 import me.bananplayss.castlewars.core.game.FlagGameImpl;
 import me.bananplayss.castlewars.core.messages.Message;
 import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
+import org.bukkit.Bukkit;
+import org.bukkit.boss.BarFlag;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -25,6 +27,7 @@ public class PlayerInteractListener implements Listener {
         if(prof.getCurrentGame() == null) return;
         if(prof.getTeam() == null) return;
 
+        if(prof.getSpectator().isSpectating()) return;
         if(prof.getCurrentGame() instanceof FlagGameImpl fg) {
             GameFlagTeam t = fg.getFlagManager().getFlagByBlock(e.getClickedBlock()); // fg.getFlagManager().canPickupAndGetTeam(prof, e.getClickedBlock());
             if(t != null) {

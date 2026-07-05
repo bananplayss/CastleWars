@@ -10,6 +10,7 @@ public class CelebrationPhase extends AbstractPhase {
 
     @Override
     public void onStart() {
+        System.out.println("CELEBRATION ELINDULTXDDDD");
     }
 
     @Override
@@ -19,6 +20,7 @@ public class CelebrationPhase extends AbstractPhase {
     @Override
     public void onEnd() {
         // this.game.start();
-        System.out.println("RESET GAME");
+        this.game.reset();
+//        System.out.println("RESET GAME");
     }
 }

@@ -72,7 +72,6 @@ public final class Main extends JavaPlugin {
         this.effectManager = new EffectManagerImpl();
         CastleWarsAPI.EFFECT_MANAGER.set(this.effectManager);
 
-
         MainCommand cmd = new MainCommand();
         cmd.registerMainCommand(this, "castlewars");
 
@@ -86,6 +85,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
 
         ArmorEquipEvent.registerListener(this);
 

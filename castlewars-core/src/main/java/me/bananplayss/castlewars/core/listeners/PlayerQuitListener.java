@@ -1,20 +1,18 @@
 package me.bananplayss.castlewars.core.listeners;
 
-import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
-import com.jeff_media.armorequipevent.ArmorEquipEvent;
 import me.bananplayss.castlewars.api.profiles.Profile;
 import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 
-public class ArmorEquipListener implements Listener {
+public class PlayerQuitListener implements Listener {
 
     @EventHandler
-    public void onArmor(ArmorEquipEvent e) {
+    public void onQuit(PlayerQuitEvent e) {
         Profile prof = ProfileCacheImpl.getProfileImpl(e.getPlayer());
         if(prof.getCurrentGame() == null) return;
-        if(prof.getTeam() == null) return;
 
-        e.setCancelled(true);
+        prof.getCurrentGame().leave(e.getPlayer());
     }
 }

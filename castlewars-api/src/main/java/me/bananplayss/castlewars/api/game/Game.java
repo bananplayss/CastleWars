@@ -22,7 +22,7 @@ import java.util.Map;
 @Getter
 public abstract class Game {
 
-    private final int id;
+    protected final int id;
     protected final BaseArena baseArena;
 
     protected Map<String, AbstractGameTeam> teams;
@@ -78,6 +78,7 @@ public abstract class Game {
     }
 
     public void leave(Player player) {
+        System.out.println("Player left");
         AbstractGameTeam t = getTeam(player);
         if(t == null) return;
         t.getPlayers().remove(player);
@@ -94,6 +95,11 @@ public abstract class Game {
         // vége
 
         CastleWarsAPI.RESPAWN_MANAGER.get().removeRespawn(player);
+
+        if (t.getPlayers().isEmpty()) {
+            t.setDead(true);
+            System.out.println("Team kiesett: " + t.getTeam().getKey());
+        }
 
         this.leavePlayer(player);
 
@@ -124,5 +130,6 @@ public abstract class Game {
 
     public abstract void start();
     public abstract void reset();
-//    public abstract void reset();
+
+    public abstract void end(AbstractGameTeam winner);
 }

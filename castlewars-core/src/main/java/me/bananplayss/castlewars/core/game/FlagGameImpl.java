@@ -1,10 +1,12 @@
 package me.bananplayss.castlewars.core.game;
 
+import com.cryptomorin.xseries.XSound;
 import lombok.Getter;
 import lombok.Setter;
 import me.bananplayss.castlewars.api.game.FlagGame;
 import me.bananplayss.castlewars.api.game.Game;
 import me.bananplayss.castlewars.api.game.action.BannerGoneAction;
+import me.bananplayss.castlewars.api.game.action.GameEndGameAction;
 import me.bananplayss.castlewars.api.game.action.KitUpgradeAction;
 import me.bananplayss.castlewars.api.game.flags.GameFlagManager;
 import me.bananplayss.castlewars.api.game.phases.CelebrationPhase;
@@ -22,23 +24,32 @@ import me.bananplayss.castlewars.core.Main;
 import me.bananplayss.castlewars.core.arena.BaseArenaImpl;
 import me.bananplayss.castlewars.core.effects.RingOuterEffect;
 import me.bananplayss.castlewars.core.game.phases.GamePhaseManagerImpl;
+import me.bananplayss.castlewars.core.kobalib.colors.ColorParser;
 import me.bananplayss.castlewars.core.map.ArenaSchematic;
 import me.bananplayss.castlewars.core.map.managers.WorldEditMapManager;
+import me.bananplayss.castlewars.core.messages.Message;
+import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
+import me.bananplayss.castlewars.core.profiles.ProfileImpl;
 import me.bananplayss.castlewars.core.utils.TeamColorConverter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Rotatable;
-import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
-import org.bukkit.util.BoundingBox;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.jetbrains.annotations.Nullable;
 
+import java.time.Duration;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
 public class FlagGameImpl extends Game implements FlagGame {
@@ -48,16 +59,14 @@ public class FlagGameImpl extends Game implements FlagGame {
     private final GameFlagManager flagManager;
     private Location origin;
 
-    @Setter
-    private long flagProtection;
-
-//    private Map<String, GameFlagTeam> gameTeams;
-    //AbsLoc = GameArenaCenter + (RelativePos - PrefabOrigin)
+    @Setter private long flagProtection;
+    @Setter private boolean respawnEnabled;
 
 
     public FlagGameImpl(int id, ArenaSchematic map, BaseArenaImpl arenaConfig) {
         super(id, arenaConfig);
         this.map = map;
+        this.respawnEnabled = true;
         this.flagManager = new GameFlagManager(this);
         this.phaseManager = new GamePhaseManagerImpl();
         this.gameLoop = new GameLoop(this);
@@ -83,10 +92,6 @@ public class FlagGameImpl extends Game implements FlagGame {
         for (Map.Entry<String, AbstractTeam> baseTeams : arenaConfig.getTeams().entrySet()) {
             GameFlagTeam t = new GameFlagTeam(
                     relLocationToAbsolute(arenaConfig.getTeams().get(baseTeams.getKey()).getSpawn()),
-//                    BoundingBox.of(
-//                            relLocationToAbsolute(baseTeams.getValue().getBoundingBox().getBound1()),
-//                            relLocationToAbsolute(baseTeams.getValue().getBoundingBox().getBound2())
-//                    ),
                     (FlagTeam) baseTeams.getValue(),
                     relLocationToAbsolute(baseTeams.getValue().getCorner1()),
                     relLocationToAbsolute(baseTeams.getValue().getCorner2())
@@ -105,7 +110,6 @@ public class FlagGameImpl extends Game implements FlagGame {
         this.lobby = relLocationToAbsolute(arenaConfig.getLobbyVector());
         placeBanners();
 
-//        ConfigurationSection actions = arenaConfig.getFile().getConfig().getConfigurationSection("actions");
         for (Map<?, ?> action : arenaConfig.getFile().getConfig().getMapList("actions")) {
             String type = (String) action.get("type");
             String dpName = (String) action.get("display_name");
@@ -116,7 +120,7 @@ public class FlagGameImpl extends Game implements FlagGame {
                     this.actionManager.getActions().add(new KitUpgradeAction(dpName, kitName, delay));
                     break;
                 case "banner_gone":
-                    this.actionManager.getActions().add(new BannerGoneAction(dpName, delay));
+//                    this.actionManager.getActions().add(new BannerGoneAction(dpName, delay));
                     break;
             }
         }
@@ -152,11 +156,17 @@ public class FlagGameImpl extends Game implements FlagGame {
     @Override
     public void joinPlayer(Player player) {
         Main.getInstance().getScoreboardManager().show(player, this);
+
+        ProfileImpl prof = ProfileCacheImpl.getProfileImpl(player);
+        prof.saveInventory();
     }
 
     @Override
     public void leavePlayer(Player player) {
         Main.getInstance().getScoreboardManager().delete(player);
+
+        ProfileImpl prof = ProfileCacheImpl.getProfileImpl(player);
+        prof.restoreInventory();
     }
 
     @Override
@@ -175,7 +185,67 @@ public class FlagGameImpl extends Game implements FlagGame {
     @Override
     public void reset() {
         Location spawn = Main.getInstance().getConfigData().getSpawn();
-        this.getAllPlayers().forEach(p -> p.teleport(spawn));
+        this.getAllPlayers().forEach(p -> {
+            p.getInventory().clear();
+            p.setGlowing(false);
+            p.teleport(spawn);
+            Main.getInstance().getScoreboardManager().delete(p);
+        });
+        broadcast(ColorParser.parse("Game resetted"));
+
+        Main.getInstance().getGameManager().removeGame(this.id);
+        // Scoreboard reset?
+
+    }
+
+    @Override
+    public void end(AbstractGameTeam winner) {
+        // title
+        // victory particles
+        // ja
+        // gg
+        for (Player player : winner.getPlayers()) {
+            Title victoryTitle = Title.title(Message.VICTORY_TITLE.builder().getComponent(player), Message.VICTORY_SUBTITLE.builder().setTeam(winner).getComponent(player), Title.Times.times(Duration.ZERO,Duration.ofSeconds(5),Duration.ZERO));
+            player.showTitle(victoryTitle);
+            XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(player,2,2f);
+            XSound.ENTITY_PLAYER_LEVELUP.play(player,2,2f);
+
+        }
+
+        List<AbstractGameTeam> losers = this.getTeams().values().stream().filter(t -> !t.equals(winner)).toList();
+
+        for (AbstractGameTeam team : losers) {
+            for (Player player : team.getPlayers()) {
+                Title loserTitle = Title.title(Message.LOSE_TITLE.builder().getComponent(player), Message.LOSE_SUBTITLE.builder().setTeam(winner).getComponent(player), Title.Times.times(Duration.ZERO,Duration.ofSeconds(5),Duration.ZERO));
+                player.showTitle(loserTitle);
+                XSound.BLOCK_ANVIL_LAND.play(player,1,1f);
+            }
+        }
+        GameFlagTeam wintm = (GameFlagTeam) winner;
+        Location fullCenter = wintm.getFlagSpawn().clone().add(0.5,0,0.5);
+        for (int i = 0; i < 12; i++) {
+            int delay = i * 9;
+            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                Firework firework = wintm.getFlagSpawn().getWorld().spawn(fullCenter.clone().add(ThreadLocalRandom.current().nextInt(-2,2), 0, ThreadLocalRandom.current().nextInt(-2,2)), Firework.class);
+                FireworkMeta fireworkMeta = firework.getFireworkMeta();
+                fireworkMeta.setPower(2);
+                fireworkMeta.addEffect(FireworkEffect.builder()
+                        .with(FireworkEffect.Type.BALL_LARGE)
+                        .withColor(TeamColorConverter.parseColorOrThrow(wintm.getTeam().getColor()))
+                        .trail(true)
+                        .flicker(true)
+                        .build()
+                );
+                firework.setFireworkMeta(fireworkMeta);
+                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                    if (!firework.isDead()) {
+                        firework.detonate();
+                    }
+                }, 50L);
+            }, delay);
+        }
+
+        this.phaseManager.nextPhase(true, true);
     }
 
     @Override
@@ -253,4 +323,6 @@ public class FlagGameImpl extends Game implements FlagGame {
 
 //        System.out.println("Placed banner to real location: " + location);
     }
+
+
 }

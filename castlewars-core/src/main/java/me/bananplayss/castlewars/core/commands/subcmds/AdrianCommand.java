@@ -8,13 +8,13 @@ import me.bananplayss.castlewars.core.game.FlagGameImpl;
 import me.bananplayss.castlewars.core.kobalib.commands.SubCommand;
 import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
 import me.bananplayss.castlewars.core.utils.LocationUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Particle;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
+import org.bukkit.util.Vector;
 
 import java.util.List;
 
@@ -53,29 +53,47 @@ public class AdrianCommand implements SubCommand {
 
         if(prof.getCurrentGame() instanceof FlagGameImpl fg) {
             GameFlagTeam ft = fg.getTeam(p);
-            if(args.length != 0) {
-                //Bukkit.broadcastMessage(LocationUtils.isInsideBlockOnly(p.getLocation(), ft.getCorner1(), ft.getCorner2(), true) +"");
-            }
-            BoundingBox box = BoundingBox.of(ft.getCorner1(), ft.getCorner2());
-            BoundingBoxVolumeEffect e = new BoundingBoxVolumeEffect(Particle.VILLAGER_HAPPY,6000,box,1);
-            e.setLooping(true);
-            Location loc = box.getCenter().toLocation(p.getWorld());
-            loc.setY(box.getMinY());
-            Main.getInstance().getEffectManager().addLoopEffect(e, loc);
-//            double w = ft.getBoundingBox().getMaxX() - ft.getBoundingBox().getMinX();
-//            double h = ft.getBoundingBox().getMaxY() - ft.getBoundingBox().getMinY();
-//            double d = ft.getBoundingBox().getMaxZ() - ft.getBoundingBox().getMinZ();
-//            Location loc = ft.getBoundingBox().getCenter().toLocation(p.getWorld());
-//            loc.setY(ft.getBoundingBox().getMinY());
-            //tesó ez miért szar ennyire xddd ez jó ig. csak majd kéne csinálni, hogy ne block szélén menjen hanem közepén mert szemmel nem látod hogy most hogy van a szélén a blocknak /melyik blocknak xd
-            //varja tesó a hight is el van kurva gg
-//            BoundingBoxEffect effect = new BoundingBoxEffect(Color.GREEN, 1000, w, h, d, 0.20, null);
-//            effect.setLooping(true);
-//            Main.getInstance().getEffectManager().addLoopEffect(effect, loc);
 
+
+            EnderDragon dragon = p.getWorld().spawn(p.getLocation(), EnderDragon.class);
+            dragon.addPassenger(p);
+
+            //dragon.setAI(true);
+            dragon.setPhase(EnderDragon.Phase.STRAFING);
+            Bukkit.getScheduler().runTaskTimer(Main.getInstance(), () -> {
+                dragon.setVelocity(p.getEyeLocation().getDirection());
+                dragon.setRotation((p.getLocation().getYaw() + 180) % 360, p.getEyeLocation().getPitch());
+                Location dragonHead = dragon.getLocation().clone().add(0, 2.5, 0);
+                clearBlocksInFront(dragonHead, dragon.getEyeLocation().getDirection(), 5, 3);
+                //dragon.getEyeLocation().getDirection().multiply(5);
+            },0L,1L);
         }
 
         //RingEffect effect = new RingEffect(4000,2,p);
         //Main.getInstance().getEffectManager().addLoopEffect(effect);
+    }
+
+    public void clearBlocksInFront(Location origin, Vector direction, double length, int radius) {
+        World world = origin.getWorld();
+        if (world == null) return;
+
+        direction = direction.clone().normalize();
+
+        for (double distance = 1.0; distance <= length; distance += 0.8) {
+            Location center = origin.clone().add(direction.clone().multiply(distance));
+
+            for (int x = -radius; x <= radius; x++) {
+                for (int y = -radius; y <= radius; y++) {
+                    for (int z = -radius; z <= radius; z++) {
+
+                        Location blockLoc = center.clone().add(x, y, z);
+                        Block block = blockLoc.getBlock();
+
+
+                        block.setType(Material.AIR, false);
+                    }
+                }
+            }
+        }
     }
 }

@@ -10,12 +10,16 @@ import me.bananplayss.castlewars.core.Main;
 import me.bananplayss.castlewars.core.kobalib.colors.ColorParser;
 import me.bananplayss.castlewars.core.messages.Message;
 import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
+import me.bananplayss.castlewars.core.profiles.ProfileImpl;
 import me.bananplayss.castlewars.core.utils.LocationUtils;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -33,7 +37,7 @@ public class PlayerDeathListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
-        Profile prof = ProfileCacheImpl.getProfileImpl(e.getPlayer());
+        ProfileImpl prof = ProfileCacheImpl.getProfileImpl(e.getPlayer());
         if (prof.getCurrentGame() == null) return;
         if (prof.getTeam() == null) return;
 
@@ -76,9 +80,17 @@ public class PlayerDeathListener implements Listener {
                     t.setFlagProtection(fg.getFlagProtection() + System.currentTimeMillis());
                 }
             }
-        }
 
-        Main.getInstance().getRespawnManager().addRespawn(e.getPlayer());
+            if(fg.isRespawnEnabled()) {
+                Main.getInstance().getRespawnManager().addRespawn(e.getPlayer());
+            } else {
+                e.getPlayer().showTitle(Title.title(
+                        Message.DIED_TITLE.builder().getComponent(e.getPlayer()),
+                        Message.DIED_SUBTITLE.builder().getComponent(e.getPlayer()),
+                        Title.DEFAULT_TIMES
+                ));
+            }
+        }
 
         Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
             e.getPlayer().spigot().respawn();
@@ -86,8 +98,18 @@ public class PlayerDeathListener implements Listener {
             e.getPlayer().setFoodLevel(20);
             e.getPlayer().setFireTicks(0);
             e.getPlayer().teleport(prof.getCurrentGame().getSpectatorSpawn());
+            prof.getSpectator().setSpectator();
             XSound.BLOCK_NOTE_BLOCK_PLING.play(e.getPlayer(),1,5);
-//            e.getPlayer().setGameMode(GameMode.SPECTATOR);
+
+            if(prof.getCurrentGame() instanceof FlagGame fg) {
+                if(!fg.isRespawnEnabled()) {
+                    if (!prof.getTeam().isTeamAlive()) {
+                        prof.getTeam().setDead(true);
+                        System.out.println("Team kiesett: " + prof.getTeam().getTeam().getKey());
+                    }
+                }
+            }
         }, 1L);
+
     }
 }

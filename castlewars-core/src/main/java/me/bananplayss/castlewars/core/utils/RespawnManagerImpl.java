@@ -95,8 +95,8 @@ public class RespawnManagerImpl implements RespawnManager {
 
     private void setDeathTitle(Player player, int seconds) {
         player.showTitle(Title.title(
-                Message.DIED_TITLE.builder().setTime(seconds + "").getComponent(player),
-                Message.DIED_SUBTITLE.builder().setTime(seconds + "").getComponent(player),
+                Message.RESPAWN_TITLE.builder().setTime(seconds + "").getComponent(player),
+                Message.RESPAWN_SUBTITLE.builder().setTime(seconds + "").getComponent(player),
                 Title.Times.times(Duration.ZERO, Duration.ofMillis(1000), Duration.ZERO))
         );
     }

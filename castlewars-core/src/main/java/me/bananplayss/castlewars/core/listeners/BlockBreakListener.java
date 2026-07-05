@@ -26,6 +26,7 @@ public class BlockBreakListener implements Listener {
             GameFlagTeam t = fg.getFlagManager().getFlagByBlock(e.getBlock()); // fg.getFlagManager().canPickupAndGetTeam(prof, e.getClickedBlock());
             if (t != null) {
                 e.setCancelled(true);
+                if(prof.getSpectator().isSpectating()) return;
                 if (!prof.getTeam().getTeam().getKey().equals(t.getTeam().getKey())) {
                     e.getPlayer().sendMessage("Ez nem a te saját zászlód te fasz.");
                     return;

@@ -14,7 +14,8 @@ public class GameFlagTeam extends AbstractGameTeam {
     public static enum FlagState {
         SPAWN,
         DROPPED,
-        CARRYING;
+        CARRYING,
+        BANNER_GONE,
     }
 
     private Location flagSpawn;

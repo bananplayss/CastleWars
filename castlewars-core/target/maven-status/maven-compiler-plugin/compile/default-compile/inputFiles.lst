@@ -45,6 +45,7 @@ C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\listeners\PlayerInteractListener.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\listeners\PlayerMoveListener.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\listeners\PlayerPostRespawnListener.java
+C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\listeners\PlayerQuitListener.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\Main.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\map\ArenaSchematic.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\map\managers\BaseMapManager.java
@@ -55,6 +56,7 @@ C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\messages\MessageBuilder.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\profiles\ProfileCacheImpl.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\profiles\ProfileImpl.java
+C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\profiles\ProfileSpectatorImpl.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\scoreboard\ArenaScoreboardData.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\scoreboard\ScoreboardManagerImpl.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\utils\ColorUtils.java

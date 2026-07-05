@@ -2,6 +2,7 @@ package me.bananplayss.castlewars.api.game.phases;
 
 import lombok.Getter;
 import me.bananplayss.castlewars.api.game.Game;
+import me.bananplayss.castlewars.api.game.action.GameEndGameAction;
 
 @Getter
 public class RunningPhase extends AbstractPhase {
@@ -19,6 +20,8 @@ public class RunningPhase extends AbstractPhase {
     @Override
     public void onUpdate() {
         this.game.getActionManager().tick();
+
+        this.game.getActionManager().getActions().add(new GameEndGameAction("Game End", this.end - System.currentTimeMillis()));
     }
 
     @Override

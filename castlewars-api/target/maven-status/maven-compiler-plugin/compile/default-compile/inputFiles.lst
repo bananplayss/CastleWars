@@ -12,6 +12,7 @@ C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-api\src\m
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-api\src\main\java\me\bananplayss\castlewars\api\game\action\BannerGoneAction.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-api\src\main\java\me\bananplayss\castlewars\api\game\action\GameAction.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-api\src\main\java\me\bananplayss\castlewars\api\game\action\GameActionManager.java
+C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-api\src\main\java\me\bananplayss\castlewars\api\game\action\GameEndGameAction.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-api\src\main\java\me\bananplayss\castlewars\api\game\action\KitUpgradeAction.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-api\src\main\java\me\bananplayss\castlewars\api\game\FlagGame.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-api\src\main\java\me\bananplayss\castlewars\api\game\flags\GameFlagManager.java
@@ -31,6 +32,8 @@ C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-api\src\m
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-api\src\main\java\me\bananplayss\castlewars\api\kits\KitManager.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-api\src\main\java\me\bananplayss\castlewars\api\profiles\Profile.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-api\src\main\java\me\bananplayss\castlewars\api\profiles\ProfileCache.java
+C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-api\src\main\java\me\bananplayss\castlewars\api\profiles\ProfileSpectator.java
+C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-api\src\main\java\me\bananplayss\castlewars\api\profiles\ProfileStatistics.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-api\src\main\java\me\bananplayss\castlewars\api\scoreboards\ScoreboardManager.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-api\src\main\java\me\bananplayss\castlewars\api\Singleton.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-api\src\main\java\me\bananplayss\castlewars\api\teams\AbstractTeam.java

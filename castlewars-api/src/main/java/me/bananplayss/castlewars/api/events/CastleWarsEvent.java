@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class CastleWarsEvent extends Event {
     private static final HandlerList HANDLERS_LIST = new HandlerList();
 
-    private Game game;
+    private final Game game;
 
     @Override
     public @NotNull HandlerList getHandlers() {
