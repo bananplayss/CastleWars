@@ -25,7 +25,8 @@ public class PlayerMoveListener implements Listener {
         if (e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockZ() == e.getTo().getBlockZ() && e.getFrom().getBlockY() == e.getTo().getBlockY()) return;
         //BleedEffect a = new BleedEffect(e.getPlayer().getLocation(), 1000);
         //a.apply();
-        Profile prof =  ProfileCacheImpl.getProfileImpl(e.getPlayer());
+        Profile prof = ProfileCacheImpl.getProfileImpl(e.getPlayer());
+        if(prof == null) return;
         if(prof.getCurrentGame() == null) return;
 
         if(prof.getCurrentGame() instanceof FlagGameImpl fg) {
@@ -41,10 +42,7 @@ public class PlayerMoveListener implements Listener {
                     e.getPlayer().setGlowing(false);
                     fg.getKit().giveHelmet(e.getPlayer());
 
-
-
                     Message.FLAG_SCORED.builder().setTeam(bevittBannerTeam).setCurrentScore(ft.getScore()).setMaxScore(fg.getBaseArena().getScoreLimit()).setPlayer(e.getPlayer()).send(prof.getCurrentGame());
-
 
                     System.out.println("Bevitte " + e.getPlayer().getName() + " team: " + bevittBannerTeam.getTeam().getKey() + " bannerjét");
                     BoundingBox b = BoundingBox.of(e.getPlayer().getLocation(), e.getPlayer().getLocation());

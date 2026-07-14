@@ -3,6 +3,7 @@ package me.bananplayss.castlewars.api.arena;
 import lombok.Getter;
 import me.bananplayss.castlewars.api.game.GameMode;
 import me.bananplayss.castlewars.api.teams.AbstractTeam;
+import me.bananplayss.castlewars.api.utils.vectors.Vector3i;
 import me.bananplayss.castlewars.api.utils.vectors.VectorLocation;
 import org.bukkit.World;
 
@@ -21,6 +22,10 @@ public class BaseArena {
     protected int respawnDelay;
     protected int scoreLimit;
     protected int teamSize;
+    protected int maxPlayerCount;
+
+    protected Vector3i corner1;
+    protected Vector3i corner2;
 
     protected String kitName;
 

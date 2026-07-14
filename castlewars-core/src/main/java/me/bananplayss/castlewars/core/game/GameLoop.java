@@ -24,6 +24,7 @@ public class GameLoop implements Runnable {
 
 
         this.game.getPhaseManager().tick();
+        this.game.getActionManager().tick();
         Main.getInstance().getScoreboardManager().updateScoreboard(this.game);
 
         if(this.game.getPhaseManager().getCurrentPhase() instanceof RunningPhase) {

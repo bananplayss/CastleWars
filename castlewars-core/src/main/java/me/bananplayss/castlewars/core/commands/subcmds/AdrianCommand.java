@@ -17,6 +17,8 @@ import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 public class AdrianCommand implements SubCommand {
     @Override
@@ -48,52 +50,23 @@ public class AdrianCommand implements SubCommand {
     public void perform(CommandSender sender, String[] args) {
         Player p = (Player) sender;
 
-        Profile prof =  ProfileCacheImpl.getProfileImpl(p);
-        if(prof.getCurrentGame() == null) return;
+//        Profile prof =  ProfileCacheImpl.getProfileImpl(p);
+//        if(prof.getCurrentGame() == null) return;
 
-        if(prof.getCurrentGame() instanceof FlagGameImpl fg) {
-            GameFlagTeam ft = fg.getTeam(p);
-
-
-            EnderDragon dragon = p.getWorld().spawn(p.getLocation(), EnderDragon.class);
-            dragon.addPassenger(p);
-
-            //dragon.setAI(true);
-            dragon.setPhase(EnderDragon.Phase.STRAFING);
-            Bukkit.getScheduler().runTaskTimer(Main.getInstance(), () -> {
-                dragon.setVelocity(p.getEyeLocation().getDirection());
-                dragon.setRotation((p.getLocation().getYaw() + 180) % 360, p.getEyeLocation().getPitch());
-                Location dragonHead = dragon.getLocation().clone().add(0, 2.5, 0);
-                clearBlocksInFront(dragonHead, dragon.getEyeLocation().getDirection(), 5, 3);
-                //dragon.getEyeLocation().getDirection().multiply(5);
-            },0L,1L);
-        }
-
-        //RingEffect effect = new RingEffect(4000,2,p);
-        //Main.getInstance().getEffectManager().addLoopEffect(effect);
+        Kys(args[0]).thenAcceptAsync((e) -> {
+            p.getLocation().getBlock().setType(Material.STONE);
+            System.out.println(e);
+        }, r -> Bukkit.getScheduler().runTask(Main.getInstance(), r));
     }
 
-    public void clearBlocksInFront(Location origin, Vector direction, double length, int radius) {
-        World world = origin.getWorld();
-        if (world == null) return;
-
-        direction = direction.clone().normalize();
-
-        for (double distance = 1.0; distance <= length; distance += 0.8) {
-            Location center = origin.clone().add(direction.clone().multiply(distance));
-
-            for (int x = -radius; x <= radius; x++) {
-                for (int y = -radius; y <= radius; y++) {
-                    for (int z = -radius; z <= radius; z++) {
-
-                        Location blockLoc = center.clone().add(x, y, z);
-                        Block block = blockLoc.getBlock();
-
-
-                        block.setType(Material.AIR, false);
-                    }
-                }
+    public CompletableFuture<String> Kys(String s) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-        }
+            return s;
+        });
     }
 }

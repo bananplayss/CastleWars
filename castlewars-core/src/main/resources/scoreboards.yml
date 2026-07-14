@@ -6,6 +6,7 @@ formats:
       DROPPED: "%prefix% &f%display_name_stripped%&f: &a%score% &a⚑%you%"
       CARRYING: "%prefix% &f%display_name_stripped%&f: &a%score% &e⚑%you%"
       BANNER_GONE: "%prefix% &f%display_name_stripped%&f: &a%remaining_players%%you%"
+    team_dead: "%prefix% &f%display_name_stripped%&f: &c❌"
 
 default:
   waiting:

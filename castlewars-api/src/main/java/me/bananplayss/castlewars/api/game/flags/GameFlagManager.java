@@ -70,20 +70,22 @@ public class GameFlagManager {
         return team;
     }
 
-    public void resetFlag(Player player, GameFlagTeam team) {
+    private void resetFlag(GameFlagTeam team) {
         team.setFlagState(GameFlagTeam.FlagState.SPAWN);
         CastleWarsAPI.EFFECT_MANAGER.get().removeLoopEffect(team.getRingEffect());
         this.flagGame.placeBanner(team, team.getFlagSpawn(), null);
-        this.carriedFlags.remove(player);
         this.blockFlags.put(team.getFlagSpawn(), team);
+
+    }
+
+    public void resetFlag(Player player, GameFlagTeam team) {
+        resetFlag(team);
+        this.carriedFlags.remove(player);
     }
 
     public void resetFlag(Block block, GameFlagTeam team) {
-        team.setFlagState(GameFlagTeam.FlagState.SPAWN);
-        CastleWarsAPI.EFFECT_MANAGER.get().removeLoopEffect(team.getRingEffect());
-        this.flagGame.placeBanner(team, team.getFlagSpawn(), null);
+        resetFlag(team);
         this.blockFlags.remove(block.getLocation());
-        this.blockFlags.put(team.getFlagSpawn(), team);
     }
 
     public GameFlagTeam drop(Player player) {
@@ -93,8 +95,16 @@ public class GameFlagManager {
 
         long blockSearch = System.nanoTime();
         Location emptyLoc = Utils.findNearestBannerLocation(player.getLocation(), 5);
+        if(!this.flagGame.getGame().isInside(emptyLoc)) {
+//            emptyLoc = stolenFlag.getFlagSpawn();
+            resetFlag(player, stolenFlag);
+            System.out.println("Outside game, using flag spawn");
+            return stolenFlag;
+        }
         if(emptyLoc == null) {
-            System.out.println("Nem talál helyet?");
+//            emptyLoc = stolenFlag.getFlagSpawn();
+            resetFlag(player, stolenFlag);
+            System.out.println("Nem talál helyet, using flag spawn");
             return stolenFlag;
         }
 

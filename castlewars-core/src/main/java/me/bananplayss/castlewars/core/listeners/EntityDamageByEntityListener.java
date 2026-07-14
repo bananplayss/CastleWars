@@ -1,5 +1,6 @@
 package me.bananplayss.castlewars.core.listeners;
 
+import me.bananplayss.castlewars.api.game.phases.RunningPhase;
 import me.bananplayss.castlewars.api.profiles.Profile;
 import me.bananplayss.castlewars.core.Main;
 import me.bananplayss.castlewars.core.effects.EffectManagerImpl;
@@ -15,11 +16,18 @@ public class EntityDamageByEntityListener implements Listener {
     public void onHit(EntityDamageByEntityEvent e) {
         if (!(e.getDamager() instanceof Player damager)) return;
         if (!(e.getEntity() instanceof Player victim)) return;
-        if(!e.isCritical()) return;
-        Profile prof = ProfileCacheImpl.getProfileImpl(victim);
-        if (prof.getCurrentGame() == null) return;
-        if (prof.getTeam() == null) return;
 
+        Profile prof = ProfileCacheImpl.getProfileImpl(victim);
+        if(prof == null) return;
+        if (prof.getCurrentGame() == null) return;
+
+//        if(!(prof.getCurrentGame().getPhaseManager().getCurrentPhase() instanceof RunningPhase)) {
+//            e.setCancelled(true);
+//            return;
+//        }
+
+        if(!e.isCritical()) return;
+//        if (prof.getTeam() == null) return;
         Main.getInstance().getEffectManager().oneShotEffect(EffectManagerImpl.HIT_BLEED,victim.getLocation().add(0,1,0));
     }
 }

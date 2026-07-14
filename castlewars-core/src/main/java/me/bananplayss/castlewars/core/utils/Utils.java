@@ -53,8 +53,9 @@ public class Utils {
         string = string.replace("%elapsed_time%", TimeUtils.formatMMSS(game.getPhaseManager().getCurrentPhase().getElapsed()))
 //                .replace("%phase_name%", game.getPhaseManager().getCurrentPhase().getClass().getSimpleName())
                 .replace("%players%", game.getAllPlayers().size() +"")
-                .replace("%max_players%", game.getBaseArena().getTeamSize() + "")
+                .replace("%max_players%", game.getBaseArena().getMaxPlayerCount() + "")
                 .replace("%gamemode%", game.getBaseArena().getGameMode().name())
+                .replace("%map%", game.getBaseArena().getDisplayName())
         ;
 
         if(game.getActionManager().getNext() != null) {

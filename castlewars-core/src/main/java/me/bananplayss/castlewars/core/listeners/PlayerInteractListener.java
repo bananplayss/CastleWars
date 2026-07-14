@@ -24,6 +24,7 @@ public class PlayerInteractListener implements Listener {
         if(e.getClickedBlock() == null) return;
 
         Profile prof = ProfileCacheImpl.getProfileImpl(e.getPlayer());
+        if(prof == null) return;
         if(prof.getCurrentGame() == null) return;
         if(prof.getTeam() == null) return;
 

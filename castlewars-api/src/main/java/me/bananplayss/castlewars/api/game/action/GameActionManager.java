@@ -2,6 +2,7 @@ package me.bananplayss.castlewars.api.game.action;
 
 import lombok.Getter;
 import me.bananplayss.castlewars.api.game.Game;
+import me.bananplayss.castlewars.api.game.phases.RunningPhase;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 
@@ -40,7 +41,9 @@ public class GameActionManager {
         long diff = unixTime - startTime;
         for (GameAction action : actions) {
             if(diff >= action.getDelay()) {
-                action.apply(this.game);
+                if(this.game.getPhaseManager().getCurrentPhase() instanceof RunningPhase) {
+                    action.apply(this.game);
+                }
                 this.actions.remove(action);
             }
         }

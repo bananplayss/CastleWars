@@ -19,6 +19,7 @@ public class BlockBreakListener implements Listener {
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
         Profile prof = ProfileCacheImpl.getProfileImpl(e.getPlayer());
+        if(prof == null) return;
         if (prof.getCurrentGame() == null) return;
         if (prof.getTeam() == null) return;
 

@@ -15,13 +15,11 @@ public class RunningPhase extends AbstractPhase {
     public void onStart() {
         this.game.start();
         this.game.getActionManager().start();
+        this.game.getActionManager().getActions().add(new GameEndGameAction("Game End", this.end - System.currentTimeMillis()));
     }
 
     @Override
     public void onUpdate() {
-        this.game.getActionManager().tick();
-
-        this.game.getActionManager().getActions().add(new GameEndGameAction("Game End", this.end - System.currentTimeMillis()));
     }
 
     @Override

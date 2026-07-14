@@ -10,6 +10,7 @@ import java.util.Map;
 
 public interface FlagGame {
 
+    Game getGame();
     GameFlagManager getFlagManager();
     void placeBanner(GameFlagTeam team, Location location, BlockFace rotation);
 

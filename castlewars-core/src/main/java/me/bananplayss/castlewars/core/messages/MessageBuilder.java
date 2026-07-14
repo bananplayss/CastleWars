@@ -1,6 +1,7 @@
 package me.bananplayss.castlewars.core.messages;
 
 import me.bananplayss.castlewars.api.teams.game.AbstractGameTeam;
+import me.bananplayss.castlewars.api.teams.game.GameFlagTeam;
 import me.bananplayss.castlewars.api.utils.ColorNormalizer;
 import me.bananplayss.castlewars.core.kobalib.KobaMessageBuilder;
 
@@ -54,8 +55,14 @@ public class MessageBuilder extends KobaMessageBuilder {
         this.replace("%score%", String.valueOf(currentScore));
         return this;
     }
+
     public MessageBuilder setMaxScore(int maxScore) {
         this.replace("%max_score%", String.valueOf(maxScore));
+        return this;
+    }
+
+    public MessageBuilder setMsg(String message) {
+        this.replace("%message%", message);
         return this;
     }
 
@@ -63,9 +70,18 @@ public class MessageBuilder extends KobaMessageBuilder {
         this.replace("%team%", team.getTeam().getDisplayName());
         this.replace("%team_display_name%", team.getTeam().getDisplayName());
         this.replace("%team_display_name_stripped%", ColorNormalizer.strip(team.getTeam().getDisplayName()));
+        this.replace("%team_display_name_uppercase%", ColorNormalizer.strip(team.getTeam().getDisplayName()).toUpperCase());
+        this.replace("%team_display_name_lowercase%", ColorNormalizer.strip(team.getTeam().getDisplayName()).toLowerCase());
         this.replace("%team_name%", team.getTeam().getKey());
+        this.replace("%team_name_uppercase%", team.getTeam().getKey().toUpperCase());
+        this.replace("%team_name_lowercase%", team.getTeam().getKey().toLowerCase());
         this.replace("%team_prefix%", team.getTeam().getPrefix());
         this.replace("%team_color%", team.getTeam().getColor());
+
+        if(team instanceof GameFlagTeam gf) { // girlfriend
+            this.replace("%team_score%", gf.getScore() +"");
+        }
+
         return this;
     }
 }

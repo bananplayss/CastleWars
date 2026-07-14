@@ -6,6 +6,7 @@ import me.bananplayss.castlewars.api.CastleWarsAPI;
 import me.bananplayss.castlewars.api.arena.BaseArena;
 import me.bananplayss.castlewars.api.game.action.GameActionManager;
 import me.bananplayss.castlewars.api.game.phases.GamePhaseManager;
+import me.bananplayss.castlewars.api.game.phases.RunningPhase;
 import me.bananplayss.castlewars.api.kits.Kit;
 import me.bananplayss.castlewars.api.profiles.Profile;
 import me.bananplayss.castlewars.api.teams.game.AbstractGameTeam;
@@ -31,8 +32,10 @@ public abstract class Game {
     protected Location lobby;
     protected Location origin;
 
-    @Setter
-    protected String kitName;
+    protected Location corner1;
+    protected Location corner2;
+
+    @Setter protected String kitName;
 
     protected GamePhaseManager phaseManager;
     protected GameActionManager actionManager;
@@ -64,14 +67,14 @@ public abstract class Game {
         team.getPlayers().add(player);
         player.teleport(this.lobby);
 
+        this.joinPlayer(player);
+
         // reset player
         player.getInventory().clear();
         player.setHealth(20);
         player.setFoodLevel(20);
         player.setGlowing(false);
         // vége
-
-        this.joinPlayer(player);
 
         // Todo: Give kit
         return JoinResult.SUCCESS;
@@ -80,8 +83,6 @@ public abstract class Game {
     public void leave(Player player) {
         System.out.println("Player left");
         AbstractGameTeam t = getTeam(player);
-        if(t == null) return;
-        t.getPlayers().remove(player);
 
         Profile profile = CastleWarsAPI.PROFILE_CACHE.get().getProfile(player);
         profile.setCurrentGame(null);
@@ -92,13 +93,22 @@ public abstract class Game {
         player.setHealth(20);
         player.setFoodLevel(20);
         player.setGlowing(false);
-        // vége
+
+        if(t != null) {
+            t.getPlayers().remove(player);
+        }
 
         CastleWarsAPI.RESPAWN_MANAGER.get().removeRespawn(player);
 
-        if (t.getPlayers().isEmpty()) {
-            t.setDead(true);
-            System.out.println("Team kiesett: " + t.getTeam().getKey());
+        if(this.phaseManager.getCurrentPhase() instanceof RunningPhase) {
+            if (t != null && t.getPlayers().isEmpty()) {
+                t.setDead(true);
+                System.out.println("Team kiesett: " + t.getTeam().getKey());
+            }
+
+            if (this instanceof FlagGame fg) {
+                fg.getFlagManager().drop(player);
+            }
         }
 
         this.leavePlayer(player);
@@ -112,7 +122,8 @@ public abstract class Game {
     }
 
     public abstract void giveKitAll();
-    
+    public abstract boolean isInside(@Nullable Location location);
+
     public Kit getKit() {
         return CastleWarsAPI.KIT_MANAGER.get().getKit(kitName);
     }

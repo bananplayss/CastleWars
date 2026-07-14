@@ -58,6 +58,9 @@ public class BaseArenaImpl extends BaseArena {
         this.spectatorVector = VectorLocation.fromString(c.getString("spectator"));
         this.lobbyVector = VectorLocation.fromString(c.getString("lobby"));
 
+        this.corner1 = Vector3i.fromString(c.getString("corners.1"));
+        this.corner2 = Vector3i.fromString(c.getString("corners.2"));
+
         this.kitName = c.getString("kit");
 
         boolean respawnEnabled = c.getBoolean("respawn.enabled");
@@ -131,5 +134,7 @@ public class BaseArenaImpl extends BaseArena {
                 }
             }
         }
+
+        this.maxPlayerCount = this.teams.size() * this.teamSize;
     }
 }

@@ -38,6 +38,7 @@ public class PlayerDeathListener implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
         ProfileImpl prof = ProfileCacheImpl.getProfileImpl(e.getPlayer());
+        if(prof == null) return;
         if (prof.getCurrentGame() == null) return;
         if (prof.getTeam() == null) return;
 

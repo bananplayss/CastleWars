@@ -22,14 +22,17 @@ public class Message extends KobaMessage {
     public static final Message RELOADED = new Message("reloaded", "%prefix% &aConfiguration files successfully reloaded!.");
     public static final Message PLAYER_NOT_FOUND = new Message("player_not_found", "%prefix% &cA játékos nem található.");
 
-    // FLAG
-    public static final Message FLAG_CAPTURED = new Message("flag.capture", "%prefix% &a%player% &7has captured the &r%team%&7 flag!");
-    public static final Message FLAG_DROPPED = new Message("flag.drop", "%prefix% &c%player% &7has dropped the &r%team%&7 flag!");
-    public static final Message FLAG_SPAWNED = new Message("flag.spawned", "%prefix% &7The &r%team%&7 flag has returned to the base.");
-    public static final Message FLAG_PROTECTED = new Message("flag.protected", "%prefix% &cYou cannot reset your flag for another &e%remaining%s&c due to spawn protection.");
-    public static final Message FLAG_SCORED = new Message("flag.scored", "%prefix% &6&lSCORE!&r &a%player% &7has captured the &r%team%&7 banner! &8(&e%score%&7/&e%max_score%&8)");
+    public static final Message CHAT_GLOBAL = new Message("chat.global", "&6[SHOUT] %team_color%[%team_display_name_uppercase%] &7%player%: &f%message%");
+    public static final Message CHAT_TEAM = new Message("chat.team", "%team_color%[%team_display_name_uppercase%] &7%player%: &f%message%");
 
-    // CUCC
+    // FLAG
+    public static final Message FLAG_CAPTURED = new Message("flag.capture", "&a%player% &7has captured the &r%team%&7 flag!");
+    public static final Message FLAG_DROPPED = new Message("flag.drop", "&c%player% &7has dropped the &r%team%&7 flag!");
+    public static final Message FLAG_SPAWNED = new Message("flag.spawned", "&7The &r%team%&7 flag has returned to the base.");
+    public static final Message FLAG_PROTECTED = new Message("flag.protected", "&cYou cannot reset your flag for another &e%remaining%s&c due to spawn protection.");
+    public static final Message FLAG_SCORED = new Message("flag.scored", "&6&lSCORE!&r &a%player% &7has captured the &r%team%&7 banner! &8(&e%score%&7/&e%max_score%&8)");
+
+    // TITLES
     public static final Message RESPAWN_TITLE = new Message("titles.respawn", "&cYOU DIED!");
     public static final Message RESPAWN_SUBTITLE = new Message("titles.respawn_sub", "&eYou will respawn in &c%time% seconds!");
     public static final Message DIED_TITLE = new Message("titles.died", "&cYOU DIED!");

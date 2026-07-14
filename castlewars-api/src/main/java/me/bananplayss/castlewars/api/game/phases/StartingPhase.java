@@ -16,12 +16,17 @@ public class StartingPhase extends AbstractPhase {
 
     @Override
     public void onUpdate() {
-        if(this.game.getAllPlayers().size() < this.game.getBaseArena().getTeamSize()) {
-           // this.game.getPhaseManager().previousPhase(false, false);
+        if(this.game.getAllPlayers().size() < this.game.getBaseArena().getMaxPlayerCount()) {
+            this.game.getPhaseManager().previousPhase(false, true);
+            System.out.println("Switch back to waiting");
         }
     }
 
     @Override
     public void onEnd() {
+        if(this.game.getAllPlayers().size() < this.game.getBaseArena().getMaxPlayerCount()) {
+            System.out.println("Gatya nincs elég player reset");
+            this.game.reset();
+        }
     }
 }

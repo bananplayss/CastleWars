@@ -30,23 +30,25 @@ import me.bananplayss.castlewars.core.map.managers.WorldEditMapManager;
 import me.bananplayss.castlewars.core.messages.Message;
 import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
 import me.bananplayss.castlewars.core.profiles.ProfileImpl;
+import me.bananplayss.castlewars.core.utils.LocationUtils;
 import me.bananplayss.castlewars.core.utils.TeamColorConverter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
-import org.bukkit.Bukkit;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Rotatable;
+import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Firework;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -62,9 +64,12 @@ public class FlagGameImpl extends Game implements FlagGame {
     @Setter private long flagProtection;
     @Setter private boolean respawnEnabled;
 
+    private final List<LivingEntity> dragons;
+
 
     public FlagGameImpl(int id, ArenaSchematic map, BaseArenaImpl arenaConfig) {
         super(id, arenaConfig);
+        this.dragons = new ArrayList<>();
         this.map = map;
         this.respawnEnabled = true;
         this.flagManager = new GameFlagManager(this);
@@ -106,6 +111,8 @@ public class FlagGameImpl extends Game implements FlagGame {
         }
 
         this.spectatorSpawn = relLocationToAbsolute(arenaConfig.getSpectatorVector());
+        this.corner1 = relLocationToAbsolute(arenaConfig.getCorner1());
+        this.corner2 = relLocationToAbsolute(arenaConfig.getCorner2());
 //        System.out.println("SPAWN: " + arenaConfig.getSpectatorVector() + "     " + spectatorSpawn);
         this.lobby = relLocationToAbsolute(arenaConfig.getLobbyVector());
         placeBanners();
@@ -185,8 +192,16 @@ public class FlagGameImpl extends Game implements FlagGame {
     @Override
     public void reset() {
         Location spawn = Main.getInstance().getConfigData().getSpawn();
+        this.dragons.forEach(LivingEntity::remove);
+        this.dragons.clear();
         this.getAllPlayers().forEach(p -> {
             p.getInventory().clear();
+
+            ProfileImpl prof = ProfileCacheImpl.getProfileImpl(p);
+            prof.restoreInventory();
+            prof.setCurrentGame(null);
+            prof.setTeam(null);
+
             p.setGlowing(false);
             p.teleport(spawn);
             Main.getInstance().getScoreboardManager().delete(p);
@@ -195,7 +210,7 @@ public class FlagGameImpl extends Game implements FlagGame {
 
         Main.getInstance().getGameManager().removeGame(this.id);
         // Scoreboard reset?
-
+        // iott van vége
     }
 
     @Override
@@ -209,7 +224,6 @@ public class FlagGameImpl extends Game implements FlagGame {
             player.showTitle(victoryTitle);
             XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(player,2,2f);
             XSound.ENTITY_PLAYER_LEVELUP.play(player,2,2f);
-
         }
 
         List<AbstractGameTeam> losers = this.getTeams().values().stream().filter(t -> !t.equals(winner)).toList();
@@ -245,6 +259,28 @@ public class FlagGameImpl extends Game implements FlagGame {
             }, delay);
         }
 
+        for(Player p : wintm.getPlayers()) {
+            EnderDragon dragon = p.getWorld().spawn(p.getLocation(), EnderDragon.class);
+            dragon.addPassenger(p);
+            dragon.setSilent(true);
+            dragons.add(dragon);
+            //dragon.setAI(true);
+            dragon.setPhase(EnderDragon.Phase.STRAFING);
+            Bukkit.getScheduler().runTaskTimer(Main.getInstance(), (e) -> {
+                 if(dragons.isEmpty()) {
+                     e.cancel();
+                     return;
+                 }
+
+                dragon.setVelocity(p.getEyeLocation().getDirection());
+                dragon.setRotation((p.getLocation().getYaw() + 180) % 360, p.getEyeLocation().getPitch());
+                Location dragonHead = dragon.getLocation().clone().add(0, 2.5, 0);
+                clearBlocksInFront(dragonHead, dragon.getEyeLocation().getDirection(), 5, 3);
+                //dragon.getEyeLocation().getDirection().multiply(5);
+
+            },0L,1L);
+        }
+
         this.phaseManager.nextPhase(true, true);
     }
 
@@ -259,6 +295,12 @@ public class FlagGameImpl extends Game implements FlagGame {
         for (Player allPlayer : this.getAllPlayers()) {
             kit.give(allPlayer);
         }
+    }
+
+    @Override
+    public boolean isInside(Location location) {
+        if(location == null) return false;
+        return LocationUtils.isInside(location, this.corner1, this.corner2);
     }
 
     public void broadcast(Component component) {
@@ -301,6 +343,11 @@ public class FlagGameImpl extends Game implements FlagGame {
 //    }
 
     @Override
+    public Game getGame() {
+        return this;
+    }
+
+    @Override
     public void placeBanner(GameFlagTeam team, Location location, BlockFace rotation) {
         Block b = location.getBlock();
         b.setType(team.getTeam().getBannerItem().getType());
@@ -322,6 +369,30 @@ public class FlagGameImpl extends Game implements FlagGame {
         Main.getInstance().getEffectManager().addLoopEffect(team.getRingEffect(), location.clone().add(0.5,0,0.5));
 
 //        System.out.println("Placed banner to real location: " + location);
+    }
+
+    public void clearBlocksInFront(Location origin, Vector direction, double length, int radius) {
+        World world = origin.getWorld();
+        if (world == null) return;
+
+        direction = direction.clone().normalize();
+
+        for (double distance = 1.0; distance <= length; distance += 0.8) {
+            Location center = origin.clone().add(direction.clone().multiply(distance));
+
+            for (int x = -radius; x <= radius; x++) {
+                for (int y = -radius; y <= radius; y++) {
+                    for (int z = -radius; z <= radius; z++) {
+
+                        Location blockLoc = center.clone().add(x, y, z);
+                        Block block = blockLoc.getBlock();
+
+
+                        block.setType(Material.AIR, false);
+                    }
+                }
+            }
+        }
     }
 
 

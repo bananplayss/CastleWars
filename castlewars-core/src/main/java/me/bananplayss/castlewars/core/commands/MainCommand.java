@@ -18,5 +18,6 @@ public class MainCommand extends BaseCommand {
         this.subCommands.add(new JoinGameCommand());
         this.subCommands.add(new CalculateCoordsCommand());
         this.subCommands.add(new AdrianCommand());
+        this.subCommands.add(new LeaveGameCommand());
     }
 }

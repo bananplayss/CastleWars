@@ -4,6 +4,7 @@ import com.jeff_media.armorequipevent.ArmorEquipEvent;
 import lombok.Getter;
 import me.bananplayss.castlewars.api.CastleWarsAPI;
 import me.bananplayss.castlewars.core.commands.MainCommand;
+import me.bananplayss.castlewars.core.database.FileDatabase;
 import me.bananplayss.castlewars.core.effects.EffectManagerImpl;
 import me.bananplayss.castlewars.core.files.ConfigData;
 import me.bananplayss.castlewars.core.files.FileManager;
@@ -11,6 +12,7 @@ import me.bananplayss.castlewars.core.arena.ArenaManagerImpl;
 import me.bananplayss.castlewars.core.game.GameManager;
 import me.bananplayss.castlewars.core.hooks.HookManager;
 import me.bananplayss.castlewars.core.kits.KitManagerImpl;
+import me.bananplayss.castlewars.core.kobalib.database.IDatabase;
 import me.bananplayss.castlewars.core.listeners.*;
 import me.bananplayss.castlewars.core.map.managers.MapManager;
 import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
@@ -42,12 +44,16 @@ public final class Main extends JavaPlugin {
 
     private EffectManagerImpl effectManager;
 
+    private IDatabase database;
+
     @Override
     public void onEnable() {
         instance = this;
 
         this.fileManager = new FileManager();
         this.configData = new ConfigData();
+
+        this.database = new FileDatabase();
 
         this.hookManager = new HookManager();
 
@@ -61,7 +67,6 @@ public final class Main extends JavaPlugin {
         CastleWarsAPI.PROFILE_CACHE.set(this.profileCache);
         
         this.mapManager = new MapManager();
-
         this.gameManager = new GameManager();
 
         this.scoreboardManager = new ScoreboardManagerImpl();
@@ -76,7 +81,7 @@ public final class Main extends JavaPlugin {
         cmd.registerMainCommand(this, "castlewars");
 
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            ProfileCacheImpl.getProfileImpl(onlinePlayer);
+            this.profileCache.loadProfile(onlinePlayer);
         }
 
         getServer().getPluginManager().registerEvents(new PlayerPostRespawnListener(), this);
@@ -86,9 +91,14 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerChatListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerTeleportListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDismountListener(), this);
+        getServer().getPluginManager().registerEvents(new EntityDamageListener(), this);
 
         ArmorEquipEvent.registerListener(this);
-
+        getServer().getPluginManager().registerEvents(new ArmorEquipListener(), this);
     }
 
     @Override

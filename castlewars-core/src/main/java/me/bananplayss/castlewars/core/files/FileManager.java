@@ -17,12 +17,14 @@ public class FileManager {
     private final KobaFile messages;
     private final KobaFile kits;
     private final KobaFile scoreboards;
+    private final KobaFile playerCache;
 
     public FileManager() {
         this.config = new KobaFile(Main.getInstance(), "config.yml");
         this.messages = new KobaFile(Main.getInstance(), "messages.yml");
         this.kits = new KobaFile(Main.getInstance(), "kits.yml");
         this.scoreboards = new KobaFile(Main.getInstance(), "scoreboards.yml");
+        this.playerCache = new KobaFile(Main.getInstance(), "player_cache.yml");
 
         new KobaFile(Main.getInstance(), "arenas", "_example_ctf.yml");
         new KobaFile(Main.getInstance(), "arenas", "_example_ctz.yml");

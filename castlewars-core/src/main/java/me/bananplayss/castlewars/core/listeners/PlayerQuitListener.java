@@ -11,6 +11,7 @@ public class PlayerQuitListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Profile prof = ProfileCacheImpl.getProfileImpl(e.getPlayer());
+        if(prof == null) return;
         if(prof.getCurrentGame() == null) return;
 
         prof.getCurrentGame().leave(e.getPlayer());
