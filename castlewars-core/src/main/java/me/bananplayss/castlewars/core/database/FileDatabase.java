@@ -1,6 +1,5 @@
 package me.bananplayss.castlewars.core.database;
 
-import me.bananplayss.castlewars.core.kobalib.database.IDatabase;
 import me.bananplayss.castlewars.core.profiles.ProfileImpl;
 
 import java.util.UUID;

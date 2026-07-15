@@ -99,7 +99,8 @@ public class PlayerDeathListener implements Listener {
             e.getPlayer().setFoodLevel(20);
             e.getPlayer().setFireTicks(0);
             e.getPlayer().teleport(prof.getCurrentGame().getSpectatorSpawn());
-            prof.getSpectator().setSpectator();
+            prof.getCurrentGame().getSpectateManager().addSpectate(e.getPlayer());
+//            prof.getSpectator().setSpectator();
             XSound.BLOCK_NOTE_BLOCK_PLING.play(e.getPlayer(),1,5);
 
             if(prof.getCurrentGame() instanceof FlagGame fg) {

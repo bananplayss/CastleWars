@@ -5,6 +5,7 @@ api-version: 1.18
 softdepend:
   - PlaceholderAPI
   - Multiverse-Core
+  - PacketEvents
 
 authors:
   - bananplayss

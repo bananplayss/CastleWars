@@ -15,10 +15,11 @@ public class EntityDamageListener implements Listener {
         if (!(e.getEntity() instanceof Player p)) return;
 
         Profile prof = ProfileCacheImpl.getProfileImpl(p);
-        if(prof == null) return;
+        if (prof == null) return;
         if (prof.getCurrentGame() == null) return;
 
-        if (!(prof.getCurrentGame().getPhaseManager().getCurrentPhase() instanceof RunningPhase)) {
+        if (!(prof.getCurrentGame().getPhaseManager().getCurrentPhase() instanceof RunningPhase)
+                || prof.getCurrentGame().getSpectateManager().isSpectating(p)) {
             e.setCancelled(true);
         }
     }

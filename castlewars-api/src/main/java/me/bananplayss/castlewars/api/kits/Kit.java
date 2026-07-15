@@ -19,15 +19,17 @@ public class Kit {
     public void give(Player player) {
         //player.getInventory().clear();
         ItemStack helmet = player.getInventory().getHelmet();
-        player.getInventory().setContents(this.items.toArray(new ItemStack[0]));
-        if (helmet != null && helmet.getType() != Material.AIR) {
-            player.getInventory().setHelmet(helmet);
+        ItemStack[] contents = this.items.toArray(new ItemStack[0]);
+        if (helmet != null && helmet.getType().name().endsWith("_BANNER")) {
+            contents[39] = helmet;
         }
+
+        player.getInventory().setContents(contents);
     }
 
     public void giveHelmet(Player player) {
         try {
-            player.getInventory().setHelmet(this.items.get(40));
+            player.getInventory().setHelmet(this.items.get(39));
         } catch (IndexOutOfBoundsException ignored) {
             player.getInventory().setHelmet(null);
         }

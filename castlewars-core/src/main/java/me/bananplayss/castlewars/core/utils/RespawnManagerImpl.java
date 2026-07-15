@@ -68,8 +68,6 @@ public class RespawnManagerImpl implements RespawnManager {
 
     private void onRespawn(Profile profile, Player player) {
         //player.setGameMode(GameMode.SURVIVAL);
-        player.teleport(profile.getTeam().getSpawn());
-
         Kit kit = Main.getInstance().getKitManager().getKit(profile.getCurrentGame().getKitName());
         kit.give(player);
 
@@ -84,8 +82,12 @@ public class RespawnManagerImpl implements RespawnManager {
         player.setFoodLevel(20);
         player.setFireTicks(0);
 
-        Main.getInstance().getEffectManager().addLoopEffect(effect,profile.getTeam().getSpawn());
+        profile.getCurrentGame().getSpectateManager().removeSpectate(player.getUniqueId());
+
+        Main.getInstance().getEffectManager().addLoopEffect(effect, profile.getTeam().getSpawn());
         XSound.BLOCK_NOTE_BLOCK_PLING.play(player, 1, 3);
+
+        player.teleport(profile.getTeam().getSpawn());
         Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
             player.updateInventory();
             player.setVelocity(new Vector(0, 0.01, 0));

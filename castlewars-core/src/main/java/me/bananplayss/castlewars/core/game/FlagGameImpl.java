@@ -74,6 +74,7 @@ public class FlagGameImpl extends Game implements FlagGame {
         this.respawnEnabled = true;
         this.flagManager = new GameFlagManager(this);
         this.phaseManager = new GamePhaseManagerImpl();
+        this.spectateManager = new GameSpectateManagerImpl(this);
         this.gameLoop = new GameLoop(this);
 
         this.flagProtection = arenaConfig.getFile().getConfig().getInt("flag_protection", 5) * 1000L;
@@ -219,6 +220,7 @@ public class FlagGameImpl extends Game implements FlagGame {
         // victory particles
         // ja
         // gg
+        destroyFlags();
         for (Player player : winner.getPlayers()) {
             Title victoryTitle = Title.title(Message.VICTORY_TITLE.builder().getComponent(player), Message.VICTORY_SUBTITLE.builder().setTeam(winner).getComponent(player), Title.Times.times(Duration.ZERO,Duration.ofSeconds(5),Duration.ZERO));
             player.showTitle(victoryTitle);
@@ -293,6 +295,7 @@ public class FlagGameImpl extends Game implements FlagGame {
     public void giveKitAll() {
         Kit kit = Main.getInstance().getKitManager().getKit(this.kitName);
         for (Player allPlayer : this.getAllPlayers()) {
+            if(this.spectateManager.isSpectating(allPlayer)) continue;
             kit.give(allPlayer);
         }
     }
@@ -369,6 +372,26 @@ public class FlagGameImpl extends Game implements FlagGame {
         Main.getInstance().getEffectManager().addLoopEffect(team.getRingEffect(), location.clone().add(0.5,0,0.5));
 
 //        System.out.println("Placed banner to real location: " + location);
+    }
+
+    @Override
+    public void destroyFlags() {
+        for (Map.Entry<Location, GameFlagTeam> entry : this.flagManager.getBlockFlags().entrySet()) {
+            entry.getKey().getBlock().setType(Material.AIR);
+            Main.getInstance().getEffectManager().removeLoopEffect(entry.getValue().getRingEffect());
+            entry.getValue().setFlagState(GameFlagTeam.FlagState.SPAWN);
+        }
+
+        this.flagManager.getBlockFlags().clear();
+
+        Kit kit = Main.getInstance().getKitManager().getKit(this.kitName);
+        for (Map.Entry<Player, GameFlagTeam> entry : this.flagManager.getCarriedFlags().entrySet()) {
+            kit.giveHelmet(entry.getKey());
+            entry.getKey().setGlowing(false);
+            entry.getValue().setFlagState(GameFlagTeam.FlagState.SPAWN);
+        }
+
+        this.flagManager.getCarriedFlags().clear();
     }
 
     public void clearBlocksInFront(Location origin, Vector direction, double length, int radius) {

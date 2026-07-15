@@ -29,6 +29,7 @@ me\bananplayss\castlewars\api\game\flags\GameScoreManager.class
 me\bananplayss\castlewars\api\scoreboards\ScoreboardManager.class
 me\bananplayss\castlewars\api\teams\AbstractTeam.class
 me\bananplayss\castlewars\api\utils\Utils$1.class
+me\bananplayss\castlewars\api\game\GameSpectateManager.class
 me\bananplayss\castlewars\api\teams\game\GameFlagTeam.class
 me\bananplayss\castlewars\api\game\action\GameActionManager.class
 me\bananplayss\castlewars\api\profiles\ProfileCache.class

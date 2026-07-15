@@ -39,6 +39,7 @@ public abstract class Game {
 
     protected GamePhaseManager phaseManager;
     protected GameActionManager actionManager;
+    protected GameSpectateManager spectateManager;
 
     protected Runnable gameLoop;
 

@@ -21,6 +21,11 @@ public class EntityDamageByEntityListener implements Listener {
         if(prof == null) return;
         if (prof.getCurrentGame() == null) return;
 
+        if(prof.getCurrentGame().getSpectateManager().isSpectating(damager)) {
+            e.setCancelled(true);
+            return;
+        }
+
 //        if(!(prof.getCurrentGame().getPhaseManager().getCurrentPhase() instanceof RunningPhase)) {
 //            e.setCancelled(true);
 //            return;

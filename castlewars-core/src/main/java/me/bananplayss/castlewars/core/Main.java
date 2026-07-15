@@ -1,6 +1,8 @@
 package me.bananplayss.castlewars.core;
 
+import com.github.retrooper.packetevents.PacketEvents;
 import com.jeff_media.armorequipevent.ArmorEquipEvent;
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import lombok.Getter;
 import me.bananplayss.castlewars.api.CastleWarsAPI;
 import me.bananplayss.castlewars.core.commands.MainCommand;
@@ -12,18 +14,21 @@ import me.bananplayss.castlewars.core.arena.ArenaManagerImpl;
 import me.bananplayss.castlewars.core.game.GameManager;
 import me.bananplayss.castlewars.core.hooks.HookManager;
 import me.bananplayss.castlewars.core.kits.KitManagerImpl;
-import me.bananplayss.castlewars.core.kobalib.database.IDatabase;
+import me.bananplayss.castlewars.core.database.IDatabase;
 import me.bananplayss.castlewars.core.listeners.*;
 import me.bananplayss.castlewars.core.map.managers.MapManager;
 import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
 import me.bananplayss.castlewars.core.scoreboard.ScoreboardManagerImpl;
 import me.bananplayss.castlewars.core.utils.RespawnManagerImpl;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter
 public final class Main extends JavaPlugin {
+
+    public static boolean PACKET_EVENTS = true;
 
     @Getter private static Main instance;
 
@@ -49,7 +54,6 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-
         this.fileManager = new FileManager();
         this.configData = new ConfigData();
 
@@ -96,6 +100,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerTeleportListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDismountListener(), this);
         getServer().getPluginManager().registerEvents(new EntityDamageListener(), this);
+        getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
 
         ArmorEquipEvent.registerListener(this);
         getServer().getPluginManager().registerEvents(new ArmorEquipListener(), this);
@@ -103,6 +108,5 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
     }
 }

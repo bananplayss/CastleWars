@@ -32,6 +32,11 @@ public class PlayerInteractListener implements Listener {
         if(prof.getCurrentGame() instanceof FlagGameImpl fg) {
             GameFlagTeam t = fg.getFlagManager().getFlagByBlock(e.getClickedBlock()); // fg.getFlagManager().canPickupAndGetTeam(prof, e.getClickedBlock());
             if(t != null) {
+                if(fg.getFlagManager().getCarriedFlags().containsKey(e.getPlayer())) {
+                    e.getPlayer().sendMessage("Már carryzel egy zászlót.");
+                    return;
+                }
+
                 if (prof.getTeam().getTeam().getKey().equals(t.getTeam().getKey())) {
                     e.getPlayer().sendMessage("Ez a sajat zaszlod te fASZ.");
                     return;

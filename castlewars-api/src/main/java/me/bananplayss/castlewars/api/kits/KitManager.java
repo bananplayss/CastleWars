@@ -9,7 +9,10 @@ public interface KitManager {
 
     Kit createKit(Player player, String name);
 
+    void deleteKit(String name);
+
     Kit getKit(String name);
+    boolean isExists(String name);
 }
 
 

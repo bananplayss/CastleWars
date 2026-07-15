@@ -107,6 +107,7 @@ public class ScoreboardManagerImpl implements ScoreboardManager {
                         .replace("%prefix%", value.getTeam().getPrefix())
                         .replace("%name%", value.getTeam().getKey())
                         .replace("%score%", ft.getScore() + "")
+                        .replace("%remaining_players%", ft.getPlayers().stream().filter(p -> game.getSpectateManager().isSpectating(p)).count() + "")
                         .replace("%you%", value == t ? you : "");
 
                 if (!fg.isRespawnEnabled()) {
