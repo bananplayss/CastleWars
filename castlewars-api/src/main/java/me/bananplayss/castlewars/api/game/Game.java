@@ -11,14 +11,12 @@ import me.bananplayss.castlewars.api.kits.Kit;
 import me.bananplayss.castlewars.api.profiles.Profile;
 import me.bananplayss.castlewars.api.teams.game.AbstractGameTeam;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 public abstract class Game {
@@ -144,4 +142,8 @@ public abstract class Game {
     public abstract void reset();
 
     public abstract void end(AbstractGameTeam winner);
+
+    public List<Player> getSpectators() {
+        return this.spectateManager.getSpectators().stream().map(Bukkit::getPlayer).filter(Objects::nonNull).toList();
+    }
 }

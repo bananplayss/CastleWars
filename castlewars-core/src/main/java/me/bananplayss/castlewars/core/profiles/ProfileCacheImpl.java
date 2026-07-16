@@ -76,4 +76,8 @@ public class ProfileCacheImpl implements ProfileCache {
     public static ProfileImpl getProfileImpl(Player player) {
         return (ProfileImpl) Main.getInstance().getProfileCache().getProfile(player);
     }
+
+    public static ProfileImpl getProfileImpl(UUID uuid) {
+        return (ProfileImpl) Main.getInstance().getProfileCache().getProfile(uuid);
+    }
 }

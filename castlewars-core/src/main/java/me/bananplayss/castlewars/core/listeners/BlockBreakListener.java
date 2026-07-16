@@ -44,13 +44,17 @@ public class BlockBreakListener implements Listener {
 
                 //fg.broadcast(Message.RESE.builder().setPlayer(e.getPlayer()).getComponent());
 
+                if(e.getBlock().getLocation().equals(t.getFlagSpawn())) {
+                    e.getPlayer().sendMessage("Mar a spawnon van te kuglifej");
+                    return;
+                }
+
                 e.getBlock().setType(Material.AIR);
-//                fg.getFlagManager().resetFlag(e.getPlayer(), t);
                 fg.getFlagManager().resetFlag(e.getBlock(), t);
                 Message.FLAG_SPAWNED.builder().setTeam(t).setPlayer(e.getPlayer()).send(prof.getCurrentGame());
-
                 System.out.println("REsetted flag : " + e.getPlayer().getName() + " csapatét: " + t.getTeam().getKey());
 
+//                fg.getFlagManager().resetFlag(e.getPlayer(), t);
             }
         }
     }

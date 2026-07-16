@@ -84,8 +84,8 @@ public class GameFlagManager {
     }
 
     public void resetFlag(Block block, GameFlagTeam team) {
-        resetFlag(team);
         this.blockFlags.remove(block.getLocation());
+        resetFlag(team);
     }
 
     public GameFlagTeam drop(Player player) {

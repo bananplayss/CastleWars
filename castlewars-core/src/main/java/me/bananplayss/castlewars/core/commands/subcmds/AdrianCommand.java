@@ -2,18 +2,16 @@ package me.bananplayss.castlewars.core.commands.subcmds;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListener;
-import com.github.retrooper.packetevents.protocol.component.builtin.TypedEntityData;
-import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
-import com.github.retrooper.packetevents.protocol.entity.data.EntityDataType;
-import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
+import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import com.github.retrooper.packetevents.protocol.player.User;
-import com.github.retrooper.packetevents.protocol.potion.PotionTypes;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityEffect;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfo;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityRelativeMove;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
 import me.bananplayss.castlewars.core.Main;
+import me.bananplayss.castlewars.core.game.GameSpectateManagerImpl;
 import me.bananplayss.castlewars.core.kobalib.commands.SubCommand;
-import me.bananplayss.castlewars.core.visibility.PlayerVisibilityManager;
+import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
+import me.bananplayss.castlewars.core.profiles.ProfileImpl;
+import me.bananplayss.castlewars.core.visibility.FakeNameTagManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -49,10 +47,10 @@ public class AdrianCommand implements SubCommand, PacketListener {
     @Override
     public void perform(CommandSender sender, String[] args) {
         Player p = (Player) sender;
-        Player target = Bukkit.getPlayer(args[1]);
 
-        User user = PacketEvents.getAPI().getPlayerManager().getUser(p);
+        ProfileImpl prof = ProfileCacheImpl.getProfileImpl(p);
 
+        ((GameSpectateManagerImpl) prof.getCurrentGame().getSpectateManager()).getNameTagManager().test(p);
 
 //        EntityData<Byte> a = new EntityData<>(0, EntityDataTypes.BYTE, (byte) 0x20);
 //        WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(

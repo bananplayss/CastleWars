@@ -38,7 +38,7 @@ public class PlayerChatListener implements Listener {
                 allPlayer.sendMessage(
                         Message.CHAT_GLOBAL.builder()
                                 .setTeam(prof.getTeam())
-                                .setMsg(msg)
+                                .setMsg(msg.strip())
                                 .setPlayer(e.getPlayer())
                                 .getComponent(e.getPlayer())
                 );

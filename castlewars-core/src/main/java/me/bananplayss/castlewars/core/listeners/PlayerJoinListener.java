@@ -11,14 +11,15 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        Async.execute(() -> Main.getInstance().getProfileCache().getProfile(e.getPlayer().getUniqueId()), profile -> {
-            if (profile == null) return;
-            ProfileImpl prof = (ProfileImpl) profile;
-            prof.join(e.getPlayer());
+        Async.execute(() -> Main.getInstance().getProfileCache().loadProfile(e.getPlayer().getUniqueId()), future -> {
+            future.thenAccept(p -> {
+                ProfileImpl prof = (ProfileImpl) p;
+                prof.join(e.getPlayer());
 
-            if(prof.getInventory() != null) {
-                prof.restoreInventory();
-            }
+                if(prof.getInventory() != null) {
+                    prof.restoreInventory();
+                }
+            });
         });
     }
 }

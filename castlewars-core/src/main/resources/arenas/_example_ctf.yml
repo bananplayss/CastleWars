@@ -86,3 +86,25 @@ teams:
             pattern: CIRCLE_MIDDLE
           - color: YELLOW
             pattern: BORDER
+
+#  green:
+#    color: "&a"
+#    spawn: "8.5, 0,0, 90, 0"
+#    prefix: "&aG"
+#    display_name: "&aGreen"
+#    corners: # 11, 0, -4
+#      1: "11, -2, -4"
+#      2: "23, 6, 4"
+#    flag:
+#      location: "19, 4, 0"
+#      rotation: "WEST"
+#
+#      banner:
+#        base_color: "GREEN" # "#FFA500"
+#        patterns:
+#          - color: BLACK
+#            pattern: STRIPE_DOWNLEFT
+#          - color: RED
+#            pattern: CIRCLE_MIDDLE
+#          - color: YELLOW
+#            pattern: BORDER
