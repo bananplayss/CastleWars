@@ -23,13 +23,15 @@ public class EffectManagerImpl implements EffectManager {
         effectLoop();
     }
     public void oneShotEffect(CustomEffect effect, Location spawn) {
-        effect.apply(spawn);
+        effect.setStartTime(System.currentTimeMillis());
+        effect.spawn(spawn);
     }
 
     public void addLoopEffect(CustomEffect effect,Location spawn) {
         effect.setSpawnLocation(spawn);
         this.loopEffects.add(effect);
         effect.setStartTime(System.currentTimeMillis());
+       // System.out.println("add loop effect");
     }
 
     public void removeLoopEffect(CustomEffect effect) {
@@ -40,16 +42,22 @@ public class EffectManagerImpl implements EffectManager {
         Bukkit.getScheduler().runTaskTimer(Main.getInstance(), () -> {
             long unixTime = System.currentTimeMillis();
             for (CustomEffect value : this.loopEffects) {
+
                 if (value.getStartTime() + value.getDuration() < unixTime) {
                     if(value.isLooping()) {
                         value.setStartTime(System.currentTimeMillis());
                         continue;
                     }
+
+                    value.onEnd();
                     removeLoopEffect(value);
                     continue;
                 }
 
-                value.apply(value.getSpawnLocation());
+                if(value.getNextRun() < unixTime) {
+                    value.setNextRun(System.currentTimeMillis() + value.getDelay());
+                    value.spawn(value.getSpawnLocation());
+                }
             }
         }, 1L, 1L);
     }

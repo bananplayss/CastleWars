@@ -37,6 +37,7 @@ public class WorldEditMapManager extends BaseMapManager {
                     System.out.println("Map already built: " + spawn);
                     continue;
                 }
+
                 System.out.println("Building map: " + arenaPrefab.getName() + "To: " + spawn);
                 arenaPrefab.buildTo(spawn,() -> {
                     builtMaps.put(spawn, arenaPrefab);

@@ -4,9 +4,11 @@ import com.cryptomorin.xseries.XSound;
 import lombok.Getter;
 import me.bananplayss.castlewars.api.kits.Kit;
 import me.bananplayss.castlewars.api.profiles.Profile;
+import me.bananplayss.castlewars.api.teams.game.GameFlagTeam;
 import me.bananplayss.castlewars.api.utils.RespawnManager;
 import me.bananplayss.castlewars.core.Main;
 import me.bananplayss.castlewars.core.effects.RingOuterEffect;
+import me.bananplayss.castlewars.core.game.FlagGameImpl;
 import me.bananplayss.castlewars.core.kobalib.colors.ColorParser;
 import me.bananplayss.castlewars.core.messages.Message;
 import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
@@ -71,20 +73,16 @@ public class RespawnManagerImpl implements RespawnManager {
         Kit kit = Main.getInstance().getKitManager().getKit(profile.getCurrentGame().getKitName());
         kit.give(player);
 
-        RingOuterEffect effect = new RingOuterEffect(
-                TeamColorConverter.parseColorOrThrow(profile.getTeam().getTeam().getColor()),
-                1000,
-                2,
-                null
-        );
+        if(profile.getCurrentGame() instanceof FlagGameImpl fg) {
+            RingOuterEffect effect = RingOuterEffect.create(((GameFlagTeam) profile.getTeam()));
+            Main.getInstance().getEffectManager().addLoopEffect(effect, profile.getTeam().getSpawn());
+        }
 
         player.setHealth(20);
         player.setFoodLevel(20);
         player.setFireTicks(0);
 
         profile.getCurrentGame().getSpectateManager().removeSpectate(player.getUniqueId());
-
-        Main.getInstance().getEffectManager().addLoopEffect(effect, profile.getTeam().getSpawn());
         XSound.BLOCK_NOTE_BLOCK_PLING.play(player, 1, 3);
 
         player.teleport(profile.getTeam().getSpawn());

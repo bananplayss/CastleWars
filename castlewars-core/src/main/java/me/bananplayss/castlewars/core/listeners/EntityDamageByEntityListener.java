@@ -31,8 +31,18 @@ public class EntityDamageByEntityListener implements Listener {
 //            return;
 //        }
 
+        Profile damagerProf = ProfileCacheImpl.getProfileImpl(damager);
+        if(damagerProf == null) return;
+        if(damagerProf.getTeam().equals(prof.getTeam())) {
+            e.setCancelled(true);
+            return;
+        }
+
+
+
         if(!e.isCritical()) return;
 //        if (prof.getTeam() == null) return;
+
         Main.getInstance().getEffectManager().oneShotEffect(EffectManagerImpl.HIT_BLEED,victim.getLocation().add(0,1,0));
     }
 }

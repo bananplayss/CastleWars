@@ -1,6 +1,8 @@
 package me.bananplayss.castlewars.core.effects;
 
 import me.bananplayss.castlewars.api.effects.CustomEffect;
+import me.bananplayss.castlewars.api.teams.game.GameFlagTeam;
+import me.bananplayss.castlewars.core.utils.TeamColorConverter;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -10,21 +12,17 @@ import org.jetbrains.annotations.Nullable;
 
 public class RingOuterEffect extends CustomEffect {
 
-    private int radius;
-    private Entity attach;
+    private final int radius;
     private float progress;
 
-    public RingOuterEffect(Color baseColor,long duration,int radius, @Nullable Entity attach) {
-        super(baseColor,duration);
+    public RingOuterEffect(Color baseColor, long duration, int radius) {
+        super(baseColor, duration);
         this.radius = radius;
-        this.attach = attach;
         this.progress = 0;
     }
 
     @Override
-    public void apply(Location spawnLocation) {
-        if(attach != null) spawnLocation = attach.getLocation();
-
+    public void spawn(Location spawnLocation) {
         progress = (float) (System.currentTimeMillis() - getStartTime()) / getDuration();
 
         Particle.DustOptions dust = new Particle.DustOptions(getBaseColor(), 0.66f);
@@ -35,8 +33,8 @@ public class RingOuterEffect extends CustomEffect {
         }
     }
 
-    @Override
-    public void end() {
 
+    public static RingOuterEffect create(GameFlagTeam team) {
+        return new RingOuterEffect(TeamColorConverter.parseColorOrThrow(team.getTeam().getColor()), 500, 2);
     }
 }

@@ -8,6 +8,7 @@ public class HookManager {
 
     private boolean papi;
     private boolean packetEvents;
+    private boolean tab;
 
     public HookManager() {
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -18,6 +19,11 @@ public class HookManager {
         if(Bukkit.getPluginManager().getPlugin("PacketEvents") != null) {
             this.packetEvents = true;
             Bukkit.getLogger().info("Hooked into PacketEvents");
+        }
+
+        if(Bukkit.getPluginManager().getPlugin("TAB") != null) {
+            this.tab = true;
+            Bukkit.getLogger().info("Hooked into TAB");
         }
     }
 }

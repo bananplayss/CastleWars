@@ -9,6 +9,8 @@ mode: CAPTURE_THE_FLAG # CAPTURE_THE_ZONE
 spectator: "15, 45, 15"
 lobby: "0, 45, 0"
 
+flag_reset_time: 3
+
 corners:
   1:
   2:

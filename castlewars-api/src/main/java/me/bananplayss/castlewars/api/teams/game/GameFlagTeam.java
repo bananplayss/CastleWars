@@ -5,7 +5,7 @@ import lombok.Setter;
 import me.bananplayss.castlewars.api.effects.CustomEffect;
 import me.bananplayss.castlewars.api.teams.FlagTeam;
 import org.bukkit.Location;
-import org.bukkit.util.BoundingBox;
+import org.jetbrains.annotations.Nullable;
 
 @Setter
 @Getter
@@ -24,7 +24,7 @@ public class GameFlagTeam extends AbstractGameTeam {
 
     private int score;
 
-    private CustomEffect ringEffect;
+    private CustomEffect currentEffect;
 
     public GameFlagTeam(Location spawn, FlagTeam team, Location corner1, Location corner2) {
         super(team, spawn, corner1, corner2);
@@ -39,6 +39,11 @@ public class GameFlagTeam extends AbstractGameTeam {
 
     public boolean hasFlagProtection() {
         return this.flagProtection > System.currentTimeMillis();
+    }
+
+    public boolean isOnSpawn(@Nullable Location location) {
+        if(location == null) return false;
+        return this.flagSpawn.equals(location);
     }
 
     @Override

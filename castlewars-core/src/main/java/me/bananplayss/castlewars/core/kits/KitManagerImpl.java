@@ -17,25 +17,7 @@ public class KitManagerImpl implements KitManager {
 
     public KitManagerImpl(){
         this.kits = new HashMap<>();
-//
-//        Kit defaultKit = new Kit("default", List.of(
-//                new ItemStack(Material.WOODEN_SWORD),
-//                new ItemStack(Material.APPLE, 3)
-//        ));
-//
-//        Kit upgrade1Kit = new Kit("upgrade1Kit", List.of(
-//                new ItemStack(Material.STONE_SWORD),
-//                new ItemStack(Material.GOLDEN_APPLE, 1)
-//        ));
-//
-//        Kit upgrade2Kit = new Kit("upgrade2Kit", List.of(
-//                new ItemStack(Material.DIAMOND_SWORD),
-//                new ItemStack(Material.GOLDEN_APPLE, 3)
-//        ));
-//
-//        this.kits.put("default", defaultKit);
-//        this.kits.put("upgrade1Kit", upgrade1Kit);
-//        this.kits.put("upgrade2Kit", upgrade2Kit);
+
         load();
     }
 

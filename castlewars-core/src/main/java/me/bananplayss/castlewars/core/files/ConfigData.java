@@ -22,7 +22,7 @@ public class ConfigData {
         reload();
     }
 
-    private void reload() {
+    public void reload() {
         this.arenaCount = Main.getInstance().getFileManager().getConfig().getDefaultConfig().getOrSet("arena_count", 10, "Hany arena legyen generálvaxd");
         this.respawnTime = Main.getInstance().getFileManager().getConfig().getDefaultConfig().getOrSet("respawn_time", 5) * 1000L;
         this.spawn = Main.getInstance().getFileManager().getConfig().getDefaultConfig().getOrSet("spawn",

@@ -7,12 +7,16 @@ import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityRelativeMove;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
 import me.bananplayss.castlewars.core.Main;
+import me.bananplayss.castlewars.core.effects.EffectManagerImpl;
+import me.bananplayss.castlewars.core.effects.FlagProtectionEffect;
+import me.bananplayss.castlewars.core.effects.RingFillEffect;
 import me.bananplayss.castlewars.core.game.GameSpectateManagerImpl;
 import me.bananplayss.castlewars.core.kobalib.commands.SubCommand;
 import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
 import me.bananplayss.castlewars.core.profiles.ProfileImpl;
 import me.bananplayss.castlewars.core.visibility.FakeNameTagManager;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -50,8 +54,8 @@ public class AdrianCommand implements SubCommand, PacketListener {
 
         ProfileImpl prof = ProfileCacheImpl.getProfileImpl(p);
 
-        ((GameSpectateManagerImpl) prof.getCurrentGame().getSpectateManager()).getNameTagManager().test(p);
-
+       // ((GameSpectateManagerImpl) prof.getCurrentGame().getSpectateManager()).getNameTagManager().test(p);
+        Main.getInstance().getEffectManager().addLoopEffect(new FlagProtectionEffect(5000, 250).end(eff -> System.out.println("End xd")), p.getLocation());
 //        EntityData<Byte> a = new EntityData<>(0, EntityDataTypes.BYTE, (byte) 0x20);
 //        WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(
 //                user.getEntityId(),

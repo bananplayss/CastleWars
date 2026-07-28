@@ -19,7 +19,7 @@ public class RingEffect extends CustomEffect {
     }
 
     @Override
-    public void apply(Location spawnLocation) {
+    public void spawn(Location spawnLocation) {
         if(attach != null) spawnLocation = attach.getLocation();
         //Particle.DustOptions dustOptions = new Particle.DustOptions(org.bukkit.Color.RED, 1);
 
@@ -33,8 +33,5 @@ public class RingEffect extends CustomEffect {
         }
     }
 
-    @Override
-    public void end() {
 
-    }
 }

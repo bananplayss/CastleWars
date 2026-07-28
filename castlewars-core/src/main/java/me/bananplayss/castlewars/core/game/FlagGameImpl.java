@@ -3,16 +3,12 @@ package me.bananplayss.castlewars.core.game;
 import com.cryptomorin.xseries.XSound;
 import lombok.Getter;
 import lombok.Setter;
+import me.bananplayss.castlewars.api.events.flags.CastleWarsFlagDropEvent;
 import me.bananplayss.castlewars.api.game.FlagGame;
 import me.bananplayss.castlewars.api.game.Game;
-import me.bananplayss.castlewars.api.game.action.BannerGoneAction;
-import me.bananplayss.castlewars.api.game.action.GameEndGameAction;
 import me.bananplayss.castlewars.api.game.action.KitUpgradeAction;
 import me.bananplayss.castlewars.api.game.flags.GameFlagManager;
-import me.bananplayss.castlewars.api.game.phases.CelebrationPhase;
-import me.bananplayss.castlewars.api.game.phases.RunningPhase;
-import me.bananplayss.castlewars.api.game.phases.StartingPhase;
-import me.bananplayss.castlewars.api.game.phases.WaitingPhase;
+import me.bananplayss.castlewars.api.game.phases.*;
 import me.bananplayss.castlewars.api.kits.Kit;
 import me.bananplayss.castlewars.api.teams.AbstractTeam;
 import me.bananplayss.castlewars.api.teams.FlagTeam;
@@ -22,8 +18,11 @@ import me.bananplayss.castlewars.api.utils.vectors.Vector3i;
 import me.bananplayss.castlewars.api.utils.vectors.VectorLocation;
 import me.bananplayss.castlewars.core.Main;
 import me.bananplayss.castlewars.core.arena.BaseArenaImpl;
+import me.bananplayss.castlewars.core.digging.GameFlagResetManager;
+import me.bananplayss.castlewars.core.effects.FlagProtectionEffect;
 import me.bananplayss.castlewars.core.effects.RingOuterEffect;
 import me.bananplayss.castlewars.core.game.phases.GamePhaseManagerImpl;
+import me.bananplayss.castlewars.core.hooks.tab.TABTabListManager;
 import me.bananplayss.castlewars.core.kobalib.colors.ColorParser;
 import me.bananplayss.castlewars.core.map.ArenaSchematic;
 import me.bananplayss.castlewars.core.map.managers.WorldEditMapManager;
@@ -59,13 +58,17 @@ public class FlagGameImpl extends Game implements FlagGame {
 
     private final ArenaSchematic map;
     private final GameFlagManager flagManager;
+    private final GameFlagResetManager flagResetManager;
     private Location origin;
 
-    @Setter private long flagProtection;
-    @Setter private boolean respawnEnabled;
+    @Setter
+    private long flagProtection;
+    @Setter
+    private boolean respawnEnabled;
+    @Getter
+    private long flagResetTime;
 
     private final List<LivingEntity> dragons;
-
 
     public FlagGameImpl(int id, ArenaSchematic map, BaseArenaImpl arenaConfig) {
         super(id, arenaConfig);
@@ -73,11 +76,17 @@ public class FlagGameImpl extends Game implements FlagGame {
         this.map = map;
         this.respawnEnabled = true;
         this.flagManager = new GameFlagManager(this);
+        this.flagResetManager = new GameFlagResetManager(this);
         this.phaseManager = new GamePhaseManagerImpl();
         this.spectateManager = new GameSpectateManagerImpl(this);
+
+        if (Main.getInstance().getHookManager().isTab()) {
+            this.tabListManager = new TABTabListManager(this);
+        }
         this.gameLoop = new GameLoop(this);
 
         this.flagProtection = arenaConfig.getFile().getConfig().getInt("flag_protection", 5) * 1000L;
+        this.flagResetTime = arenaConfig.getFile().getConfig().getInt("flag_reset_time", 3) * 1000L;
 
         for (Map.Entry<Location, ArenaSchematic> entry : ((WorldEditMapManager) Main.getInstance().getMapManager().getManager()).getBuiltMaps().entrySet()) {
             if (entry.getValue().equals(this.map)) {
@@ -105,9 +114,10 @@ public class FlagGameImpl extends Game implements FlagGame {
 
             Location flagSpawnLoc = relLocationToAbsolute(((FlagTeam) baseTeams.getValue()).getFlagVector());
             t.setFlagSpawn(flagSpawnLoc);
-            RingOuterEffect e = new RingOuterEffect(TeamColorConverter.parseColorOrThrow(t.getTeam().getColor()), 500, 2, null);
+            RingOuterEffect e = RingOuterEffect.create(t);
             e.setLooping(true);
-            t.setRingEffect(e);
+            t.setCurrentEffect(e);
+
             this.teams.put(baseTeams.getKey(), t);
         }
 
@@ -173,17 +183,22 @@ public class FlagGameImpl extends Game implements FlagGame {
     public void leavePlayer(Player player) {
         Main.getInstance().getScoreboardManager().delete(player);
 
+        this.flagResetManager.getTimes().remove(player);
+
+        this.tabListManager.resetFormat(player);
         ProfileImpl prof = ProfileCacheImpl.getProfileImpl(player);
         prof.restoreInventory();
     }
 
     @Override
     public void start() {
+        // hide for others
         Kit startKit = Main.getInstance().getKitManager().getKit(this.kitName);
         for (AbstractGameTeam value : this.teams.values()) {
             value.getPlayers().forEach(p -> {
                 startKit.give(p);
                 p.teleport(value.getSpawn());
+                this.tabListManager.setFormat(p);
             });
         }
 
@@ -204,7 +219,9 @@ public class FlagGameImpl extends Game implements FlagGame {
             prof.setTeam(null);
 
             p.setGlowing(false);
+            p.setVelocity(new Vector(0, 0, 0));
             p.teleport(spawn);
+            this.tabListManager.resetFormat(p);
             Main.getInstance().getScoreboardManager().delete(p);
         });
         broadcast(ColorParser.parse("Game resetted"));
@@ -222,27 +239,27 @@ public class FlagGameImpl extends Game implements FlagGame {
         // gg
         destroyFlags();
         for (Player player : winner.getPlayers()) {
-            Title victoryTitle = Title.title(Message.VICTORY_TITLE.builder().getComponent(player), Message.VICTORY_SUBTITLE.builder().setTeam(winner).getComponent(player), Title.Times.times(Duration.ZERO,Duration.ofSeconds(5),Duration.ZERO));
+            Title victoryTitle = Title.title(Message.VICTORY_TITLE.builder().getComponent(player), Message.VICTORY_SUBTITLE.builder().setTeam(winner).getComponent(player), Title.Times.times(Duration.ZERO, Duration.ofSeconds(5), Duration.ZERO));
             player.showTitle(victoryTitle);
-            XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(player,2,2f);
-            XSound.ENTITY_PLAYER_LEVELUP.play(player,2,2f);
+            XSound.ENTITY_EXPERIENCE_ORB_PICKUP.play(player, 2, 2f);
+            XSound.ENTITY_PLAYER_LEVELUP.play(player, 2, 2f);
         }
 
         List<AbstractGameTeam> losers = this.getTeams().values().stream().filter(t -> !t.equals(winner)).toList();
 
         for (AbstractGameTeam team : losers) {
             for (Player player : team.getPlayers()) {
-                Title loserTitle = Title.title(Message.LOSE_TITLE.builder().getComponent(player), Message.LOSE_SUBTITLE.builder().setTeam(winner).getComponent(player), Title.Times.times(Duration.ZERO,Duration.ofSeconds(5),Duration.ZERO));
+                Title loserTitle = Title.title(Message.LOSE_TITLE.builder().getComponent(player), Message.LOSE_SUBTITLE.builder().setTeam(winner).getComponent(player), Title.Times.times(Duration.ZERO, Duration.ofSeconds(5), Duration.ZERO));
                 player.showTitle(loserTitle);
-                XSound.BLOCK_ANVIL_LAND.play(player,1,1f);
+                XSound.BLOCK_ANVIL_LAND.play(player, 1, 1f);
             }
         }
         GameFlagTeam wintm = (GameFlagTeam) winner;
-        Location fullCenter = wintm.getFlagSpawn().clone().add(0.5,0,0.5);
+        Location fullCenter = wintm.getFlagSpawn().clone().add(0.5, 0, 0.5);
         for (int i = 0; i < 12; i++) {
             int delay = i * 9;
             Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-                Firework firework = wintm.getFlagSpawn().getWorld().spawn(fullCenter.clone().add(ThreadLocalRandom.current().nextInt(-2,2), 0, ThreadLocalRandom.current().nextInt(-2,2)), Firework.class);
+                Firework firework = wintm.getFlagSpawn().getWorld().spawn(fullCenter.clone().add(ThreadLocalRandom.current().nextInt(-2, 2), 0, ThreadLocalRandom.current().nextInt(-2, 2)), Firework.class);
                 FireworkMeta fireworkMeta = firework.getFireworkMeta();
                 fireworkMeta.setPower(2);
                 fireworkMeta.addEffect(FireworkEffect.builder()
@@ -261,7 +278,7 @@ public class FlagGameImpl extends Game implements FlagGame {
             }, delay);
         }
 
-        for(Player p : wintm.getPlayers()) {
+        for (Player p : wintm.getPlayers()) {
             EnderDragon dragon = p.getWorld().spawn(p.getLocation(), EnderDragon.class);
             dragon.addPassenger(p);
             dragon.setSilent(true);
@@ -269,10 +286,10 @@ public class FlagGameImpl extends Game implements FlagGame {
             //dragon.setAI(true);
             dragon.setPhase(EnderDragon.Phase.STRAFING);
             Bukkit.getScheduler().runTaskTimer(Main.getInstance(), (e) -> {
-                 if(dragons.isEmpty()) {
-                     e.cancel();
-                     return;
-                 }
+                if (dragons.isEmpty()) {
+                    e.cancel();
+                    return;
+                }
 
                 dragon.setVelocity(p.getEyeLocation().getDirection());
                 dragon.setRotation((p.getLocation().getYaw() + 180) % 360, p.getEyeLocation().getPitch());
@@ -280,7 +297,7 @@ public class FlagGameImpl extends Game implements FlagGame {
                 clearBlocksInFront(dragonHead, dragon.getEyeLocation().getDirection(), 5, 3);
                 //dragon.getEyeLocation().getDirection().multiply(5);
 
-            },0L,1L);
+            }, 0L, 1L);
         }
 
         this.phaseManager.nextPhase(true, true);
@@ -294,15 +311,14 @@ public class FlagGameImpl extends Game implements FlagGame {
     @Override
     public void giveKitAll() {
         Kit kit = Main.getInstance().getKitManager().getKit(this.kitName);
-        for (Player allPlayer : this.getAllPlayers()) {
-            if(this.spectateManager.isSpectating(allPlayer)) continue;
+        for (Player allPlayer : this.getAlivePlayers()) {
             kit.give(allPlayer);
         }
     }
 
     @Override
     public boolean isInside(Location location) {
-        if(location == null) return false;
+        if (location == null) return false;
         return LocationUtils.isInside(location, this.corner1, this.corner2);
     }
 
@@ -369,7 +385,21 @@ public class FlagGameImpl extends Game implements FlagGame {
         b.setBlockData(r);
         this.flagManager.getBlockFlags().put(location, team);
 
-        Main.getInstance().getEffectManager().addLoopEffect(team.getRingEffect(), location.clone().add(0.5,0,0.5));
+        if (team.hasFlagProtection()) {
+            team.setCurrentEffect(new FlagProtectionEffect(this.flagProtection, 650)
+                            .end((eff) -> {
+                                Main.getInstance().getEffectManager().removeLoopEffect(team.getCurrentEffect());
+                                team.setCurrentEffect(RingOuterEffect.create(team));
+                                Main.getInstance().getEffectManager().addLoopEffect(team.getCurrentEffect(), location.clone().add(0.5, 0, 0.5));
+                                System.out.println("End rögtön lefut xd");
+                            }));
+        } else if (!(team.getCurrentEffect() instanceof RingOuterEffect)) {
+            RingOuterEffect e = RingOuterEffect.create(team);
+            e.setLooping(true);
+            team.setCurrentEffect(e);
+        }
+
+        Main.getInstance().getEffectManager().addLoopEffect(team.getCurrentEffect(), location.clone().add(0.5, 0, 0.5));
 
 //        System.out.println("Placed banner to real location: " + location);
     }
@@ -378,7 +408,7 @@ public class FlagGameImpl extends Game implements FlagGame {
     public void destroyFlags() {
         for (Map.Entry<Location, GameFlagTeam> entry : this.flagManager.getBlockFlags().entrySet()) {
             entry.getKey().getBlock().setType(Material.AIR);
-            Main.getInstance().getEffectManager().removeLoopEffect(entry.getValue().getRingEffect());
+            Main.getInstance().getEffectManager().removeLoopEffect(entry.getValue().getCurrentEffect());
             entry.getValue().setFlagState(GameFlagTeam.FlagState.SPAWN);
         }
 

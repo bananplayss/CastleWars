@@ -23,7 +23,7 @@ public class BannerGoneAction extends GameAction {
             for (Map.Entry<Location, GameFlagTeam> entry : fg.getFlagManager().getBlockFlags().entrySet()) {
                 entry.getKey().getBlock().setType(Material.AIR);
                 entry.getValue().setFlagState(GameFlagTeam.FlagState.BANNER_GONE);
-                CastleWarsAPI.EFFECT_MANAGER.get().removeLoopEffect(entry.getValue().getRingEffect());
+                CastleWarsAPI.EFFECT_MANAGER.get().removeLoopEffect(entry.getValue().getCurrentEffect());
             }
             fg.getFlagManager().getBlockFlags().clear();
 

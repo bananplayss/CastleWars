@@ -1,6 +1,7 @@
 package me.bananplayss.castlewars.core.files;
 
 import lombok.Getter;
+import me.bananplayss.castlewars.api.arena.BaseArena;
 import me.bananplayss.castlewars.core.Main;
 import me.bananplayss.castlewars.core.arena.BaseArenaImpl;
 import me.bananplayss.castlewars.core.kobalib.KobaFile;
@@ -8,6 +9,7 @@ import net.kyori.adventure.text.Component;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Getter
@@ -32,12 +34,23 @@ public class FileManager {
     }
 
     public void loadArenas() {
-        File f = new File(Main.getInstance().getDataFolder(),"arenas");
+        File f = new File(Main.getInstance().getDataFolder(), "arenas");
         for (File file : f.listFiles()) {
-            if(file.getName().startsWith("_")) continue;
-            if(!file.getName().endsWith(".yml")) continue;
+            if (file.getName().startsWith("_")) continue;
+            if (!file.getName().endsWith(".yml")) continue;
             KobaFile kobaFile = new KobaFile(Main.getInstance(), file);
-            Main.getInstance().getArenaManager().registerArena(new BaseArenaImpl(kobaFile));
+
+            BaseArena arena = new BaseArenaImpl(kobaFile);
+            if (Main.getInstance().getArenaManager().getArenas().containsKey(arena.getName())) continue;
+            Main.getInstance().getArenaManager().registerArena(arena);
         }
+    }
+
+    public void reloadAll() {
+        this.config.reload();
+        this.messages.reload();
+        this.kits.reload();
+        this.scoreboards.reload();
+//        this.playerCache.reload();
     }
 }

@@ -10,6 +10,7 @@ import me.bananplayss.castlewars.api.game.phases.RunningPhase;
 import me.bananplayss.castlewars.api.kits.Kit;
 import me.bananplayss.castlewars.api.profiles.Profile;
 import me.bananplayss.castlewars.api.teams.game.AbstractGameTeam;
+import me.bananplayss.castlewars.api.teams.game.GameFlagTeam;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -39,6 +40,8 @@ public abstract class Game {
     protected GameActionManager actionManager;
     protected GameSpectateManager spectateManager;
 
+    protected ITabListManager tabListManager;
+
     protected Runnable gameLoop;
 
     public Game(int id, BaseArena baseArena) {
@@ -57,6 +60,8 @@ public abstract class Game {
         if(team == null){
             return JoinResult.LOBBY_FULL;
         }
+
+        player.sendMessage("Teamed: " + team.getTeam().getKey());
 
         Profile profile = CastleWarsAPI.PROFILE_CACHE.get().getProfile(player);
         profile.setCurrentGame(this);
@@ -133,6 +138,10 @@ public abstract class Game {
 
     public List<Player> getAllPlayers() {
         return this.teams.values().stream().flatMap(t -> t.getPlayers().stream()).toList();
+    }
+
+    public List<Player> getAlivePlayers() {
+        return this.teams.values().stream().flatMap(t -> t.getPlayers().stream()).filter(t -> !this.spectateManager.isSpectating(t)).toList();
     }
 
     public abstract void joinPlayer(Player player);

@@ -14,6 +14,8 @@ public interface FlagGame {
     GameFlagManager getFlagManager();
     void placeBanner(GameFlagTeam team, Location location, BlockFace rotation);
 
+    long getFlagResetTime();
+
     void destroyFlags();
 
     long getFlagProtection();

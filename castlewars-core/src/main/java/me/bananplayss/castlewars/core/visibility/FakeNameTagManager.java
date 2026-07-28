@@ -26,7 +26,7 @@ import org.bukkit.util.Vector;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class FakeNameTagManager implements PacketListener {
+public class FakeNameTagManager implements PacketListener {
 
     private static final double HEIGHT = 1.8;
     private final AtomicInteger entityId = new AtomicInteger(2_000_000_000);
@@ -57,20 +57,50 @@ public final class FakeNameTagManager implements PacketListener {
                 Player owner = tag.getOwner();
 
                 Location loc = owner.getLocation().add(0, HEIGHT, 0);
-                Location current = owner.getLocation().clone();
-                Vector deltaVector = current.toVector().subtract(tag.previousLocation.toVector());
-                if (deltaVector.lengthSquared() == 0) {
-                    continue;
-                }
-
-                WrapperPlayServerEntityRelativeMove packet = new WrapperPlayServerEntityRelativeMove(
-                        tag.entityId,
-                        deltaVector.getX(),
-                        deltaVector.getY(),
-                        deltaVector.getZ(),
+                //Location current = owner.getLocation().clone();
+                WrapperPlayServerEntityTeleport teleport = new WrapperPlayServerEntityTeleport(
+                        tag.getEntityId(),
+                        SpigotConversionUtil.fromBukkitLocation(loc).getPosition(),
+                        loc.getYaw(),
+                        loc.getPitch(),
                         false
                 );
-                tag.setPreviousLocation(current.clone());
+                for (Player viewer : tag.viewers) {
+                    PacketEvents.getAPI().getPlayerManager().sendPacket(viewer, teleport);
+                }
+                PacketEvents.getAPI().getPlayerManager().sendPacket(owner, teleport);
+//                Vector deltaVector = current.toVector().clone().subtract(tag.previousLocation.toVector());
+//                if (deltaVector.lengthSquared() == 0) {
+//                    continue;
+//                }
+//                System.out.println(deltaVector);
+//                if (Math.abs(deltaVector.getX()) > 2.9 || Math.abs(deltaVector.getZ()) > 2.9 || Math.abs(deltaVector.getY()) > 2.9) {
+//                    WrapperPlayServerEntityTeleport teleport = new WrapperPlayServerEntityTeleport(
+//                            tag.getEntityId(),
+//                            SpigotConversionUtil.fromBukkitLocation(current).getPosition(),
+//                            current.getYaw(),
+//                            current.getPitch(),
+//                            false
+//                    );
+//                    for (Player viewer : tag.viewers) {
+//                        PacketEvents.getAPI().getPlayerManager().sendPacket(viewer, teleport);
+//                    }
+//                    PacketEvents.getAPI().getPlayerManager().sendPacket(owner, teleport);
+//                } else {
+//                    WrapperPlayServerEntityRelativeMove packet = new WrapperPlayServerEntityRelativeMove(
+//                            tag.entityId,
+//                            deltaVector.getX(),
+//                            deltaVector.getY(),
+//                            deltaVector.getZ(),
+//                            false
+//                    );
+//                    for (Player viewer : tag.viewers) {
+//                        PacketEvents.getAPI().getPlayerManager().sendPacket(viewer, packet);
+//                    }
+//                    PacketEvents.getAPI().getPlayerManager().sendPacket(owner, packet);
+//                }
+
+
 //                WrapperPlayServerEntityTeleport packet = new WrapperPlayServerEntityTeleport(
 //                        tag.entityId,
 //                        new Vector3d(loc.getX(), loc.getY(), loc.getZ()),
@@ -80,11 +110,7 @@ public final class FakeNameTagManager implements PacketListener {
 //                );
 
 
-                for (Player viewer : tag.viewers) {
-                    PacketEvents.getAPI().getPlayerManager().sendPacket(viewer, packet);
-                }
-                PacketEvents.getAPI().getPlayerManager().sendPacket(owner, packet);
-
+                //tag.setPreviousLocation(current.clone());
 
             }
         }, 0L, 1L);

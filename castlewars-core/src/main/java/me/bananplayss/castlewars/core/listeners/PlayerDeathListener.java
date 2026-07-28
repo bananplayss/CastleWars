@@ -7,6 +7,8 @@ import me.bananplayss.castlewars.api.profiles.Profile;
 import me.bananplayss.castlewars.api.teams.game.AbstractGameTeam;
 import me.bananplayss.castlewars.api.teams.game.GameFlagTeam;
 import me.bananplayss.castlewars.core.Main;
+import me.bananplayss.castlewars.core.effects.FlagProtectionEffect;
+import me.bananplayss.castlewars.core.effects.RingOuterEffect;
 import me.bananplayss.castlewars.core.kobalib.colors.ColorParser;
 import me.bananplayss.castlewars.core.messages.Message;
 import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
@@ -74,11 +76,10 @@ public class PlayerDeathListener implements Listener {
 
             if (!resettedToSpawn) {
                 GameFlagTeam t = fg.getFlagManager().drop(e.getPlayer());
-                CastleWarsFlagDropEvent event = new CastleWarsFlagDropEvent(prof.getCurrentGame(), e.getPlayer(), carriedTeam, fg.getFlagManager().getFlagLocation(t));
-                event.callEvent();
+
                 if (t != null) {
                     Message.FLAG_DROPPED.builder().setTeam(t).setPlayer(e.getPlayer()).send(prof.getCurrentGame());
-                    t.setFlagProtection(fg.getFlagProtection() + System.currentTimeMillis());
+//                    t.setFlagProtection(fg.getFlagProtection() + System.currentTimeMillis());
                 }
             }
 
@@ -112,6 +113,5 @@ public class PlayerDeathListener implements Listener {
                 }
             }
         }, 1L);
-
     }
 }

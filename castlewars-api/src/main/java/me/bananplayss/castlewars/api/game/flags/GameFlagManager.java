@@ -3,17 +3,15 @@ package me.bananplayss.castlewars.api.game.flags;
 import lombok.Getter;
 import me.bananplayss.castlewars.api.CastleWarsAPI;
 import me.bananplayss.castlewars.api.effects.EffectManager;
+import me.bananplayss.castlewars.api.events.flags.CastleWarsFlagDropEvent;
 import me.bananplayss.castlewars.api.game.FlagGame;
 import me.bananplayss.castlewars.api.profiles.Profile;
 import me.bananplayss.castlewars.api.teams.game.GameFlagTeam;
 import me.bananplayss.castlewars.api.utils.Utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -64,7 +62,7 @@ public class GameFlagManager {
             this.carriedFlags.put(p, team);
             block.setType(Material.AIR);
             team.setFlagState(GameFlagTeam.FlagState.CARRYING);
-            CastleWarsAPI.EFFECT_MANAGER.get().removeLoopEffect(team.getRingEffect());
+            CastleWarsAPI.EFFECT_MANAGER.get().removeLoopEffect(team.getCurrentEffect());
         }
 
         return team;
@@ -72,10 +70,9 @@ public class GameFlagManager {
 
     private void resetFlag(GameFlagTeam team) {
         team.setFlagState(GameFlagTeam.FlagState.SPAWN);
-        CastleWarsAPI.EFFECT_MANAGER.get().removeLoopEffect(team.getRingEffect());
+        CastleWarsAPI.EFFECT_MANAGER.get().removeLoopEffect(team.getCurrentEffect());
         this.flagGame.placeBanner(team, team.getFlagSpawn(), null);
         this.blockFlags.put(team.getFlagSpawn(), team);
-
     }
 
     public void resetFlag(Player player, GameFlagTeam team) {
@@ -85,6 +82,7 @@ public class GameFlagManager {
 
     public void resetFlag(Block block, GameFlagTeam team) {
         this.blockFlags.remove(block.getLocation());
+        block.setType(Material.AIR);
         resetFlag(team);
     }
 
@@ -108,12 +106,17 @@ public class GameFlagManager {
             return stolenFlag;
         }
 
+        CastleWarsFlagDropEvent event = new CastleWarsFlagDropEvent(this.flagGame.getGame(), player, stolenFlag, emptyLoc);
+        event.callEvent();
+
+        stolenFlag.setFlagProtection(flagGame.getFlagProtection() + System.currentTimeMillis());
         this.flagGame.placeBanner(stolenFlag, emptyLoc, Utils.getNearestBlockFace(player));
 
         this.carriedFlags.remove(player);
         this.blockFlags.put(emptyLoc, stolenFlag);
         stolenFlag.setFlagState(GameFlagTeam.FlagState.DROPPED);
-        System.out.println("Block search took: " + (System.nanoTime() - blockSearch));
+
+        //System.out.println("Block search took: " + (System.nanoTime() - blockSearch));
         return stolenFlag;
     }
 

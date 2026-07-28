@@ -48,7 +48,7 @@ public class BoundingBoxEffect extends CustomEffect {
     }
 
     @Override
-    public void apply(Location spawnLocation) {
+    public void spawn(Location spawnLocation) {
         Particle.DustOptions dust = new Particle.DustOptions(this.getBaseColor(), 0.66f);
 
         if (attach != null && attach.isValid()) {
@@ -145,8 +145,4 @@ public class BoundingBoxEffect extends CustomEffect {
         }
     }
 
-    @Override
-    public void end() {
-
-    }
 }

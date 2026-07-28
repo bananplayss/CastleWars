@@ -11,17 +11,20 @@ C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\commands\subcmds\kits\KitGiveCommand.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\commands\subcmds\kits\KitPreviewCommand.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\commands\subcmds\LeaveGameCommand.java
+C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\commands\subcmds\ReloadCommand.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\commands\subcmds\StartGameCommand.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\database\FileDatabase.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\database\IDatabase.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\database\MySQLDatabase.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\database\SQLiteDatabase.java
-C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\digging\BannerDiggingManager.java
+C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\digging\GameFlagResetManager.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\effects\BleedEffect.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\effects\BoundingBoxEffect.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\effects\BoundingBoxVolumeEffect.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\effects\EffectManagerImpl.java
+C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\effects\FlagProtectionEffect.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\effects\RingEffect.java
+C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\effects\RingFillEffect.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\effects\RingOuterEffect.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\files\ConfigData.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\files\FileManager.java
@@ -32,6 +35,7 @@ C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\game\GameSpectateManagerImpl.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\game\phases\GamePhaseManagerImpl.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\hooks\HookManager.java
+C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\hooks\tab\TABTabListManager.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\kits\KitManagerImpl.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\kobalib\colors\ColorParser.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\kobalib\colors\LegacyToMiniMessage.java
@@ -66,6 +70,7 @@ C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\listeners\PlayerQuitListener.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\listeners\PlayerTeleportListener.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\listeners\SpectateMoveListener.java
+C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\listeners\SpectatorEverythingListener.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\Main.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\map\ArenaSchematic.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\map\managers\BaseMapManager.java
@@ -87,4 +92,4 @@ C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\utils\TimeUtils.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\utils\Utils.java
 C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\visibility\FakeNameTagManager.java
-C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\visibility\MovePacketListener.java
+C:\Users\Balu\Desktop\Projects\MinecraftProjects\CastleWars\castlewars-core\src\main\java\me\bananplayss\castlewars\core\visibility\SpectatePacketListener.java

@@ -27,7 +27,7 @@ public class BoundingBoxVolumeEffect extends CustomEffect {
     }
 
     @Override
-    public void apply(Location spawnLocation) {
+    public void spawn(Location spawnLocation) {
 
         World world = spawnLocation.getWorld();
 
@@ -48,12 +48,5 @@ public class BoundingBoxVolumeEffect extends CustomEffect {
             double randomZ = minZ + (maxZ - minZ) * Math.random();
             world.spawnParticle(particle, randomX, randomY, randomZ, 1);
         }
-    }
-
-
-
-    @Override
-    public void end() {
-
     }
 }

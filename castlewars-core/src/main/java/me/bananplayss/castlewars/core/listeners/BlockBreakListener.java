@@ -1,5 +1,6 @@
 package me.bananplayss.castlewars.core.listeners;
 
+import com.cryptomorin.xseries.particles.XParticle;
 import me.bananplayss.castlewars.api.events.flags.CastleWarsFlagPickupEvent;
 import me.bananplayss.castlewars.api.events.flags.CastleWarsFlagResetEvent;
 import me.bananplayss.castlewars.api.profiles.Profile;
@@ -11,10 +12,11 @@ import me.bananplayss.castlewars.core.utils.TimeUtils;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public class BlockBreakListener implements Listener {
-
 
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
@@ -49,7 +51,6 @@ public class BlockBreakListener implements Listener {
                     return;
                 }
 
-                e.getBlock().setType(Material.AIR);
                 fg.getFlagManager().resetFlag(e.getBlock(), t);
                 Message.FLAG_SPAWNED.builder().setTeam(t).setPlayer(e.getPlayer()).send(prof.getCurrentGame());
                 System.out.println("REsetted flag : " + e.getPlayer().getName() + " csapatét: " + t.getTeam().getKey());

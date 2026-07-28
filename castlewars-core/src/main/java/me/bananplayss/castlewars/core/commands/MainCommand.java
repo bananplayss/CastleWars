@@ -21,6 +21,8 @@ public class MainCommand extends BaseCommand {
         this.subCommands.add(new AdrianCommand());
         this.subCommands.add(new LeaveGameCommand());
 
+        this.subCommands.add(new ReloadCommand());
+
         this.subCommands.add(new KitCreateCommand());
         this.subCommands.add(new KitDeleteCommand());
         this.subCommands.add(new KitEditCommand());

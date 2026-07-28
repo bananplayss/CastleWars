@@ -5,12 +5,11 @@ import com.github.retrooper.packetevents.event.EventManager;
 import com.github.retrooper.packetevents.event.PacketListenerCommon;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.jeff_media.armorequipevent.ArmorEquipEvent;
-import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import lombok.Getter;
 import me.bananplayss.castlewars.api.CastleWarsAPI;
+import me.bananplayss.castlewars.api.profiles.Profile;
 import me.bananplayss.castlewars.core.commands.MainCommand;
 import me.bananplayss.castlewars.core.database.FileDatabase;
-import me.bananplayss.castlewars.core.digging.BannerDiggingManager;
 import me.bananplayss.castlewars.core.effects.EffectManagerImpl;
 import me.bananplayss.castlewars.core.files.ConfigData;
 import me.bananplayss.castlewars.core.files.FileManager;
@@ -22,13 +21,19 @@ import me.bananplayss.castlewars.core.database.IDatabase;
 import me.bananplayss.castlewars.core.listeners.*;
 import me.bananplayss.castlewars.core.map.managers.MapManager;
 import me.bananplayss.castlewars.core.profiles.ProfileCacheImpl;
+import me.bananplayss.castlewars.core.profiles.ProfileImpl;
 import me.bananplayss.castlewars.core.scoreboard.ScoreboardManagerImpl;
 import me.bananplayss.castlewars.core.utils.RespawnManagerImpl;
-import me.bananplayss.castlewars.core.visibility.FakeNameTagManager;
-import me.bananplayss.castlewars.core.visibility.MovePacketListener;
-import net.kyori.adventure.text.Component;
+import me.bananplayss.castlewars.core.visibility.SpectatePacketListener;
+import me.neznamy.tab.api.TabAPI;
+import me.neznamy.tab.api.TabPlayer;
+import me.neznamy.tab.api.event.player.PlayerLoadEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -55,21 +60,17 @@ public final class Main extends JavaPlugin {
     private RespawnManagerImpl respawnManager;
 
     private EffectManagerImpl effectManager;
-    private BannerDiggingManager bannerDiggingManager;
 
     private IDatabase database;
 
     private PacketListenerCommon movePacketListenerCommon;
-    private PacketListenerCommon bannerDiggingManagerListenerCommon;
 
     @Override
     public void onLoad() {
-        this.bannerDiggingManager = new BannerDiggingManager();
         //this.movePacketListener = new MovePacketListener();
 
         EventManager events = PacketEvents.getAPI().getEventManager();
-        this.movePacketListenerCommon = events.registerListener(new MovePacketListener(), PacketListenerPriority.NORMAL);
-        this.bannerDiggingManagerListenerCommon = events.registerListener(this.bannerDiggingManager, PacketListenerPriority.NORMAL);
+        this.movePacketListenerCommon = events.registerListener(new SpectatePacketListener(), PacketListenerPriority.NORMAL);
     }
 
     @Override
@@ -124,15 +125,35 @@ public final class Main extends JavaPlugin {
         pm.registerEvents(new EntityDamageListener(), this);
         pm.registerEvents(new InventoryClickListener(), this);
         pm.registerEvents(new SpectateMoveListener(), this);
+        pm.registerEvents(new SpectatorEverythingListener(), this);
 
         ArmorEquipEvent.registerListener(this);
         pm.registerEvents(new ArmorEquipListener(), this);
+
+        if(this.hookManager.isTab()) {
+            TabAPI.getInstance().getEventBus().register(PlayerLoadEvent.class, event -> {
+                TabPlayer tabPlayer = event.getPlayer();
+                ProfileImpl prof = ProfileCacheImpl.getProfileImpl(tabPlayer.getUniqueId());
+                if(prof == null) return;
+
+                if(prof.getCurrentGame() == null) return;
+                if(prof.getTeam() == null) return;
+
+                tabPlayer.setTemporaryGroup(prof.getTeam().getTeam().getKey());
+            });
+        }
     }
+
+//    @EventHandler
+//    public void onDisablePlugin(PluginDisableEvent e) {
+//        if(e.getPlugin().equals(this)) {
+//
+//        }
+//    }
 
     @Override
     public void onDisable() {
         EventManager events = PacketEvents.getAPI().getEventManager();
         events.unregisterListener(this.movePacketListenerCommon);
-        events.unregisterListener(this.bannerDiggingManagerListenerCommon);
     }
 }
